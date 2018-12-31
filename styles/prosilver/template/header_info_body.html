@@ -1,0 +1,56 @@
+<!-- Custom Header Info Extension STARTS -->
+<!-- IF S_HEADER_INFO_ENABLED -->
+<!-- IF HEADER_INFO_IS_COLLAPSIBLE -->
+<a class="category<!-- IF S_HEADER_INFO_HIDDEN --> hidden-category<!-- ENDIF -->" style="display: none; height: 0"></a>
+<!-- ENDIF -->
+<div class="forabg" id="info-scroll">
+   <div class="inner">
+      <ul class="topiclist">
+         <li class="header">
+            <dl class="row-item">
+            <dt><i class="fa fa-thumbs-up" aria-hidden="true"></i> {L_HEADER_INFO_SCROLL_INDEX}</dt>
+	       <dd></dd>
+	      </dl>
+         </li>
+      </ul>
+	<div style="position: relative; float:right; padding-right:20px; margin-top: -20px; height:17px;">
+	<a href="#" title="{L_PREVIOUS_SCROLL}" id="tickerb-previous">
+		<img src="{BOARD_URL}ext/orynider/custom_headernfo/styles/prosilver/theme/images/rewind.png" width="16" height="16" alt="{L_PREVIOUS_SCROLL}" />
+	</a> 
+	<a href="#" title="{L_NEXT_SCROLL}" id="tickerb-next">
+		<img src="{BOARD_URL}ext/orynider/custom_headernfo/styles/prosilver/theme/images/fastforward.png" width="16" height="16" alt="{L_NEXT_SCROLL}" />
+	</a> 
+	<a href="#" title="{L_STOP_SCROLL}" id="stopb">
+		<img src="{BOARD_URL}ext/orynider/custom_headernfo/styles/prosilver/theme/images/control_stop.png" width="16" height="16" alt="{L_STOP_SCROLL}" />
+	</a> 
+	<a href="#" title="{L_START_SCROLL}" id="startb">
+		<img src="{BOARD_URL}ext/orynider/custom_headernfo/styles/prosilver/theme/images/control_play.png" width="16" height="16" alt="{L_START_SCROLL}" />
+	</a>
+	</div>
+<!-- IF HEADER_INFO_IS_COLLAPSIBLE -->
+<a href="{U_HEADER_INFO_COLLAPSE_URL}" class="collapse-btn collapse-<!-- IF S_HEADER_INFO_HIDDEN -->show<!-- ELSE -->hide<!-- ENDIF -->"
+		data-hidden="{S_HEADER_INFO_HIDDEN}"
+		data-ajax="phpbb_collapse"
+		data-overlay="true"
+		title="{L_COLLAPSIBLE_CATEGORIES_TITLE}">
+</a>
+<!-- ENDIF -->
+	<div class="vertical-tickerb">   
+	    <ul id="vertical-tickerb" class="topiclist forums">
+			<!-- BEGIN header_info_scroll -->
+	            <li class="row">
+			        <div style="text-align: center;">
+	                    <a href="{header_info_scroll.HEADER_INFO_URL}">
+						<img src="<!-- IF S_THUMBNAIL -->{header_info_scroll.THUMBNAIL_URL}?info_id={header_info_scroll.HEADER_INFO_ID}<!-- ELSE -->{header_info_scroll.HEADER_INFO_IMAGE} <!-- ENDIF -->" title="{header_info_scroll.HEADER_INFO_NAME}" alt="{header_info_scroll.HEADER_INFO_URL}" style="width: 458px; height: 50px;" />
+						</a>
+					</div>
+			    </li>
+		    <!-- BEGINELSE -->
+			<span class="center-inforoll">{L_HEADER_INFO_SCROLL_NOTHING}</span>
+		    <!-- END header_info_scroll --> 
+		</ul>
+	</div>   
+    </div>
+</div>
+<!-- ENDIF -->
+<!-- Custom Header Info Extension ENDS -->

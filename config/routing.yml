@@ -1,0 +1,3 @@
+orynider_custom_headernfo_controller_thumbnail:
+    path: /thumbnail
+    defaults: { _controller: orynider.custom_headernfo.controller.thumbnail:handle_thumbnail }    

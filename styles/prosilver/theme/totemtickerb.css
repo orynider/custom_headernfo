@@ -1,0 +1,32 @@
+/**
+ *
+* @package phpBB Extension - Custom Header Info
+ *
+* @copyright (c) 2018 orynider - http://mxpcms.sourceforge.net
+ * @license GNU General Public License, version 2 (GPL-2.0)
+ *
+ */
+
+#vertical-tickerb{
+	height:75px;
+	overflow:hidden;
+	margin:0; padding:0;
+	-webkit-box-shadow:0 1px 3px rgba(0,0,0, .4);
+}
+
+#vertical-tickerb li {
+	display:block;
+    padding: 12px 5px 35px 5px;
+}
+
+.center-inforoll {
+    font-size: 200%;
+	font-weight: bold;
+    color: #BF0000;
+}
+
+@media only screen and (max-width: 1220px), only screen and (max-device-width: 1220px) {
+	#info-scroll {
+		margin: 0 12px;
+	}
+}
