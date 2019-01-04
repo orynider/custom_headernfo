@@ -1,15 +1,19 @@
 <?php
 /**
-*
-* @package phpBB Extension - Custom Header Logo
-* @copyright (c) 2018, orynider, https://mxpcms.sourceforge.net.org
-* @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
-*
-*/
+ *
+ * This file is part of the phpBB Forum Software package.
+ *
+ * @copyright (c) phpBB Limited <https://www.phpbb.com>
+ * @license GNU General Public License, version 2 (GPL-2.0)
+ *
+ * For full copyright and license information, please see
+ * the docs/CREDITS.txt file.
+ *
+ */
 
 /**
-* DO NOT CHANGE
-*/
+ * DO NOT CHANGE
+ */
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -20,21 +24,11 @@ if (empty($lang) || !is_array($lang))
 	$lang = array();
 }
 
-// DEVELOPERS PLEASE NOTE
-//
-// All language files should use UTF-8 as their encoding and the files must not contain a BOM.
-//
-// Placeholders can now contain order information, e.g. instead of
-// 'Page %s of %s' you can (and should) write 'Page %1$s of %2$s', this allows
-// translators to re-order the output of data while ensuring it remains correct
-//
-// You do not need this where single placeholders are used, e.g. 'Message %d' is fine
-// equally where a string contains only two placeholders which are used to wrap text
-// in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
-//
-// Some characters you may want to copy&paste:
-// ’ » “ ” …
-//
-
 $lang = array_merge($lang, array(
+	'Genesys 1:1'	=> 'In beginning created Gods all the heavens and all the earth.',
+	'Exodus 33:20'	=> 'And to say, You dont grab to see even My face because cant stare Me the man and live.',
+	'Leviticus 23:6'	=> '�And in fifteenth day of month, Festival of Crakers to YAHWEH � seven days crakers you eat.',
+	'Numbers10:35'	=> 'And being, in pulling the ark, and said Moses, Rise YAHWEH, and shall be scattered Your enemies, and shall flee Your hated from Your Face.',
+	'Deuteronomy 8:3'	=> '"...to make it known that not alone by the bread to his belly lives the man, but on every takes out mouth of YAHWEH lives the man."',
+
 ));

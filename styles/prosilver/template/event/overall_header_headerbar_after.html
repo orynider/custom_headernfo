@@ -1,11 +1,11 @@
-{% if S_HEADER_INFO_POSITION2 %}
-	<div id="info-scroll" class="info-scroll rightside responsive-hide">
-      <ul class="topiclist">
+{% if S_HEADER_INFO_POSITION4 %}
+	<div id="info-scroll"  class="info-scroll rightside">
+     <ul class="topiclist">
          <li class="header">
             <dl class="row-item">
             <dt><i class="fa fa-thumbs-up" aria-hidden="true"></i> {L_HEADER_INFO_SCROLL_INDEX}</dt>
-	       <dd></dd>
-	      </dl>
+           <dd></dd>
+           </dl>
          </li>
       </ul>
 	<div style="position: relative; float:right; padding-right:20px; margin-top: -20px; height:17px;">
@@ -35,9 +35,14 @@
 			<!-- BEGIN header_info_scroll -->
 	            <li class="row">
 			        <div style="text-align: center;">
+						<!-- IF header_info_scroll.S_HTML_MULTI_TEXT_ENABLED or header_info_scroll.S_SIMPLE_DB_TEXT_ENABLED -->
+							{header_info_scroll.HEADER_INFO_TITLE}
+							{header_info_scroll.HEADER_INFO_RANDDESC}
+						<!-- ELSE -->
 	                    <a href="{header_info_scroll.HEADER_INFO_URL}">
 						<img src="<!-- IF S_THUMBNAIL -->{header_info_scroll.THUMBNAIL_URL}?info_id={header_info_scroll.HEADER_INFO_ID}<!-- ELSE -->{header_info_scroll.HEADER_INFO_IMAGE} <!-- ENDIF -->" title="{header_info_scroll.HEADER_INFO_NAME}" alt="{header_info_scroll.HEADER_INFO_URL}" style="width: 458px; height: 50px;" />
 						</a>
+						<!-- ENDIF -->
 					</div>
 			    </li>
 		    <!-- BEGINELSE -->
