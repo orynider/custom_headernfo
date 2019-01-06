@@ -190,9 +190,11 @@ class thumbnail
 		
 		$this->language_into = is_file($this->module_root_path . 'language/' . $this->language_into . '/' . $header_info_dir . '/common.' . $this->php_ext) ? $this->language_into : $this->language_from;
 		
+		$this->language_into = is_file($this->module_root_path . 'language/' . $this->language_into . '/' . $header_info_dir . '/common.' . $this->php_ext) ? $this->language_into : 'en';
+		
 		$this->entries = $this->load_lang_file($this->module_root_path . 'language/' . $this->language_into . '/' . $header_info_dir . '/common.' . $this->php_ext);
-		//die(print_r($row, true));
-		//die(print_r($this->entries, true));
+		//die(print_r($this->language_into, true));
+		//die(print_r($this->language_into, true));
 		$i = 0;
 		$pic_title = array();
 		$pic_desc = array();
