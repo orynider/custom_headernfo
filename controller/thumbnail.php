@@ -17,6 +17,12 @@ namespace orynider\custom_headernfo\controller;
  */
 class thumbnail
 {
+	/** @var \phpbb\config\config $config */
+	protected $config;
+	
+	/** @var \phpbb\language\language $language */
+	protected $language;
+	
 	/** @var \phpbb\template\template */
 	protected $template;
 
@@ -68,24 +74,28 @@ class thumbnail
 	/**
 	* Constructor
 	*
-	* @param \phpbb\template\template		 						$template
-	* @param \phpbb\user													$user
+	 * @param \phpbb\config\config							              $config
+	 * @param \phpbb\language\language							         $language
+	* @param \phpbb\template\template		 							$template
+	* @param \phpbb\user														$user
 	* @param \phpbb\log														$log
 	* @param \phpbb\cache\service										$cache
-	* @param \orynider\pafiledb\core\functions_cache		$functions_cache	
-	* @param \phpbb\db\driver\driver_interface				$db
-	* @param \phpbb\request\request		 							$request
-	* @param \phpbb\pagination											$pagination
-	* @param \phpbb\extension\manager								$ext_manager
-	* @param \phpbb\path_helper										$path_helper
+	* @param \orynider\pafiledb\core\functions_cache				$functions_cache
+	* @param \phpbb\db\driver\driver_interface						$db
+	* @param \phpbb\request\request		 								$request
+	* @param \phpbb\pagination												$pagination
+	* @param \phpbb\extension\manager									$ext_manager
+	* @param \phpbb\path_helper											$path_helper
 	* @param string 																$php_ext
 	* @param string 																$root_path
 	* @param string 																$custom_header_info
 	* @param string 																$custom_header_info_config
-	* @param \phpbb\files\factory										$files_factory
+	* @param \phpbb\files\factory											$files_factory
 	*
 	*/
 	public function __construct(
+		\phpbb\config\config $config,
+		\phpbb\language\language $language, 
 		\phpbb\template\template $template,
 		\phpbb\user $user,
 		\phpbb\log\log $log,
@@ -100,6 +110,8 @@ class thumbnail
 		$custom_header_info_config_table,
 		\phpbb\files\factory $files_factory = null)
 	{
+		$this->config							 = $config;
+		$this->language							 = $language;
 		$this->template 						= $template;
 		$this->user 								= $user;
 		$this->log 								= $log;
@@ -129,9 +141,11 @@ class thumbnail
 		// Read out config values
 		//$custom_header_info_config = $this->config_values();
 		//$this->backend = $this->confirm_backend();
-		
-		$this->language_from = (isset($this->config['default_lang'])) ? $this->config['default_lang'] : 'en';
-		$this->language_into	= (isset($user->lang['USER_LANG'])) ? $user->lang['USER_LANG'] : $this->language_from;
+		//$language->set_default_language($this->user->data['user_lang']);
+		//$language->add_lang(array('common', 'acp/common', 'cli'));
+		//$user->setup();
+		$this->language_from = (isset($this->config['default_lang'])) ? $this->config['default_lang'] : $this->user->lang['USER_LANG'];
+		$this->language_into = (isset($this->user->data['user_lang'])) ? $this->user->data['user_lang'] : $this->language_from;
 		
 		//print_r($custom_header_info_config);
 	}
@@ -148,7 +162,6 @@ class thumbnail
 		// Request vars
 		// =======================================================
 		$info_id = $this->request->variable('info_id', 1);
-		
 		
 		// get languages installed
 		//$this->countries = $this->get_countries();
@@ -172,10 +185,14 @@ class thumbnail
 		$header_info_font = $row['header_info_font'];
 		
 		// populate entries (all lang keys)
+		$this->language_from = (isset($this->config['default_lang'])) ? $this->config['default_lang'] : $this->user->lang['USER_LANG'];
+		$this->language_into = (isset($this->user->data['user_lang'])) ? $this->user->data['user_lang'] : $this->language_from;
+		
 		$this->language_into = is_file($this->module_root_path . 'language/' . $this->language_into . '/' . $header_info_dir . '/common.' . $this->php_ext) ? $this->language_into : $this->language_from;
+		
 		$this->entries = $this->load_lang_file($this->module_root_path . 'language/' . $this->language_into . '/' . $header_info_dir . '/common.' . $this->php_ext);
 		//die(print_r($row, true));
-		
+		//die(print_r($this->entries, true));
 		$i = 0;
 		$pic_title = array();
 		$pic_desc = array();
@@ -203,6 +220,7 @@ class thumbnail
 			$pic_desc = $l_values[$j];
 		}
 		//die(print_r($pic_desc, true));
+		//$pic_desc = "ויענך וירעבך ויאכלך את המן אשר לא ידעת ולא ידעון אבתיך  למען הודיעך כי לא על הלחם לבדו יחיה האדם—כי על כל מוצא פי יהוה יחיה האדם";
 
 		$header_info_image	= $row['header_info_image'];
 
@@ -307,18 +325,22 @@ class thumbnail
 		ImageSaveAlpha($im, true);
 
 		$dimension_height = ImageFontHeight($dimension_font);
-		$dimension_width = ImageFontWidth($dimension_font) * strlen($pic_desc);
-		$dimension_x = (($thumbnail_width - $dimension_width) / 2) - strlen($pic_desc);
+		$dimension_width = ImageFontWidth($dimension_font) * mb_strlen($pic_desc, 'utf-8');
+		$dimension_x = (($thumbnail_width - $dimension_width) / 2) - mb_strlen($pic_desc, 'utf-8');
 		$dimension_y = $thumbnail_height + ((16 - $dimension_height) / 2);
 		
 		//ideea: https://stackoverflow.com/a/8187653/9369810
 		//credit: https://stackoverflow.com/users/1046402/jeff-wilbert
-		$middle = strrpos(substr($pic_desc, 0, floor(strlen($pic_desc) / 2)), ' ') + 4;
-
-		$pic_desc1 = substr($pic_desc, 0, $middle); 
-		$pic_desc2 = substr($pic_desc, $middle); 
+		//$middle = strrpos(substr($pic_desc, 0, floor(strlen($pic_desc) / 2)), ' ') + 4;
+		$middle = mb_strrpos(mb_substr($pic_desc, 0, floor(mb_strlen($pic_desc) / 2 )), ' ' ) + 1;
 		
+		$pic_desc = $this->convert_encoding($pic_desc); 
+		$pic_title = $this->convert_encoding($pic_title);
 		
+		$pic_desc1 = $this->convert_encoding(mb_substr($pic_desc, 0, $middle)); 
+		$pic_desc2 = $this->convert_encoding(mb_substr($pic_desc, $middle)); 
+		
+		//die(print_r($pic_desc2, true));
 		//ImageTtfText($im, 2, 20, $dimension_x, $dimension_y, $blue, 'DejaVuSerif.ttf', $pic_title_reg);
 		Header($file_header);
 
@@ -327,9 +349,10 @@ class thumbnail
 		Header("Cache-Control: no-store, no-cache, must-revalidate");
 		Header("Cache-Control: post-check=0, pre-check=0", false);
 		Header("Pragma: no-cache");
-
+		
+		
 		//4 x 138 >= 458
-		if ((6 * strlen($pic_desc)) >= $resize_width)
+		if ((6 * mb_strlen($pic_desc, 'utf-8')) >= $resize_width)
 		{
 			ImageString($im, 2, 10, $dimension_y, $pic_desc1, $blue);
 			ImageString($im, 2, 10, 36, $pic_desc2, $blue);
@@ -340,17 +363,36 @@ class thumbnail
 		}
 		
 		//ImageString($im, 2, 20, 17, $pic_desc, $blue);
-
+		
 		// Add some shadow to the text
 		ImageTtfText($im, 18, 0, 12, 36, $grey, $font, $pic_title);
 
 		// Add the text
-		ImageTtfText($im, 18, 0, 12, 35, $black, $font, $pic_title);
+		ImageTtfText($im, 18, 0, 12, 36, $black, $font, $pic_title);
 
 		
 		ImagePNG($im);
 		//ImageDestroy($im);
 		exit;
+	}
+
+	/**
+	 *
+	 *
+	* @return $out
+	 */
+	function convert_encoding($text)
+	{
+		/* */
+		// Convert UTF-8 string to HTML entities
+		$text = mb_convert_encoding($text, 'HTML-ENTITIES',"UTF-8");
+
+		// Convert HTML entities into ISO-8859-1
+		//$text = html_entity_decode($text, ENT_NOQUOTES, "ISO-8859-1");
+
+		/* */
+
+		return $text;
 	}
 
 	/**
@@ -979,7 +1021,7 @@ class thumbnail
 				case 'galician':
 					$lang_name = 'gl';
 				break;
-				case 'guaran�':
+				case 'guaraní':
 					$lang_name = 'gn';
 				break;
 				case 'gujarati':
@@ -1570,7 +1612,7 @@ class thumbnail
 					$lang_name = 'galician';
 				break;
 				case 'gn':
-					$lang_name = 'guaran�';
+					$lang_name = 'guaraní';
 				break;
 				case 'gu':
 					$lang_name = 'gujarati';

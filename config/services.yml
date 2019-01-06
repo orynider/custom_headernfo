@@ -42,6 +42,8 @@ services:
     orynider.custom_headernfo.controller.thumbnail:
         class: orynider\custom_headernfo\controller\thumbnail
         arguments:
+            - '@config'
+            - '@language'
             - '@template'
             - '@user'
             - '@log'

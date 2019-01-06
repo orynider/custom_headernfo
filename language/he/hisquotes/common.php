@@ -32,3 +32,6 @@ $lang = array_merge($lang, array(
 	'Deuteronomy 8:3'	=> '"."',
 
 ));
+
+// THE END
+?>

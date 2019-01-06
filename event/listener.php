@@ -218,7 +218,7 @@ class listener implements EventSubscriberInterface
 				$info_desc = $l_values[$j];
 			}
 			//Populate info to display ends
-			
+			//die($info_desc);
 			$this->template->assign_block_vars('header_info_scroll', array(
 				'HEADER_INFO_ID'							=> $row['header_info_id'],
 				'HEADER_INFO_NAME'					=> $row['header_info_name'],
