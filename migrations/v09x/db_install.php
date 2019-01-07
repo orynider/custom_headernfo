@@ -323,7 +323,7 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 				'header_info_desc'			=> 'Test Header Info for the Custom Header Info extension.',
 				'header_info_longdesc'		=> 'Sample text description: Test text for the Custom Header Info extension.',
 				'header_info_dir'				=> 'movies', //ext/orynider/custom_headernfo/language/movies/
-				'header_info_font'			=>  'DejaVuSerif',
+				'header_info_font'			=>  'tituscbz',
 				'header_info_type'				=> 'language',
 				'header_info_image'			=> generate_board_url() . '/ext/orynider/custom_headernfo/styles/prosilver/theme/images/banners/custom_header_info.png', //str_replace('prosilver' 'all', $data_files['header_info_image'])
 				'header_info_image_link'	=> 0,	
@@ -346,7 +346,7 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 				'header_info_desc'			=> 'Test Header Info text for the Custom Header Info extension.',
 				'header_info_longdesc'		=> 'Sample text description: Test text for the Custom Header Info extension.',
 				'header_info_dir'				=> 'wlcodex', //ext/orynider/custom_headernfo/language/wlcodex/
-				'header_info_font'			=>  'DejaVuSerif',
+				'header_info_font'			=>  'tituscbz',
 				'header_info_type'				=> 'language',
 				'header_info_image'			=> generate_board_url() . '/ext/orynider/custom_headernfo/styles/prosilver/theme/images/banners/custom_header_info.png', //str_replace('prosilver' 'all', $data_files['header_info_image'])
 				'header_info_image_link'	=> 0,	
@@ -369,7 +369,7 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 				'header_info_desc'			=> 'Test Header Info Prototype for the Custom Header Info extension.',
 				'header_info_longdesc'		=> 'Sample text description: Test text for the Custom Header Info\'s extension Demo Prototype.',
 				'header_info_dir'				=> 'hisquotes', //ext/orynider/custom_headernfo/language/hisquotes/
-				'header_info_font'			=>  'DejaVuSerif',
+				'header_info_font'			=>  'tituscbz',
 				'header_info_type'				=> 'language',
 				'header_info_image'			=> generate_board_url() . '/ext/orynider/custom_headernfo/styles/prosilver/theme/images/banners/custom_header_info.png', //str_replace('prosilver' 'all', $data_files['header_info_image'])
 				'header_info_image_link'	=> 0,

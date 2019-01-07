@@ -234,15 +234,25 @@
 	</thead>
 	<tbody>
 	<!-- BEGIN header_info_scroll -->
+		<!-- INCLUDECSS @orynider_custom_headernfo/{header_info_scroll.HEADER_INFO_DB_FONT}.css -->
 		<tr>
 		    <td width="10%">{header_info_scroll.HEADER_INFO_ID}</td>
-			<td style="text-align: center;">
+			<td class="row1">
+			<!-- IF header_info_scroll.S_SIMPLE_DB_TEXT_ENABLED --><div style="background-image: url('{header_info_scroll.HEADER_INFO_IMAGE}');"><!-- ENDIF -->
 				<!-- IF header_info_scroll.S_HTML_MULTI_TEXT_ENABLED or header_info_scroll.S_SIMPLE_DB_TEXT_ENABLED -->
-					{header_info_scroll.HEADER_INFO_TITLE}
-					{header_info_scroll.HEADER_INFO_RANDDESC}
+							<div id="header_info_title" style="font-size: 11px; font-family: {header_info_scroll.HEADER_INFO_DB_FONT};">
+								<a href="{header_info_scroll.HEADER_INFO_URL}">
+								  <p>{header_info_scroll.HEADER_INFO_RANDDESC}</p>
+								</a>
+							</div>
+							<br />
+							<div id="header_info_title" style="float: <!-- IF S_CONTENT_DIRECTION eq 'ltr' -->left<!-- ELSE -->right<!-- ENDIF -->; font-weight: bold; font-size: 18px; color: #000000; font-family: {header_info_scroll.HEADER_INFO_DB_FONT};">
+								{header_info_scroll.HEADER_INFO_TITLE}
+							</div>
 				<!-- ELSE -->
-				<img src="<!-- IF S_THUMBNAIL -->{header_info_scroll.THUMBNAIL_URL}?info_id={header_info_scroll.HEADER_INFO_ID}<!-- ELSE -->{header_info_scroll.HEADER_INFO_IMAGE} <!-- ENDIF -->" title="{L_HEADER_INFO_URL_B}{{ lang('COLON') }} {header_info_scroll.HEADER_INFO_URL}" alt="" />
+				<img src="<!-- IF S_THUMBNAIL -->{header_info_scroll.THUMBNAIL_URL}?info_id={header_info_scroll.HEADER_INFO_ID}&resize_width={header_info_scroll.HEADER_INFO_PIC_WIDTH}&resize_height={header_info_scroll.HEADER_INFO_PIC_HEIGHT}<!-- ELSE -->{header_info_scroll.HEADER_INFO_IMAGE} <!-- ENDIF -->" title="{L_HEADER_INFO_URL_B}{{ lang('COLON') }} {header_info_scroll.HEADER_INFO_URL}" alt="" />
 				<!-- ENDIF -->
+				 <!-- IF header_info_scroll.S_SIMPLE_DB_TEXT_ENABLED --></div><!-- ENDIF -->
 			</td>
             <td>{header_info_scroll.HEADER_INFO_NAME}</td>
 			<td class="actions"><a href="{header_info_scroll.U_EDIT}">{ICON_EDIT}</a> <a href="{header_info_scroll.U_DELETE}" data-ajax="row_delete">{ICON_DELETE}</a></td>

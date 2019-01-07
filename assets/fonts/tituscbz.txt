@@ -1,0 +1,8 @@
+In cooperation with BITSTREAM, the TITUS project has prepared a Unicode Font (in Windows TTF format) 
+to match the requirements of linguists and philologists working on several languages (ancient and modern). 
+This font (named "TITUS Cyberbit Basic"), now compliant with UNICODE 4.0 , is available for non-commercial users only. 
+The font can be downloaded here http://titus.fkidg1.uni-frankfurt.de/unicode/tituut.asp
+(N.B. the preparation of the download file may take a minute). 
+If you want to use the font with your web browser, you will have to configure your system and your browser in the way indicated above.
+
+On the basis of the tool "Uniqoder" developed by Östen Dahl, Andrej Perdih created UniqTitus, a UNICODE keyboard layout for MS Word. This tool, which is available for non-commercial users only, can be downloaded here. http://titus.fkidg1.uni-frankfurt.de/unicode/tituut.asp

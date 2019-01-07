@@ -194,7 +194,7 @@ class thumbnail
 		
 		$this->entries = $this->load_lang_file($this->module_root_path . 'language/' . $this->language_into . '/' . $header_info_dir . '/common.' . $this->php_ext);
 		//die(print_r($this->language_into, true));
-		//die(print_r($this->language_into, true));
+		
 		$i = 0;
 		$pic_title = array();
 		$pic_desc = array();
@@ -250,11 +250,10 @@ class thumbnail
 
 		if (!is_file($font))
 		{
-			$font = $this->module_root_path . "assets/fonts/" . $header_info_font . '.ttf';
+			$font = $this->module_root_path . "assets/fonts/" . $header_info_font; //. '.ttf';
 		}
 
 		$header_info_image = $header_info_image ? str_replace('_info.', '_bg.', $header_info_image) : $this->module_root_path . "styles/prosilver/theme/images/banners/custom_header_bg.png";
-
 
 		$src = str_replace('php', 'png', $header_info_image);
 		$src_path = str_replace($phpbb_url, $this->root_path, $header_info_image);
@@ -273,25 +272,41 @@ class thumbnail
 		
 		$resize_width = $this->request->variable('resize_width', $pic_width); 
 		$resize_height = $this->request->variable('resize_height', $pic_height);
-		
+
+		// Create some colors
+		$white = ImageColorAllocate($im, 255, 255, 255);
+		$grey = ImageColorAllocate($im, 128, 128, 128);
+		// integer representation of the color black (rgb: 0,0,0)
+		$black = $background = ImageColorAllocate($im, 0, 0, 0);
+		$blue = ImageColorAllocate($im, 6, 108, 159);
+		$blure = ImageColorAllocate($im, 29, 36, 52);
+		$rand = ImageColorAllocate($im, rand(180, 255), rand(180, 255), rand(180, 255));
+
+		/**/
 		if (($resize_width !== 0) && ($resize_width !== $pic_width))
 		{
+			//$resize = $im;
 			$resize = ($this->gdVersion() == 1) ? ImageCreate($resize_width, $resize_height) : ImageCreateTrueColor($resize_width, $resize_height);
 			$resize_function = ($this->gdVersion() == 1) ? 'imagecopyresized' : 'imagecopyresampled';
-			
-			if (function_exists('imageantialias'))
-			{
-				ImageAntialias($resize, true);
-			}
-			ImageAlphaBlending($resize, false);
-			if (function_exists('imagesavealpha'))
-			{
-				ImageSaveAlpha($resize, true);
-			}
 
 			$resize_function($resize, $im, 0, 0, 0, 0, $resize_width, $resize_height, $pic_width, $pic_height);
 			ImageDestroy($im);
+			$pic_width = $resize_width;
+			$pic_height = $resize_height;
+			
 			$im = $resize;
+			
+			ImageFilledRectAngle($im, 0, 0, $resize_width, $pic_height, $white);
+			
+			if (function_exists('imageantialias'))
+			{
+				ImageAntialias($im, true);
+			}
+			ImageAlphaBlending($im, false);
+			if (function_exists('imagesavealpha'))
+			{
+				ImageSaveAlpha($im, true);
+			}
 		}
 		else
 		{
@@ -305,21 +320,12 @@ class thumbnail
 				ImageSaveAlpha($im, true);
 			}
 		}
-
+		/**/
 		$dimension_filesize = @FileSize($src_path);
 
 		$dimension_font = 1;
 		$dimension_string = intval($pic_width) . 'x' . intval($pic_height) . '(' . intval($dimension_filesize / 1024) . 'KB)';
 
-		// Create some colors
-		$white = ImageColorAllocate($im, 255, 255, 255);
-		$grey = ImageColorAllocate($im, 128, 128, 128);
-		// integer representation of the color black (rgb: 0,0,0)
-		$black = $background = ImageColorAllocate($im, 0, 0, 0);
-		$blue = ImageColorAllocate($im, 6, 108, 159);
-		$blure = ImageColorAllocate($im, 29, 36, 52);
-
-		//ImageFilledRectAngle($im, 0, 0, 399, 29, $white);
 		// removing the black from the placeholder
 		ImageColorTransparent($im, $background);
 		// turning on alpha channel information saving (to ensure the full range
@@ -330,19 +336,21 @@ class thumbnail
 		$dimension_width = ImageFontWidth($dimension_font) * mb_strlen($pic_desc, 'utf-8');
 		$dimension_x = (($thumbnail_width - $dimension_width) / 2) - mb_strlen($pic_desc, 'utf-8');
 		$dimension_y = $thumbnail_height + ((16 - $dimension_height) / 2);
-		
+
 		//ideea: https://stackoverflow.com/a/8187653/9369810
 		//credit: https://stackoverflow.com/users/1046402/jeff-wilbert
 		//$middle = strrpos(substr($pic_desc, 0, floor(strlen($pic_desc) / 2)), ' ') + 4;
-		$middle = mb_strrpos(mb_substr($pic_desc, 0, floor(mb_strlen($pic_desc) / 2 )), ' ' ) + 1;
-		
+		$middle = mb_strrpos(mb_substr($pic_desc, 0, floor(mb_strlen($pic_desc) / 2 )), ' ') + 1;
+
 		$pic_desc = $this->convert_encoding($pic_desc); 
 		$pic_title = $this->convert_encoding($pic_title);
-		
+
 		$pic_desc1 = $this->convert_encoding(mb_substr($pic_desc, 0, $middle)); 
 		$pic_desc2 = $this->convert_encoding(mb_substr($pic_desc, $middle)); 
-		
-		//die(print_r($pic_desc2, true));
+
+		//$font = $this->module_root_path . "assets/fonts/tituscbz.ttf";
+		//imageloadfont($font);
+		//die(print_r($font, true));
 		//ImageTtfText($im, 2, 20, $dimension_x, $dimension_y, $blue, 'DejaVuSerif.ttf', $pic_title_reg);
 		Header($file_header);
 
@@ -351,28 +359,33 @@ class thumbnail
 		Header("Cache-Control: no-store, no-cache, must-revalidate");
 		Header("Cache-Control: post-check=0, pre-check=0", false);
 		Header("Pragma: no-cache");
-		
-		
+
 		//4 x 138 >= 458
-		if ((6 * mb_strlen($pic_desc, 'utf-8')) >= $resize_width)
+		//ImageString ( resource 1 $image , int 2 $font , 3 int $x , 4 int $y , string 5 $string , int 6 $color )
+		//ImageTtfText ( resource 1 $image , float 2 $size ie 18, float 3 $angle ie 0, int 4 $x , int 5 $y , int 6 $color , string 7 $fontfile , string 8 $text )
+		if (((6 * mb_strlen($pic_desc, 'utf-8')) >= $resize_width) || (mb_strlen($pic_desc2, 'utf-8') >= $resize_width))
 		{
-			ImageString($im, 2, 10, $dimension_y, $pic_desc1, $blue);
-			ImageString($im, 2, 10, 36, $pic_desc2, $blue);
+			//ImageString($im, 2, 10, $dimension_y, $pic_desc1, $blue);
+			ImageTtfText($im, 10, 0, 10, $dimension_y + 8, $blue, $font, $pic_desc1);
+			//ImageString($im, 2, 10, 36, $pic_desc2, $blue);
+			ImageTtfText($im, 10, 0, 10, $dimension_y + 43, $blue, $font, $pic_desc2);
 		}
 		else
 		{
-			ImageString($im, 2, 10, $dimension_y, $pic_desc, $blue);
+			//ImageString($im, 2, 10, $dimension_y, $pic_desc, $blue);
+			ImageTtfText($im, 10, 0, 10, $dimension_y + 10, $blue, $font, $pic_desc);
 		}
-		
+
 		//ImageString($im, 2, 20, 17, $pic_desc, $blue);
-		
+		//$bbox = ImageTtfBBox(20, 0, $font , $pic_title);
+		//$textWidth = $bbox[2] - $bbox[0];
+
 		// Add some shadow to the text
-		ImageTtfText($im, 18, 0, 12, 36, $grey, $font, $pic_title);
+		ImageTtfText($im, 18, 0, 12, $dimension_y + 29, $grey, $font, $pic_title);
 
 		// Add the text
-		ImageTtfText($im, 18, 0, 12, 36, $black, $font, $pic_title);
+		ImageTtfText($im, 18, 0, 12, $dimension_y + 29, $black, $font, $pic_title);
 
-		
 		ImagePNG($im);
 		//ImageDestroy($im);
 		exit;
@@ -380,23 +393,58 @@ class thumbnail
 
 	/**
 	 *
+	 * Add here conversion code for 
+	 * preparing text for php_gd2 function ImageTtfText()
 	 *
 	* @return $out
 	 */
 	function convert_encoding($text)
 	{
 		/* */
+		//die(print_r($this->language_into, true));
 		// Convert UTF-8 string to HTML entities
-		$text = mb_convert_encoding($text, 'HTML-ENTITIES',"UTF-8");
-
+		//$text = mb_convert_encoding($text, 'HTML-ENTITIES',"UTF-8");
+		//$opts = array('http' => array('header' => 'Accept-Charset: windows-1255,utf-8;q=0.7,*;q=0.7'));
+		//$context = stream_context_create($opts);
+		//$content = file_get_contents('my_url', false, $context);
+		//$text = iconv("UTF-8", "cp1255", $text);
 		// Convert HTML entities into ISO-8859-1
 		//$text = html_entity_decode($text, ENT_NOQUOTES, "ISO-8859-1");
-
 		/* */
-
+		
+		//Reverse string for RTL languages 
+		switch($this->language_into)
+		{
+			case 'he':
+			case 'ar':
+				preg_match_all ('/./us' , $text, $rtl);
+				$text = join ('' , array_reverse($rtl[0])); 
+			break;
+			
+			default:
+			break;
+		}
+		
 		return $text;
 	}
-
+	
+	/**
+	 * utf8 strlen
+	 *
+	* @return $return
+	 */
+	function utf8_strlen($text) 
+	{
+		if (function_exists('mb_strlen'))
+		{
+			return mb_strlen($text, 'utf-8');
+		}
+		else
+		{
+			return preg_match_all('/[\x00-\x7F\xC0-\xFD]/', $text, $return);
+		}
+	}
+	
 	/**
 	 * Confirm Forum Backend Name
 	 *

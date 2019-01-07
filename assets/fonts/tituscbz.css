@@ -1,0 +1,8 @@
+@font-face {
+    	font-family: 'TITUSCyberbitBasic';
+    	font-style:normal;
+
+	src: url('tituscbz.eot');
+  	src: local('?'),
+         url('tituscbz.woff') format('woff'), url('tituscbz.ttf') format('truetype'), url('tituscbz.svg') format('svg');
+}

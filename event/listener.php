@@ -228,6 +228,7 @@ class listener implements EventSubscriberInterface
 				'HEADER_INFO_RANDDESC'				=> $info_desc,
 				'HEADER_INFO_TYPE'						=> $row['header_info_type'],
 				'HEADER_INFO_DIR'						=> $row['header_info_dir'], //ext/orynider/custom_headernfo/language/movies/
+				'HEADER_INFO_DB_FONT' 				=> substr($row['header_info_font'], 0, strrpos($row['header_info_font'], '.')), 
 				'HEADER_INFO_IMAGE'					=> $row['header_info_image'],
 				'THUMBNAIL_URL'   						=> generate_board_url() . '/app.php/thumbnail',
 				'S_HEADER_INFO_LINK_CHECKED'		=> $row['header_info_link'],
@@ -247,7 +248,7 @@ class listener implements EventSubscriberInterface
 
 		if ($this->operator !== null)
 		{
-			$fid = 'headernfo'; // string for hash
+			$fid = 'header_info'; // string for hash
 			$this->template->assign_vars(array(
 				'HEADER_INFO_IS_COLLAPSIBLE'	=> true,
 				'S_HEADER_INFO_HIDDEN' => in_array($fid, $this->operator->get_user_categories()),

@@ -225,13 +225,14 @@ class admin_controller
 				'HEADER_INFO_LONGDESC'				=> $row['header_info_longdesc'],
 				'HEADER_INFO_RANDDESC'				=> $info_desc,
 				'HEADER_INFO_TYPE_SELECT'			=> $header_info_type_select,
+				'HEADER_INFO_DIR'						=> $this->user->lang[$row['header_info_dir']],
 				'HEADER_INFO_TYPE'						=> $row['header_info_type'],
 				'HEADER_INFO_DIR_SELECT' 			=> $this->gen_lang_dirs_select_list('html', 'header_info_dir', $row['header_info_dir']), //ext/orynider/custom_headernfo/language/movies/
-				'HEADER_INFO_FONT_SELECT' 			=> $this->gen_fonts_select_list('html', 'header_info_fonts', $row['header_info_fonts']), //ext/orynider/custom_headernfo/assets/fonts/
-				'HEADER_INFO_FONT' 					=> $row['header_info_fonts'], 
+				'HEADER_INFO_FONT_SELECT' 		=> $this->gen_fonts_select_list('html', 'header_info_font', $row['header_info_font']), //ext/orynider/custom_headernfo/assets/fonts/
+				'HEADER_INFO_DB_FONT' 				=> substr($row['header_info_font'], 0, strrpos($row['header_info_font'], '.')),
 				'HEADER_INFO_IMAGE'					=> $row['header_info_image'],
 				'THUMBNAIL_URL'   						=> generate_board_url() . '/app.php/thumbnail',
-				'S_HEADER_INFO_LINK_CHECKED'		=> $row['header_info_link'],
+				'S_HEADER_INFO_LINK_CHECKED'	=> $row['header_info_link'],
 				'HEADER_INFO_URL'						=> $row['header_info_url'],
 				'HEADER_INFO_LICENSE'					=> $row['header_info_license'],
 				'HEADER_INFO_TIME'						=> $row['header_info_time'],
@@ -239,7 +240,7 @@ class admin_controller
 				'HEADER_INFO_PIC_WIDTH'				=> $row['header_info_pic_width'],
 				'HEADER_INFO_PIC_HEIGHT'			=> $row['header_info_pic_height'],
 				'S_HTML_MULTI_TEXT_ENABLED'		=> ($row['header_info_type'] == 'lang_html_text'),
-				'S_SIMPLE_DB_TEXT_ENABLED'			=> ($row['header_info_type'] == 'simple_db_text'),
+				'S_SIMPLE_DB_TEXT_ENABLED'		=> ($row['header_info_type'] == 'simple_db_text'),
 				'S_HEADER_INFO_PIN_CHECKED'		=> $row['header_info_pin'],
 				'S_HEADER_INFO_DISABLE'				=> $row['header_info_disable'], // settings_disable,
 				'U_EDIT'										=> $this->u_action . "&amp;id=" . $row['header_info_id'] . "&amp;action=edit",
@@ -259,7 +260,7 @@ class admin_controller
 			'S_HEADER_INFO_POSITION4'		=> $custom_header_info_config['banner_position'],
 			'HEADER_INFO_TYPE_SELECT'		=> $header_info_type_select,
 			'HEADER_INFO_DIR_SELECT' 		=> $this->gen_lang_dirs_select_list('html', 'header_info_dir', 'politics'), //ext/orynider/custom_headernfo/language/movies/
-			'HEADER_INFO_FONT_SELECT'		=> $this->gen_fonts_select_list('html', 'header_info_fonts', 'DejaVuSerif'), //ext/orynider/custom_headernfo/assets/fonts/
+			'HEADER_INFO_FONT_SELECT'		=> $this->gen_fonts_select_list('html', 'header_info_font', ''), //ext/orynider/custom_headernfo/assets/fonts/
 			'HEADER_INFO_IMAGE'				=> generate_board_url() . '/' . $custom_header_info_config['banners_dir'] . 'custom_header_info.png',
 			'SHOW_AMOUNT'				   		=> $custom_header_info_config['show_amount'],
 			'S_THUMBNAIL'   						=> (@function_exists('gd_info') && (@count(@gd_info()) !== 0)), 
@@ -302,7 +303,7 @@ class admin_controller
 			$longdesc = $this->request->variable('header_info_longdesc', '', true);
 			$dir = $this->request->variable('header_info_dir', 'politics', true);
 			$type = $this->request->variable('header_info_type', '', true);
-			$font = $this->request->variable('header_info_font', 'DejaVuSerif', true);
+			$font = $this->request->variable('header_info_font', '', true);
 			$image = $this->request->variable('header_info_image', generate_board_url() . $custom_header_info_config['banners_dir'] . 'custom_header_info.png');
 			$link = $this->request->variable('header_info_link', 0);
 			$url = $this->request->variable('header_info_url', '');
@@ -324,19 +325,19 @@ class admin_controller
 					'header_info_desc'				=> $desc,
 					'header_info_longdesc'			=> $longdesc,
 					'header_info_dir'					=> $dir, //ext/orynider/custom_headernfo/language/movies/
-					'header_info_type'				=> $type,
-					'header_info_font'				=> $font,
+					'header_info_type'					=> $type,
+					'header_info_font'					=> $font,
 					'header_info_image'				=> $image, //str_replace('prosilver' 'all', $data_files['header_info_image'])
 					'header_info_image_link'		=> $link,
 					'header_info_url'					=> $url,
-					'header_info_license'			=> $license,
+					'header_info_license'				=> $license,
 					'header_info_time'				=> time(),
-					'header_info_last'				=> 0,
-					'header_info_pin'				=> $pin,
+					'header_info_last'					=> 0,
+					'header_info_pin'					=> $pin,
 					'header_info_pic_width'			=> $pic_width,
-					'header_info_pic_height'		=> $pic_height,
-					'header_info_disable'			=> $disable, // settings_disable,
-					'user_id'							=> $this->user->data['user_id'],
+					'header_info_pic_height'			=> $pic_height,
+					'header_info_disable'				=> $disable, // settings_disable,
+					'user_id'								=> $this->user->data['user_id'],
 					'bbcode_bitfield'					=> 'QQ==',
 					'bbcode_uid'						=> '2p5lkzzx',
 					'bbcode_options'					=> '',
@@ -346,29 +347,30 @@ class admin_controller
 				$this->db->sql_query($sql);
 				trigger_error($this->user->lang['HEADER_INFO_ADDED'] . adm_back_link($this->u_action));
 			}
-			else if($name != '' && $url != '' && $image != '' && isset($edit) && !empty($edit_id))
+			else if($name != '' && $url != '' && $image != '' && $font != '' && isset($edit) && !empty($edit_id))
 			{
 				$sql_array = array(
 					'header_info_name'				=> $name,
 					'header_info_desc'				=> $desc,
 					'header_info_longdesc'			=> $longdesc,
 					'header_info_dir'					=> $dir, //ext/orynider/custom_headernfo/language/movies/
-					'header_info_type'				=> $type,
-					'header_info_font'				=> $font,
+					'header_info_type'					=> $type,
+					'header_info_font'					=> $font,
 					'header_info_image'				=> $image, //str_replace('prosilver' 'all', $data_files['header_info_image'])
 					'header_info_image_link'		=> $link,
 					'header_info_url'					=> $url,
-					'header_info_license'			=> $license,
+					'header_info_license'				=> $license,
 					'header_info_time'				=> $time,
-					'header_info_last'				=> time(),
-					'header_info_pin'				=> $pin,
+					'header_info_last'					=> time(),
+					'header_info_pin'					=> $pin,
 					'header_info_pic_width'			=> $pic_width,
-					'header_info_pic_height'		=> $pic_height,
-					'header_info_disable'			=> $disable, // settings_disable,
-					'user_id'							=> $this->user->data['user_id'],
+					'header_info_pic_height'			=> $pic_height,
+					'header_info_disable'				=> $disable, // settings_disable,
+					'user_id'								=> $this->user->data['user_id'],
 				);
 
 				$sql = 'UPDATE ' . $this->custom_header_info_table . ' SET ' . $this->db->sql_build_array('UPDATE', $sql_array) . ' WHERE header_info_id = ' . $edit_id;
+				print_r($sql);
 				$this->db->sql_query($sql);
 				trigger_error($this->user->lang['HEADER_INFO_UDPATED'] . adm_back_link($this->u_action));
 			}
@@ -548,18 +550,19 @@ class admin_controller
 						'HEADER_INFO_RANDDESC'				=> $info_desc,
 						'HEADER_INFO_TYPE'						=> $row['header_info_type'],
 						'HEADER_INFO_TYPE_SELECT'			=> $header_info_type_select,
+						'HEADER_INFO_DIR'						=> $this->user->lang[$row['header_info_dir']],
 						'HEADER_INFO_DIR_SELECT' 			=> $this->gen_lang_dirs_select_list('html', 'header_info_dir', $row['header_info_dir']), //ext/orynider/custom_headernfo/language/movies/
-						'HEADER_INFO_FONT_SELECT' 			=> $this->gen_fonts_select_list('html', 'header_info_fonts', $row['header_info_fonts']), //ext/orynider/custom_headernfo/assets/fonts/
-						'HEADER_INFO_FONT' 					=> $row['header_info_fonts'], 
+						'HEADER_INFO_FONT_SELECT' 		=> $this->gen_fonts_select_list('html', 'header_info_font', $row['header_info_font']), //ext/orynider/custom_headernfo/assets/fonts/
+						'HEADER_INFO_DB_FONT' 				=> substr($row['header_info_font'], 0, strrpos($row['header_info_font'], '.')),
 						'HEADER_INFO_IMAGE'					=> $row['header_info_image'],
 						'THUMBNAIL_URL'   						=> generate_board_url() . '/app.php/thumbnail',
-						'S_HEADER_INFO_LINK_CHECKED'		=> $row['header_info_link'],
+						'S_HEADER_INFO_LINK_CHECKED'	=> $row['header_info_link'],
 						'HEADER_INFO_URL'						=> $row['header_info_url'],
 						'HEADER_INFO_LICENSE'					=> $row['header_info_license'],
 						'HEADER_INFO_TIME'						=> $row['header_info_time'],
 						'HEADER_INFO_LAST'						=> $row['header_info_last'],
 						'S_HTML_MULTI_TEXT_ENABLED'		=> ($row['header_info_type'] == 'lang_html_text'),
-						'S_SIMPLE_DB_TEXT_ENABLED'			=> ($row['header_info_type'] == 'simple_db_text'),
+						'S_SIMPLE_DB_TEXT_ENABLED'		=> ($row['header_info_type'] == 'simple_db_text'),
 						'S_HEADER_INFO_PIN_CHECKED'		=> $row['header_info_pin'],
 						'HEADER_INFO_PIC_WIDTH'				=> $row['header_info_pic_width'],
 						'HEADER_INFO_PIC_HEIGHT'			=> $row['header_info_pic_height'],
@@ -1783,12 +1786,12 @@ class admin_controller
 	 * Generate option list
 	 * @return HMTML option list
 	 * @param $html string generate option list in HTML or JS format /now available only HTML/
-	 * @param $which_list string which option list should be generated /'
+	 * @param $name_select string which option list should be generated /'
 	 * @param $selected string key of selected item
 	 * @param $disabled mixed list of disabed key items
 	 * @param $from_select boolean is the list initial?
 	 */
-	function gen_fonts_select_list($html, $name_select, $selected = '', $disabled = '')
+	function gen_fonts_select_list($html, $name_select = 'header_info_font', $selected = '', $disabled = '')
 	{
 		$list_ary = $this->get_fonts();
 
@@ -1804,7 +1807,7 @@ class admin_controller
 
 		$rows_count = (count($list_ary) < '25' ) ? count($list_ary) : '25';
 		$full_list_true = $full_list ? ' size="' . $rows_count . '"' : '';
-		$option_list = '<select name="' . $name_select .'" ' . $full_list_true . '>';
+		$option_list = '<select id="' . $name_select .'" name="' . $name_select .'" ' . $full_list_true . '>';
 		
 		switch ($html)
 		{
@@ -1815,6 +1818,7 @@ class admin_controller
 					{
 						continue;
 					}
+					
 					$option_list .= '<option value="' . $key . '"';
 					if ( $selected == $key )
 					{
