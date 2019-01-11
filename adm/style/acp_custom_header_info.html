@@ -1,4 +1,4 @@
-<!-- INCLUDE overall_header.html -->
+{% include 'overall_header.html' %}
 
 <h1>{{ lang('HEADER_INFO_TITLE') }}</h1>
 
@@ -76,7 +76,6 @@
 			<label><input type="radio" class="radio" name="banner_position2" value="0"{% if not S_HEADER_INFO_POSITION2 %} id="header_info_position" checked="checked"{% endif %} /> {{ lang('NO') }}</label>
 		</dd>
 	</dl>
-	
 	<dl>
 		<dt>
 			<label for="banner_custom">{{ lang('HEADER_INFO_NAVBAR') }}{{ lang('COLON') }}</label>
@@ -86,7 +85,6 @@
 			<label><input type="radio" class="radio" name="banner_position1" value="0"{% if not S_HEADER_INFO_POSITION1 %} id="header_info_position" checked="checked"{% endif %} /> {{ lang('NO') }}</label>
 		</dd>
 	</dl>
-
 	<dl>
 		<dt>
 			<label for="banner_custom">{{ lang('HEADER_INFO_INDEX') }}{{ lang('COLON') }}</label>
@@ -96,7 +94,6 @@
 			<label><input type="radio" class="radio" name="banner_position3" value="0"{% if not S_HEADER_INFO_POSITION3 %} id="header_info_position" checked="checked"{% endif %} /> {{ lang('NO') }}</label>
 		</dd>
 	</dl>
-
 	<dl>
 		<dt>
 			<label for="banner_custom">{{ lang('HEADER_INFO_HEADER') }}{{ lang('COLON') }}</label>
@@ -119,25 +116,68 @@
 
 <form id="acp_header_info" method="post" action="{U_ACTION}">  
   <fieldset>
-    <legend><!-- IF HEADER_INFO_EDIT -->{L_HEADER_INFO_EDIT}<!-- ELSE -->{L_HEADER_INFO_ADD}<!-- ENDIF --></legend>
+    <legend><!-- IF HEADER_INFO_EDIT -->{{ lang('HEADER_INFO_EDIT') }}{{ lang('COLON') }}<!-- ELSE -->{L_HEADER_INFO_ADD}<!-- ENDIF --></legend>
         <dl>
-			<dt><label for="name">{L_HEADER_INFO_NAME}</label><br /><span>{L_HEADER_INFO_NAME_EXPLAIN}</span></dt>
+			<dt><label for="name">{{ lang('HEADER_INFO_NAME') }}{{ lang('COLON') }}</label><br /><span>{L_HEADER_INFO_NAME_EXPLAIN}</span></dt>
 			<dd><input type="text" size="40" id="name" name="header_info_name"<!-- IF HEADER_INFO_NAME --> value="{HEADER_INFO_NAME}"<!-- ENDIF --> /></dd>
 		</dl>
         <dl>
-			<dt><label for="desc">{L_HEADER_INFO_DESC}</label><br /><span>{L_HEADER_INFO_DESC_EXPLAIN}</span></dt>
+			<dt><label for="desc">{{ lang('HEADER_INFO_DESC') }}{{ lang('COLON') }}</label><br /><span>{L_HEADER_INFO_DESC_EXPLAIN}</span></dt>
 			<dd><input type="text" size="40" id="desc" name="header_info_desc"<!-- IF HEADER_INFO_DESC --> value="{HEADER_INFO_DESC}"<!-- ENDIF --> /></dd>
 		</dl>
         <dl>
-			<dt><label for="longdesc">{L_HEADER_INFO_LONGDESC}</label><br /><span>{L_HEADER_INFO_LONGDESC_EXPLAIN}</span></dt>
+			<dt><label for="longdesc">{{ lang('HEADER_INFO_LONGDESC') }}{{ lang('COLON') }}</label><br /><span>{L_HEADER_INFO_LONGDESC_EXPLAIN}</span></dt>
 			<dd><input type="text" size="40" id="longdesc" name="header_info_longdesc"<!-- IF HEADER_INFO_LONGDESC --> value="{HEADER_INFO_LONGDESC}"<!-- ENDIF --> /></dd>
 		</dl>
 		<dl>
-			<dt><label for="url">{L_HEADER_INFO_URL}</label><br /><span>{L_HEADER_INFO_URL_EXPLAIN}</span></dt>
+			<dt>
+				<label for="use_extended_desc">{{ lang('USE_EXTENED_SITE_DESC') }}{{ lang('COLON') }}</label><br /><span>{{ lang('USE_EXTENED_SITE_DESC_EXPLAIN') }}</span>
+			</dt>
+			<dd>
+				<label><input type="radio" class="radio" name="header_info_use_extdesc" value="1" id="use_extended_desc" {% if EXTENED_SITE_DESC %} checked="checked"{% endif %}/> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="header_info_use_extdesc" value="0" {% if not EXTENED_SITE_DESC %} checked="checked"{% endif %} /> {{ lang('NO') }}</label>
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="header_info_title_colour">{{ lang('HEADER_INFO_TITLE_COLOUR') }}{{ lang('COLON') }}</label><br /><span>{{ lang('HEADER_INFO_TITLE_COLOUR_EXPLAIN') }}</span></dt>
+			<dd><input class="jscolor {hash:true, uppercase:false}" name="header_info_title_colour" type="text" id="header_info_title_colour" value="{{ HEADER_INFO_TITLE_COLOUR }}" size="8" maxlength="8" />&nbsp;{{ lang('CLICK_TO_SELECT') }}</dd>
+		</dl>
+		<dl>
+			<dt><label for="header_info_desc_colour">{{ lang('HEADER_INFO_DESC_COLOUR') }}{{ lang('COLON') }}</label><br /><span>{{ lang('HEADER_INFO_DESC_COLOUR_EXPLAIN') }}</span></dt>
+			<dd><input class="jscolor {hash:true, uppercase:false}" name="header_info_desc_colour" type="text" id="header_info_desc_colour" value="{{ HEADER_INFO_DESC_COLOUR }}" size="8" maxlength="8" />&nbsp;{{ lang('CLICK_TO_SELECT') }}</dd>
+		</dl>
+		<dl>
+			<dt><label for="header_info_radius">{{ lang('HEADER_INFO_RADIUS') }}{{ lang('COLON') }}</label><br /><span>{{ lang('HEADER_INFO_RADIUS_EXPLAIN') }}</span></dt>
+			<dd><input name="header_info_banner_radius" type="number" id="header_info_radius" value="{{ HEADER_INFO_RADIUS }}" min="0" max="99" /> {{ lang('PIXELS') }}</dd>
+		</dl>
+		<dl>
+			<dt><label for="header_info_pixels">{{ lang('HEADER_INFO_PIXELS') }}{{ lang('COLON') }}</label><br /><span>{{ lang('HEADER_INFO_PIXELS_EXPLAIN') }}</span></dt>
+			<dd><input name="header_info_pixels" type="number" id="header_info_pixels" value="{{ HEADER_INFO_PIXELS }}" min="0" max="99" /> {{ lang('PIXELS') }}</dd>
+		</dl>
+		<dl>
+			<dt><label for="header_info_title_pixels">{{ lang('HEADER_INFO_TITLE_PIXELS') }}{{ lang('COLON') }}</label><br /><span>{{ lang('HEADER_INFO_TITLE_PIXELS_EXPLAIN') }}</span></dt>
+			<dd><input name="header_info_title_pixels" type="number" id="header_info_title_pixels" value="{{ HEADER_INFO_TITLE_PIXELS }}" min="0" max="99" /> {{ lang('PIXELS') }}</dd>
+		</dl>
+		<dl>
+			<dt><label for="header_info_desc_pixels">{{ lang('HEADER_INFO_DESC_PIXELS') }}{{ lang('COLON') }}</label><br /><span>{{ lang('HEADER_INFO_DESC_PIXELS_EXPLAIN') }}</span></dt>
+			<dd><input name="header_info_desc_pixels" type="number" id="header_info_desc_pixels" value="{{ HEADER_INFO_DESC_PIXELS }}" min="0" max="99" /> {{ lang('PIXELS') }}</dd>
+		</dl>
+		<dl>
+			<dt><label for="header_info_left">{{ lang('HEADER_INFO_LEFT') }}{{ lang('COLON') }}</label><br /><span>{{ lang('HEADER_INFO_LEFT_EXPLAIN') }}</span></dt>
+			<dd><label><input type="radio" class="radio" name="header_info_left" value="1" id="header_info_left" {% if HEADER_INFO_LEFT %} checked="checked" {% endif %} /> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="header_info_left" value="0" {% if not HEADER_INFO_LEFT %} checked="checked"{% endif %} /> {{ lang('NO') }}</label></dd>
+		</dl>
+		<dl>
+			<dt><label for="header_info_right">{{ lang('HEADER_INFO_RIGHT') }}{{ lang('COLON') }}</label><br /><span>{{ lang('HEADER_INFO_RIGHT_EXPLAIN') }}</span></dt>
+			<dd><label><input type="radio" class="radio" name="header_info_right" value="1" id="header_info_right" {% if HEADER_INFO_RIGHT %} checked="checked" {% endif %} /> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="header_info_right" value="0" {% if not HEADER_INFO_RIGHT %} checked="checked"{% endif %} /> {{ lang('NO') }}</label></dd>
+		</dl>
+		<dl>
+			<dt><label for="url">{{ lang('HEADER_INFO_URL') }}{{ lang('COLON') }}</label><br /><span>{{ lang('HEADER_INFO_URL_EXPLAIN') }}</span></dt>
 			<dd><input type="text" size="40" id="url" name="header_info_url"<!-- IF HEADER_INFO_URL --> value="{HEADER_INFO_URL}"<!-- ENDIF --> /></dd>
 		</dl>
 		<dl>
-			<dt><label for="type">{L_HEADER_INFO_TYPE}</label><br /><span class="explain">{L_HEADER_INFO_TYPE_EXPLAIN}</span></dt>
+			<dt><label for="type">{{ lang('HEADER_INFO_TYPE') }}{{ lang('COLON') }}</label><br /><span class="explain">{{ lang('HEADER_INFO_TYPE_EXPLAIN') }}</span></dt>
 			<dd>
 			
 			<!-- IF HEADER_INFO_TYPE_SELECT -->
@@ -151,7 +191,7 @@
 		<!-- IF HEADER_INFO_TYPE  eq 'language' or HEADER_INFO_TYPE  eq 'lang_html_text' or HEADER_INFO_NAME eq '' -->
 		<dl>
 			<dt>
-				<label for="dir">{L_HEADER_INFO_DIR}</label>
+				<label for="dir">{{ lang('HEADER_INFO_DIR') }}{{ lang('COLON') }}</label>
 				<br />
 				<span>{L_HEADER_INFO_DIR_EXPLAIN}</span>
 			</dt>
@@ -160,19 +200,23 @@
 		<!-- ENDIF -->
 		<dl>
 			<dt>
-				<label for="font">{L_HEADER_INFO_FONT}</label>
+				<label for="font">{{ lang('HEADER_INFO_FONT') }}{{ lang('COLON') }}</label>
 				<br />
 				<span>{L_HEADER_INFO_FONT_EXPLAIN}</span>
 			</dt>
 			<dd>{HEADER_INFO_FONT_SELECT}</dd>
 		</dl>
 		<dl>
-			<dt><label for="image">{L_HEADER_INFO_IMAGE}</label><br /><span>{L_HEADER_INFO_IMAGE_EXPLAIN}</span></dt>
+			<dt><label for="forum">{{ lang('LOOK_UP_FORUM') }}{{ lang('COLON') }}</label><br /><span>{{ lang('HEADER_INFO_FORUM_DESC') }}</span></dt>
+			<dd><select id="forum" name="forum_id" size="10">{S_FORUM_OPTIONS}</select></dd>
+		</dl>
+		<dl>
+			<dt><label for="image">{{ lang('HEADER_INFO_IMAGE') }}{{ lang('COLON') }}</label><br /><span>{L_HEADER_INFO_IMAGE_EXPLAIN}</span></dt>
 			<dd><input type="text" size="40" id="image" name="header_info_image"<!-- IF HEADER_INFO_IMAGE --> value="{HEADER_INFO_IMAGE}"<!-- ENDIF --> /></dd>
 		</dl>
         <dl>
 			<dt>
-			<label for="link">{L_HEADER_INFO_LINK}{{ lang('COLON') }}</label><br />
+			<label for="link">{{ lang('HEADER_INFO_LINK') }}{{ lang('COLON') }}</label><br />
 			</dt>
 			<dd>
 			<label><input type="radio" class="radio" id="link" name="header_info_link" value="1"{% if S_HEADER_INFO_LINK_CHECKED %} id="header_info_link" checked="checked"{% endif %} /> {{ lang('YES') }}</label>
@@ -180,11 +224,11 @@
 			</dd>
 		</dl>
 		<dl>
-			<dt><label for="type">{L_HEADER_INFO_LICENSE}</label><br /><span>{L_HEADER_INFO_LICENSE_EXPLAIN}</span></dt>
+			<dt><label for="type">{{ lang('HEADER_INFO_LICENSE') }}{{ lang('COLON') }}</label><br /><span>{L_HEADER_INFO_LICENSE_EXPLAIN}</span></dt>
 			<dd><input type="text" size="40" id="licence" name="header_info_license"<!-- IF HEADER_INFO_LICENSE --> value="{HEADER_INFO_LICENSE}"<!-- ENDIF --> /></dd>
 		</dl>
 	  <dl>
-		<dt class="bg1"><label for="pin">{L_HEADER_INFO_PINNED}</label><br><span>{L_HEADER_INFO_PINNED_EXPLAIN}</span></dt>
+		<dt class="bg1"><label for="pin">{{ lang('HEADER_INFO_PINNED') }}{{ lang('COLON') }}</label><br><span>{L_HEADER_INFO_PINNED_EXPLAIN}</span></dt>
 		<dt class="bg2">
 			<label><input type="radio" class="radio" id="pin" name="header_info_pin" value="1"{% if S_HEADER_INFO_PIN_CHECKED %} id="header_info_pin" checked="checked"{% endif %} /> {{ lang('YES') }}</label>
 			<label><input type="radio" class="radio" id="pin" name="header_info_pin" value="0"{% if not S_HEADER_INFO_PIN_CHECKED %} id="header_info_pin" checked="checked"{% endif %} /> {{ lang('NO') }}</label>
@@ -193,20 +237,20 @@
 	<dl>
 	</dl>
 	  <dl>
-		<dt class="bg1"><label for="pic_width">{L_HEADER_INFO_PIC_WIDTH}</label><br><span>{L_HEADER_INFO_PIC_WIDTH_EXPLAIN}</span></dt>
+		<dt class="bg1"><label for="pic_width">{{ lang('HEADER_INFO_PIC_WIDTH') }}{{ lang('COLON') }}</label><br><span>{L_HEADER_INFO_PIC_WIDTH_EXPLAIN}</span></dt>
 		<dt class="bg2">
 			<input type="number" class="number" id="pic_width" name="header_info_pic_width" value="{HEADER_INFO_PIC_WIDTH}" size="3" maxlength="3" min="0" max="999" />
 		</dt>
 	   </dl>
 	  </dl>
 	  <dl>
-		<dt class="bg1"><label for="pic_height">{L_HEADER_INFO_PIC_HEIGHT}</label><br /><span>{L_HEADER_INFO_PIC_HEIGHT_EXPLAIN}</span></dt>
+		<dt class="bg1"><label for="pic_height">{{ lang('HEADER_INFO_PIC_HEIGHT') }}{{ lang('COLON') }}</label><br /><span>{L_HEADER_INFO_PIC_HEIGHT_EXPLAIN}</span></dt>
 		<dt class="bg2">
 			<input type="number" class="number" id="pic_height" name="header_info_pic_height" value="{HEADER_INFO_PIC_HEIGHT}" size="3" maxlength="3" min="0" max="999" /> 
 		</dt>
 	  </dl>
         <dl>
-			<dt><label for="header_info_disable">{L_HEADER_INFO_DISABLE}{{ lang('COLON') }}</label><br /><span>{L_HEADER_INFO_DISABLE_EXPLAIN}</span></dt>
+			<dt><label for="header_info_disable">{{ lang('HEADER_INFO_DISABLE') }}{{ lang('COLON') }}</label><br /><span>{L_HEADER_INFO_DISABLE_EXPLAIN}</span></dt>
 			<dd>
 			<label><input type="radio" class="radio" id="disable" name="header_info_disable" value="1"{% if S_HEADER_INFO_DISABLE %} id="header_info_disable" checked="checked"{% endif %} /> {{ lang('YES') }}</label>
 			<label><input type="radio" class="radio" id="disable" name="header_info_disable" value="0"{% if not S_HEADER_INFO_DISABLE %} id="header_info_disable" checked="checked"{% endif %} /> {{ lang('NO') }}</label>
@@ -234,7 +278,12 @@
 	</thead>
 	<tbody>
 	<!-- BEGIN header_info_scroll -->
+		<!-- IF header_info_scroll.HEADER_INFO_DB_FONT eq '' -->
+		Thumbnail Font Dadabase Error! for item id: {header_info_scroll.HEADER_INFO_ID} <br />
+		<!-- INCLUDECSS @orynider_custom_headernfo/tituscbz.css -->
+		<!-- ELSE -->
 		<!-- INCLUDECSS @orynider_custom_headernfo/{header_info_scroll.HEADER_INFO_DB_FONT}.css -->
+		<!-- ENDIF -->
 		<tr>
 		    <td width="10%">{header_info_scroll.HEADER_INFO_ID}</td>
 			<td class="row1">
@@ -269,4 +318,5 @@
     <div style="text-align: center;">&copy; {L_HEADER_INFO_COPYRIGHT} {L_HEADER_INFO_VERSION} {BANNER_VERSION}</div>
 	</div>
 
-<!-- INCLUDE overall_footer.html -->
+{% INCLUDEJS '@orynider_custom_headernfo/jscolor.js' %}
+{% include 'overall_footer.html' %}

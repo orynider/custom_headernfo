@@ -47,20 +47,30 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 						'header_info_name'			=> array('VCHAR:255', ''),
 						'header_info_desc'			=> array('MTEXT_UNI', ''),
 						'header_info_longdesc'		=> array('MTEXT_UNI', ''),
+						'header_info_use_extdesc'	=> array('TINT:2', 0),
+						'header_info_title_colour'	=> array('VCHAR:8', '#000000'),
+						'header_info_desc_colour'	=> array('VCHAR:8', '#12A3EB'),
 						'header_info_dir'				=> array('VCHAR:255', ''), //langSubDir ie: 'movies'
-						'header_info_font'			=> array('VCHAR:255', ''), 
-						'header_info_type'			=> array('VCHAR:190', ''),
+						'header_info_font'				=> array('VCHAR:190', 'tituscbz'), 
+						'header_info_type'				=> array('VCHAR:190', ''),
 						'header_info_url'				=> array('MTEXT_UNI', ''),
 						'header_info_image'	    	=> array('MTEXT_UNI', ''),
 						'header_info_image_link'	=> array('TINT:1', 0),
-						'header_info_license'		=> array('MTEXT_UNI', ''),
+						'header_info_banner_radius' =>  array('INT:8', 10),
+						'header_info_title_pixels'		=>  array('INT:8', 14),
+						'header_info_desc_pixels'	=>  array('INT:8', 10),
+						'header_info_pixels'			=>  array('INT:8', 12),
+						'header_info_left'				=> array('TINT:2', 0),
+						'header_info_right'			=> array('TINT:2', 0),
+						'header_info_license'			=> array('MTEXT_UNI', ''),
 						'header_info_time'			=> array('UINT:8', 0),
-						'header_info_last'			=> array('INT:50', 0),
+						'header_info_last'				=> array('INT:50', 0),
 						'header_info_pic_width'	    => array('INT:8', 458),
-						'header_info_pic_height'	 => array('INT:8', 50),
-						'header_info_pin'			=> array('TINT:2', 0),
-						'header_info_disable'		=> array('TINT:1', 0),
-						'user_id'						=> array('INT:8', 0),
+						'header_info_pic_height'	 	=> array('INT:8', 50),
+						'header_info_pin'				=> array('TINT:2', 0),
+						'header_info_disable'			=> array('TINT:1', 0),
+						'forum_id' 						=> array('INT:8', 0),
+						'user_id'							=> array('INT:8', 0),
 						'bbcode_bitfield'				=> array('VCHAR:255', ''),
 						'bbcode_uid'					=> array('VCHAR:8', ''),
 						'bbcode_options'				=> array('VCHAR:255', ''),
@@ -285,12 +295,12 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 		//
 		
 		// Add configs
-		'header_info_enable' => '1', 
+		'header_info_enable' => '0',  //Pos 0
 		// Add positions to configuration
-		'banner_position1' => '',
-		'banner_position2' => '',
-		'banner_position3' => '',
-		'banner_position' => '',
+		'banner_position1' => '0', //Pos 1
+		'banner_position2' => '0', //Pos 2
+		'banner_position3' => '0', //Pos 3
+		'banner_position' => '1', //Pos 4 (Default)
 		
 		'module_name' => 'Custom Header Info', // settings_dbname
 		'wysiwyg_path' => 'assets/javascript/',
@@ -300,7 +310,7 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 		'show_amount' => '15',  //New 01.01.2019 by orynider
 
 		//Version
-		'header_info_version'		=> '0.8.9',
+		'header_info_version'		=> '0.9.0',
 	);
 	
 	/**
@@ -313,7 +323,7 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 	{
 		$user = $this->container->get('user');
 		
-		add_log('admin', 'Custom Header Info extension Install/Upgrade', 'Version 0.8.0 Alfa');
+		add_log('admin', 'Custom Header Info extension Install/Upgrade', 'Version 0.9.0 Alfa');
 		
 		// Define sample article data
 		$sample_data_files = array(
@@ -322,19 +332,29 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 				'header_info_name'			=> 'Test Header Info #1',
 				'header_info_desc'			=> 'Test Header Info for the Custom Header Info extension.',
 				'header_info_longdesc'		=> 'Sample text description: Test text for the Custom Header Info extension.',
+				'header_info_use_extdesc'	=> 0,
+				'header_info_title_colour'	=> '#000000',
+				'header_info_desc_colour'	=> '#0000ff',
 				'header_info_dir'				=> 'movies', //ext/orynider/custom_headernfo/language/movies/
-				'header_info_font'			=>  'tituscbz',
+				'header_info_font'				=>  'tituscbz.ttf',
 				'header_info_type'				=> 'language',
-				'header_info_image'			=> generate_board_url() . '/ext/orynider/custom_headernfo/styles/prosilver/theme/images/banners/custom_header_info.png', //str_replace('prosilver' 'all', $data_files['header_info_image'])
+				'header_info_image'			=> generate_board_url() . '/ext/orynider/custom_headernfo/styles/prosilver/theme/images/banners/custom_header_bg.png', //str_replace('prosilver' 'all', $data_files['header_info_image'])
 				'header_info_image_link'	=> 0,	
+				'header_info_banner_radius' => '10',
+				'header_info_title_pixels'		=> '12',
+				'header_info_desc_pixels'	=> '10',
+				'header_info_pixels'			=> '10',
+				'header_info_left'				=> 0,
+				'header_info_right'			=> 0,
 				'header_info_url'				=> 'http://mxpcms.sourceforge.net/',
 				'header_info_license'			=> 'GNU GPL-2',
 				'header_info_time'			=> time(),
 				'header_info_last'				=> 0,
-				'header_info_pin'				=> 1,
-				'header_info_pic_width'		=> 458,
-				'header_info_pic_height'		=> 50,
+				'header_info_pin'				=> '1',
+				'header_info_pic_width'		=> '458',
+				'header_info_pic_height'		=> '50',
 				'header_info_disable'			=> 0,
+				'forum_id'						=> 0,
 				'user_id'							=> $user->data['user_id'],
 				'bbcode_bitfield'				=> 'QQ==',
 				'bbcode_uid'					=> '2p5lkzzx',
@@ -345,19 +365,29 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 				'header_info_name'			=> 'Test Header Info #2',
 				'header_info_desc'			=> 'Test Header Info text for the Custom Header Info extension.',
 				'header_info_longdesc'		=> 'Sample text description: Test text for the Custom Header Info extension.',
+				'header_info_use_extdesc'	=> 0,
+				'header_info_title_colour'	=> '#000000',
+				'header_info_desc_colour'	=> '#066c9f',
 				'header_info_dir'				=> 'wlcodex', //ext/orynider/custom_headernfo/language/wlcodex/
-				'header_info_font'			=>  'tituscbz',
+				'header_info_font'				=>  'tituscbz.ttf',
 				'header_info_type'				=> 'language',
-				'header_info_image'			=> generate_board_url() . '/ext/orynider/custom_headernfo/styles/prosilver/theme/images/banners/custom_header_info.png', //str_replace('prosilver' 'all', $data_files['header_info_image'])
+				'header_info_image'			=> generate_board_url() . '/ext/orynider/custom_headernfo/styles/prosilver/theme/images/banners/custom_header_bg.png', //str_replace('prosilver' 'all', $data_files['header_info_image'])
 				'header_info_image_link'	=> 0,	
+				'header_info_banner_radius' => 0,
+				'header_info_title_pixels'		=> '18',
+				'header_info_desc_pixels'	=> '10',
+				'header_info_pixels'			=> '10',
+				'header_info_left'				=> 0,
+				'header_info_right'			=> 0,
 				'header_info_url'				=> 'http://mxpcms.sourceforge.net/',
 				'header_info_license'			=> 'GNU GPL-2',
 				'header_info_time'			=> time(),
 				'header_info_last'				=> 0,
 				'header_info_pin'				=> 0,
-				'header_info_pic_width'		=> 458,
-				'header_info_pic_height'		=> 50,
+				'header_info_pic_width'		=> '458',
+				'header_info_pic_height'		=> '50',
 				'header_info_disable'			=> 0,
+				'forum_id'						=> 0,
 				'user_id'							=> $user->data['user_id'],
 				'bbcode_bitfield'				=> 'QQ==',
 				'bbcode_uid'					=> '2p5lkzzx',
@@ -368,19 +398,62 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 				'header_info_name'			=> 'Demo Prototype Header Dimensions',
 				'header_info_desc'			=> 'Test Header Info Prototype for the Custom Header Info extension.',
 				'header_info_longdesc'		=> 'Sample text description: Test text for the Custom Header Info\'s extension Demo Prototype.',
+				'header_info_use_extdesc'	=> 0,
+				'header_info_title_colour'	=> '#000000',
+				'header_info_desc_colour'	=> '#066c9f',
 				'header_info_dir'				=> 'hisquotes', //ext/orynider/custom_headernfo/language/hisquotes/
-				'header_info_font'			=>  'tituscbz',
+				'header_info_font'				=>  'tituscbz.ttf',
 				'header_info_type'				=> 'language',
-				'header_info_image'			=> generate_board_url() . '/ext/orynider/custom_headernfo/styles/prosilver/theme/images/banners/custom_header_info.png', //str_replace('prosilver' 'all', $data_files['header_info_image'])
+				'header_info_image'			=> generate_board_url() . '/ext/orynider/custom_headernfo/styles/prosilver/theme/images/banners/custom_header_bg.png', //str_replace('prosilver' 'all', $data_files['header_info_image'])
 				'header_info_image_link'	=> 0,
+				'header_info_banner_radius' => '8',
+				'header_info_title_pixels'		=> '18',
+				'header_info_desc_pixels'	=> '10',
+				'header_info_pixels'			=> '10',
+				'header_info_left'				=> 0,
+				'header_info_right'			=> 0,
 				'header_info_url'				=> 'http://mxpcms.sourceforge.net/',
 				'header_info_license'			=> 'GNU GPL-2',
 				'header_info_time'			=> time(),
 				'header_info_last'				=> 1,
 				'header_info_pin'				=> 1,
-				'header_info_pic_width'		=> 458,
-				'header_info_pic_height'		=> 50,
+				'header_info_pic_width'		=> '458',
+				'header_info_pic_height'		=> '50',
 				'header_info_disable'			=> 0,
+				'forum_id'						=> 0,
+				'user_id'							=> $user->data['user_id'],
+				'bbcode_bitfield'				=> 'QQ==',
+				'bbcode_uid'					=> '2p5lkzzx',
+				'bbcode_options'				=> '',
+			),
+			array(
+				'header_info_id'				=> 4,
+				'header_info_name'			=> 'Test Header Info #4',
+				'header_info_desc'			=> 'Test Header Info for the Custom Header Info extension.',
+				'header_info_longdesc'		=> 'Sample text description: Test text for the Custom Header Info extension.',
+				'header_info_use_extdesc'	=> 0,
+				'header_info_title_colour'	=> '#000000',
+				'header_info_desc_colour'	=> '#0c6a99',
+				'header_info_dir'				=> 'politics', 
+				'header_info_font'				=>  'tituscbz.ttf',
+				'header_info_type'				=> 'language',
+				'header_info_image'			=> generate_board_url() . '/ext/orynider/custom_headernfo/styles/prosilver/theme/images/banners/custom_header_bg.png', //str_replace('prosilver' 'all', $data_files['header_info_image'])
+				'header_info_image_link'	=> 0,	
+				'header_info_banner_radius' => '10',
+				'header_info_title_pixels'		=> '12',
+				'header_info_desc_pixels'	=> '10',
+				'header_info_pixels'			=> '10',
+				'header_info_left'				=> 0,
+				'header_info_right'			=> 0,
+				'header_info_url'				=> 'http://mxpcms.sourceforge.net/',
+				'header_info_license'			=> 'GNU GPL-2',
+				'header_info_time'			=> time(),
+				'header_info_last'				=> 0,
+				'header_info_pin'				=> '1',
+				'header_info_pic_width'		=> '458',
+				'header_info_pic_height'		=> '50',
+				'header_info_disable'			=> 0,
+				'forum_id'						=> 0,
 				'user_id'							=> $user->data['user_id'],
 				'bbcode_bitfield'				=> 'QQ==',
 				'bbcode_uid'					=> '2p5lkzzx',

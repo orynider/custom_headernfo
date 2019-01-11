@@ -45,6 +45,7 @@ class listener implements EventSubscriberInterface
 	\phpbb\collapsiblecategories\operator\operator $operator = null)
 	{
 		$this->db = $db;
+		$this->user = $user;
 		$this->cache = $cache;
 		$this->config = $config;
 		$this->template = $template;
@@ -66,7 +67,7 @@ class listener implements EventSubscriberInterface
 		$this->header_info_config = $this->config_values();
 		
 		$this->language_from = (isset($this->config['default_lang'])) ? $this->config['default_lang'] : 'en';
-		$this->language_into	= (isset($user->lang['USER_LANG'])) ? $user->lang['USER_LANG'] : $this->language_from;
+		$this->language_into	= (isset($this->user->lang['USER_LANG'])) ? $this->user->lang['USER_LANG'] : $this->language_from;
 		
 		$this->template->assign_vars(array(
 			//'S_HEADER_INFO_POSITION'			=> (!empty($this->header_info_config['banner_position'])) ? true : false,
@@ -162,7 +163,6 @@ class listener implements EventSubscriberInterface
 
 		while($row = $this->db->sql_fetchrow($result)) 
 		{
-			
 			//Populate info to display starts
 			$info_title = array();
 			$info_desc = array();
@@ -217,6 +217,16 @@ class listener implements EventSubscriberInterface
 				$info_title = $l_keys[$j];
 				$info_desc = $l_values[$j];
 			}
+			
+			$header_corners 		= '0px 0px 0px 0px';
+			// Populate corners
+			if ($row['header_info_image'])
+			{
+				$header_corners 	= ($row['header_info_left']) ? $row['header_info_pixels'] . 'px 0px 0px ' . $row['header_info_pixels'] . 'px' : $logo_corners;
+	 			$header_corners 	= ($row['header_info_right']) ? '0px ' . $row['header_info_pixels'] . 'px ' . $row['header_info_pixels'] . 'px 0px' : $logo_corners;
+				$header_corners 	= ($row['header_info_left'] && $row['header_info_right']) ? $row['header_info_pixels'] . 'px ' . $row['header_info_pixels'] . 'px ' . $row['header_info_pixels'] . 'px ' . $row['header_info_pixels'] . 'px' : $logo_corners;
+			}
+			
 			//Populate info to display ends
 			//die($info_desc);
 			$this->template->assign_block_vars('header_info_scroll', array(
@@ -225,13 +235,31 @@ class listener implements EventSubscriberInterface
 				'HEADER_INFO_TITLE'						=> $info_title,
 				'HEADER_INFO_DESC'						=> $row['header_info_desc'],
 				'HEADER_INFO_LONGDESC'				=> $row['header_info_longdesc'],
-				'HEADER_INFO_RANDDESC'				=> $info_desc,
+				'HEADER_INFO_RANDDESC'				=> ($row['header_info_use_extdesc'] == 1) ? $this->config['site_desc'] : $info_desc,
+				'HEADER_INFO_SITE_DESC'				=> $this->config['site_desc'],
+				//New 0.9.0 start
+				'HEADER_INFO_TITLE_COLOUR'		=> isset($row['header_info_title_colour']) ? $row['header_info_title_colour'] : '',
+				'HEADER_INFO_TITLE_COLOUR_1'	=> isset($row['header_info_title_colour']) ? $this->get_gradient_colour($row['header_info_title_colour'], 1) : '',
+				'HEADER_INFO_TITLE_COLOUR_2'	=> isset($row['header_info_title_colour']) ? $this->get_gradient_colour($row['header_info_title_colour'], 2) : '',
+				'HEADER_INFO_DESC_COLOUR'		=> isset($row['header_info_desc_colour']) ? $row['header_info_desc_colour'] : '',
+				'HEADER_INFO_DESC_COLOUR_1'	=> isset($row['header_info_desc_colour']) ? $this->get_gradient_colour($row['header_info_desc_colour'], 1) : '',
+				'HEADER_INFO_DESC_COLOUR_2'	=> isset($row['header_info_desc_colour']) ? $this->get_gradient_colour($row['header_info_desc_colour'], 2) : '',
+				//New 0.9.0 ends
 				'HEADER_INFO_TYPE'						=> $row['header_info_type'],
 				'HEADER_INFO_DIR'						=> $row['header_info_dir'], //ext/orynider/custom_headernfo/language/movies/
 				'HEADER_INFO_DB_FONT' 				=> substr($row['header_info_font'], 0, strrpos($row['header_info_font'], '.')), 
 				'HEADER_INFO_IMAGE'					=> $row['header_info_image'],
 				'THUMBNAIL_URL'   						=> generate_board_url() . '/app.php/thumbnail',
-				'S_HEADER_INFO_LINK_CHECKED'		=> $row['header_info_link'],
+				//New 0.9.0 start
+				'HEADER_INFO_RADIUS'					=> isset($row['header_info_banner_radius']) ? $row['header_info_banner_radius'] : '',
+				'HEADER_INFO_PIXELS'					=> isset($row['header_info_pixels']) ? $row['header_info_pixels'] : '',
+				'HEADER_INFO_LEFT'						=> isset($row['header_info_left']) ? $row['header_info_left'] : '',
+				'HEADER_INFO_RIGHT'					=> isset($row['header_info_right']) ? $row['header_info_right'] : '',
+				'HEADER_INFO_CORNERS'				=> $header_corners,
+				'HEADER_INFO_WIDTH'					=> $row['header_info_width'],
+				'HEADER_INFO_HEIGHT'					=> $row['header_info_height'],
+				//New 0.9.0 ends
+				'S_HEADER_INFO_LINK_CHECKED'	=> $row['header_info_link'],
 				'HEADER_INFO_URL'						=> $row['header_info_url'],
 				'HEADER_INFO_LICENSE'					=> $row['header_info_license'],
 				'HEADER_INFO_TIME'						=> $row['header_info_time'],
@@ -239,8 +267,9 @@ class listener implements EventSubscriberInterface
 				'HEADER_INFO_PIC_WIDTH'				=> $row['header_info_pic_width'],
 				'HEADER_INFO_PIC_HEIGHT'			=> $row['header_info_pic_height'],
 				'S_HTML_MULTI_TEXT_ENABLED'		=> ($row['header_info_type'] == 'lang_html_text'),
-				'S_SIMPLE_DB_TEXT_ENABLED'			=> ($row['header_info_type'] == 'simple_db_text'),
+				'S_SIMPLE_DB_TEXT_ENABLED'		=> ($row['header_info_type'] == 'simple_db_text'),
 				'S_HEADER_INFO_PIN_CHECKED'		=> $row['header_info_pin'],
+				'S_USE_SITE_DESC'							=> $row['header_info_use_extdesc'],
 				'S_HEADER_INFO_DISABLE'				=> $row['header_info_disable'], // settings_disable,
 			));
 		}
@@ -256,6 +285,31 @@ class listener implements EventSubscriberInterface
 				'hash' => generate_link_hash("collapsible_$fid")))
 			));
 		}
+	}
+
+	/**
+	* Based on get_hex_colour() by david63
+	* Ported by orynider in 2019
+	* Description:
+	* Get a offset color we need for a gradient
+	* Uses about same offset as prosilver
+	*
+	* @return $offset_colour hex colour
+	* @access ?
+	*/
+	function get_gradient_colour($header_colour, $offset)
+	{
+		//Check if first character of hex colour
+		if ((int) ord(substr($header_colour, 1, 1)) > 57)
+		{
+			$offset_colour = $header_colour;
+		}
+		else
+		{
+			$header_colour	= hexdec(ltrim($header_colour, '#'));
+			$offset_colour		= '#' . dechex(($offset == 1) ? $header_colour + 5778196 : $header_colour - 1191226);
+		}
+		return $offset_colour;
 	}
 
 	function load_lang_file($filename)

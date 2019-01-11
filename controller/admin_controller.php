@@ -122,13 +122,13 @@ class admin_controller
 		// Read out config values
 		//$custom_header_info_config = $this->config_values();
 		$this->backend = $this->confirm_backend();
-		
+
 		// get packs installed and init some variables
 		//$this->packs = $this->load_lang_dirs($this->module_root_path);
-		
+
 		$this->language_from = (isset($this->config['default_lang'])) ? $this->config['default_lang'] : 'en';
 		$this->language_into	= (isset($user->lang['USER_LANG'])) ? $user->lang['USER_LANG'] : $this->language_from;
-		
+
 		//print_r($custom_header_info_config);
 	}
 
@@ -169,6 +169,7 @@ class admin_controller
 			$header_info_name = $row['header_info_name'];
 			$header_info_desc = $row['header_info_desc'];
 			$header_info_longdesc = $row['header_info_longdesc'];
+			$header_info_use_extdesc = $row['header_info_use_extdesc'];
 			
 			if ($row['header_info_type'] == 'lang_html_text')
 			{
@@ -215,23 +216,31 @@ class admin_controller
 				$info_title = $l_keys[$j];
 				$info_desc = $l_values[$j];
 			}
-			//Populate info to display ends
 			
+			$header_info_font = isset($row['header_info_font']) ? $row['header_info_font'] : 'tituscbz.ttf';
+			
+			//Populate info to display ends
 			$this->template->assign_block_vars('header_info_scroll', array(
 				'HEADER_INFO_ID'							=> $row['header_info_id'],
 				'HEADER_INFO_NAME'					=> $row['header_info_name'],
 				'HEADER_INFO_TITLE'						=> $info_title,
 				'HEADER_INFO_DESC'						=> $row['header_info_desc'],
 				'HEADER_INFO_LONGDESC'				=> $row['header_info_longdesc'],
+				'HEADER_INFO_USE_EXTDESC'			=> $row['header_info_use_extdesc'],
+				'EXTENED_SITE_DESC'						=> $row['header_info_use_extdesc'],
 				'HEADER_INFO_RANDDESC'				=> $info_desc,
 				'HEADER_INFO_TYPE_SELECT'			=> $header_info_type_select,
 				'HEADER_INFO_DIR'						=> $this->user->lang[$row['header_info_dir']],
 				'HEADER_INFO_TYPE'						=> $row['header_info_type'],
 				'HEADER_INFO_DIR_SELECT' 			=> $this->gen_lang_dirs_select_list('html', 'header_info_dir', $row['header_info_dir']), //ext/orynider/custom_headernfo/language/movies/
 				'HEADER_INFO_FONT_SELECT' 		=> $this->gen_fonts_select_list('html', 'header_info_font', $row['header_info_font']), //ext/orynider/custom_headernfo/assets/fonts/
-				'HEADER_INFO_DB_FONT' 				=> substr($row['header_info_font'], 0, strrpos($row['header_info_font'], '.')),
+				'HEADER_INFO_DB_FONT' 				=> substr($header_info_font, 0, strrpos($header_info_font, '.')),
 				'HEADER_INFO_IMAGE'					=> $row['header_info_image'],
 				'THUMBNAIL_URL'   						=> generate_board_url() . '/app.php/thumbnail',
+				//New 0.9.0 start
+				'HEADER_INFO_TITLE_COLOUR'		=> isset($row['header_info_title_colour']) ? $row['header_info_title_colour'] : '',
+				'HEADER_INFO_DESC_COLOUR'		=> isset($row['header_info_desc_colour']) ? $row['header_info_desc_colour'] : '',
+				//New 0.9.0 ends
 				'S_HEADER_INFO_LINK_CHECKED'	=> $row['header_info_link'],
 				'HEADER_INFO_URL'						=> $row['header_info_url'],
 				'HEADER_INFO_LICENSE'					=> $row['header_info_license'],
@@ -239,6 +248,7 @@ class admin_controller
 				'HEADER_INFO_LAST'						=> $row['header_info_last'],
 				'HEADER_INFO_PIC_WIDTH'				=> $row['header_info_pic_width'],
 				'HEADER_INFO_PIC_HEIGHT'			=> $row['header_info_pic_height'],
+				'S_FORUM_OPTIONS'						=> make_forum_select($row['forum_id'], array(), true, false, false),
 				'S_HTML_MULTI_TEXT_ENABLED'		=> ($row['header_info_type'] == 'lang_html_text'),
 				'S_SIMPLE_DB_TEXT_ENABLED'		=> ($row['header_info_type'] == 'simple_db_text'),
 				'S_HEADER_INFO_PIN_CHECKED'		=> $row['header_info_pin'],
@@ -261,8 +271,9 @@ class admin_controller
 			'HEADER_INFO_TYPE_SELECT'		=> $header_info_type_select,
 			'HEADER_INFO_DIR_SELECT' 		=> $this->gen_lang_dirs_select_list('html', 'header_info_dir', 'politics'), //ext/orynider/custom_headernfo/language/movies/
 			'HEADER_INFO_FONT_SELECT'		=> $this->gen_fonts_select_list('html', 'header_info_font', ''), //ext/orynider/custom_headernfo/assets/fonts/
-			'HEADER_INFO_IMAGE'				=> generate_board_url() . '/' . $custom_header_info_config['banners_dir'] . 'custom_header_info.png',
+			'HEADER_INFO_IMAGE'				=> generate_board_url() . '/' . $custom_header_info_config['banners_dir'] . 'custom_header_bg.png',
 			'SHOW_AMOUNT'				   		=> $custom_header_info_config['show_amount'],
+			'S_FORUM_OPTIONS'					=> make_forum_select(1, array(), true, false, false),
 			'S_THUMBNAIL'   						=> (@function_exists('gd_info') && (@count(@gd_info()) !== 0)), 
 			'S_THUMB_CACHE_ENABLED'		=> $custom_header_info_config['thumb_cache'],
 			'HEADER_INFO_PIC_WIDTH'			=> $this->request->variable('header_info_pic_width', 458),
@@ -273,7 +284,7 @@ class admin_controller
 			'BANNERS_DIR'		   					=> $custom_header_info_config['banners_dir'],
 			'HEADER_INFOVERSION'				=> $custom_header_info_config['header_info_version'],
 			'SITE_HOME_URL'   					=> $custom_header_info_config['site_home_url'], //PORTAL_URL
-			'PHPBB_URL'   						=> generate_board_url() . '/', //FORUM_URL
+			'PHPBB_URL'   							=> generate_board_url() . '/', //FORUM_URL
 			'READONLY'								=> ' readonly="readonly"'
 		));
 
@@ -301,11 +312,20 @@ class admin_controller
 			$name = $this->request->variable('header_info_name', '', true);
 			$desc = $this->request->variable('header_info_desc', '', true);
 			$longdesc = $this->request->variable('header_info_longdesc', '', true);
+			$use_extdesc = $this->request->variable('header_info_use_extdesc', '', true);
+			$title_colour = $this->request->variable('header_info_title_colour', '#000000', true);
+			$desc_colour = $this->request->variable('header_info_desc_colour', '#12A3EB', true);
 			$dir = $this->request->variable('header_info_dir', 'politics', true);
 			$type = $this->request->variable('header_info_type', '', true);
 			$font = $this->request->variable('header_info_font', '', true);
-			$image = $this->request->variable('header_info_image', generate_board_url() . $custom_header_info_config['banners_dir'] . 'custom_header_info.png');
+			$image = $this->request->variable('header_info_image', generate_board_url() . $custom_header_info_config['banners_dir'] . 'custom_header_bg.png');
 			$link = $this->request->variable('header_info_link', 0);
+			$radius = $this->request->variable('header_info_banner_radius', 0);
+			$pixels = $this->request->variable('header_info_pixels', 12);
+			$title_pixels = $this->request->variable('header_title_info_pixels', 18);
+			$desc_pixels = $this->request->variable('header_desc_info_pixels', 10);
+			$left = $this->request->variable('header_info_left', 0);
+			$right = $this->request->variable('header_info_right', 0);
 			$url = $this->request->variable('header_info_url', '');
 			$license = $this->request->variable('header_info_license', 'GNU GPL-2');
 			$time = $this->request->variable('header_info_time', time());
@@ -324,11 +344,20 @@ class admin_controller
 					'header_info_name'				=> $name,
 					'header_info_desc'				=> $desc,
 					'header_info_longdesc'			=> $longdesc,
+					'header_info_use_extdesc'		=> $use_extdesc,
+					'header_info_title_colour'		=> $title_colour,
+					'header_info_desc_colour'		=> $desc_colour,
 					'header_info_dir'					=> $dir, //ext/orynider/custom_headernfo/language/movies/
 					'header_info_type'					=> $type,
 					'header_info_font'					=> $font,
 					'header_info_image'				=> $image, //str_replace('prosilver' 'all', $data_files['header_info_image'])
 					'header_info_image_link'		=> $link,
+					'header_info_banner_radius' 	=> $radius,
+					'header_info_pixels'				=> $pixels,
+					'header_info_title_pixels'			=> $title_pixels,
+					'header_info_desc_pixels'		=> $desc_pixels,
+					'header_info_left'					=> $left,
+					'header_info_right'				=> $right,
 					'header_info_url'					=> $url,
 					'header_info_license'				=> $license,
 					'header_info_time'				=> time(),
@@ -337,6 +366,7 @@ class admin_controller
 					'header_info_pic_width'			=> $pic_width,
 					'header_info_pic_height'			=> $pic_height,
 					'header_info_disable'				=> $disable, // settings_disable,
+					'forum_id'							=> 0,
 					'user_id'								=> $this->user->data['user_id'],
 					'bbcode_bitfield'					=> 'QQ==',
 					'bbcode_uid'						=> '2p5lkzzx',
@@ -353,11 +383,20 @@ class admin_controller
 					'header_info_name'				=> $name,
 					'header_info_desc'				=> $desc,
 					'header_info_longdesc'			=> $longdesc,
+					'header_info_use_extdesc'		=> $use_extdesc,
+					'header_info_title_colour'		=> $title_colour,
+					'header_info_desc_colour'		=> $desc_colour,
 					'header_info_dir'					=> $dir, //ext/orynider/custom_headernfo/language/movies/
 					'header_info_type'					=> $type,
 					'header_info_font'					=> $font,
 					'header_info_image'				=> $image, //str_replace('prosilver' 'all', $data_files['header_info_image'])
 					'header_info_image_link'		=> $link,
+					'header_info_banner_radius' 	=> $radius,
+					'header_info_pixels'				=> $pixels,
+					'header_info_title_pixels'			=> $title_pixels,
+					'header_info_desc_pixels'		=> $desc_pixels,
+					'header_info_left'					=> $left,
+					'header_info_right'				=> $right,
 					'header_info_url'					=> $url,
 					'header_info_license'				=> $license,
 					'header_info_time'				=> $time,
@@ -366,11 +405,12 @@ class admin_controller
 					'header_info_pic_width'			=> $pic_width,
 					'header_info_pic_height'			=> $pic_height,
 					'header_info_disable'				=> $disable, // settings_disable,
+					'forum_id'							=> 0,
 					'user_id'								=> $this->user->data['user_id'],
 				);
 
 				$sql = 'UPDATE ' . $this->custom_header_info_table . ' SET ' . $this->db->sql_build_array('UPDATE', $sql_array) . ' WHERE header_info_id = ' . $edit_id;
-				print_r($sql);
+				//print_r($sql);
 				$this->db->sql_query($sql);
 				trigger_error($this->user->lang['HEADER_INFO_UDPATED'] . adm_back_link($this->u_action));
 			}
@@ -484,14 +524,15 @@ class admin_controller
 														'simple_bg_logo' => $this->user->lang('SIMPLE_BG_LOGO')
 														), 
 														$row['header_info_type']);
+
 					//Populate info to display starts
 					$info_title = array();
 					$info_desc = array();
-					
+
 					$header_info_name = $row['header_info_name'];
 					$header_info_desc = $row['header_info_desc'];
 					$header_info_longdesc = $row['header_info_longdesc'];
-					
+
 					if ($row['header_info_type'] == 'lang_html_text')
 					{
 						$header_info_dir = $row['header_info_dir'];
@@ -500,7 +541,7 @@ class admin_controller
 						// populate entries (all lang keys)
 						$this->language_into = is_file($this->module_root_path . 'language/' . $this->language_into . '/' . $header_info_dir . '/common.' . $this->php_ext) ? $this->language_into : $this->language_from;
 						$this->entries = $this->load_lang_file($this->module_root_path . 'language/' . $this->language_into . '/' . $header_info_dir . '/common.' . $this->php_ext);
-						
+
 						$i = 0;
 						srand ((float) microtime() * 10000000);
 
@@ -511,7 +552,9 @@ class admin_controller
 							
 							$l_keys[1] = $header_info_name;
 							$l_values[1] = $header_info_longdesc;
+							
 							$j = rand(0, 1);
+							
 							$info_title = $l_keys[$j];
 							$info_desc = $l_values[$j];
 						}
@@ -529,17 +572,21 @@ class admin_controller
 					}
 					else
 					{
+						$header_info_font = isset($row['header_info_font']) ? $row['header_info_font'] : 'tituscbz.ttf';
+						
 						$l_keys[0] = $header_info_name;
 						$l_values[0] = $header_info_desc;
 							
 						$l_keys[1] = $header_info_name;
 						$l_values[1] = $header_info_longdesc;
+						
 						$j = rand(0, 1);
+						
 						$info_title = $l_keys[$j];
 						$info_desc = $l_values[$j];
 					}
+
 					//Populate info to display ends
-			
 					$this->template->assign_vars(array(
 						'HEADER_INFO_EDIT'						=> $row['header_info_id'],
 						'HEADER_INFO_ID'							=> $row['header_info_id'],
@@ -548,19 +595,34 @@ class admin_controller
 						'HEADER_INFO_DESC'						=> $row['header_info_desc'],
 						'HEADER_INFO_LONGDESC'				=> $row['header_info_longdesc'],
 						'HEADER_INFO_RANDDESC'				=> $info_desc,
+						'HEADER_INFO_USE_EXTDESC'			=> $row['header_info_use_extdesc'],
+						'EXTENED_SITE_DESC'						=> $row['header_info_use_extdesc'],
+						//New 0.9.0 start
+						'HEADER_INFO_TITLE_COLOUR'		=> isset($row['header_info_title_colour']) ? $row['header_info_title_colour'] : '',
+						'HEADER_INFO_DESC_COLOUR'		=> isset($row['header_info_desc_colour']) ? $row['header_info_desc_colour'] : '',
+						//New 0.9.0 ends
 						'HEADER_INFO_TYPE'						=> $row['header_info_type'],
 						'HEADER_INFO_TYPE_SELECT'			=> $header_info_type_select,
 						'HEADER_INFO_DIR'						=> $this->user->lang[$row['header_info_dir']],
 						'HEADER_INFO_DIR_SELECT' 			=> $this->gen_lang_dirs_select_list('html', 'header_info_dir', $row['header_info_dir']), //ext/orynider/custom_headernfo/language/movies/
-						'HEADER_INFO_FONT_SELECT' 		=> $this->gen_fonts_select_list('html', 'header_info_font', $row['header_info_font']), //ext/orynider/custom_headernfo/assets/fonts/
-						'HEADER_INFO_DB_FONT' 				=> substr($row['header_info_font'], 0, strrpos($row['header_info_font'], '.')),
+						'HEADER_INFO_FONT_SELECT' 		=> $this->gen_fonts_select_list('html', 'header_info_font', $header_info_font), //ext/orynider/custom_headernfo/assets/fonts/
+						'HEADER_INFO_DB_FONT' 				=> substr($header_info_font, 0, strrpos($header_info_font, '.')),
 						'HEADER_INFO_IMAGE'					=> $row['header_info_image'],
 						'THUMBNAIL_URL'   						=> generate_board_url() . '/app.php/thumbnail',
+						//New 0.9.0 start
+						'HEADER_INFO_RADIUS'					=> isset($row['header_info_banner_radius']) ? $row['header_info_banner_radius'] : '',
+						'HEADER_INFO_PIXELS'					=> isset($row['header_info_pixels']) ? $row['header_info_pixels'] : '',
+						'HEADER_INFO_TITLE_PIXELS'			=> isset($row['header_info_title_pixels']) ? $row['header_info_title_pixels'] : '',
+						'HEADER_INFO_DESC_PIXELS'			=> isset($row['header_info_desc_pixels']) ? $row['header_info_desc_pixels'] : '',
+						'HEADER_INFO_LEFT'						=> isset($row['header_info_left']) ? $row['header_info_left'] : '',
+						'HEADER_INFO_RIGHT'					=> isset($row['header_info_right']) ? $row['header_info_right'] : '',
+						//New 0.9.0 ends
 						'S_HEADER_INFO_LINK_CHECKED'	=> $row['header_info_link'],
 						'HEADER_INFO_URL'						=> $row['header_info_url'],
 						'HEADER_INFO_LICENSE'					=> $row['header_info_license'],
 						'HEADER_INFO_TIME'						=> $row['header_info_time'],
 						'HEADER_INFO_LAST'						=> $row['header_info_last'],
+						'S_FORUM_OPTIONS'						=> make_forum_select($row['forum_id'], array(), true, false, false),
 						'S_HTML_MULTI_TEXT_ENABLED'		=> ($row['header_info_type'] == 'lang_html_text'),
 						'S_SIMPLE_DB_TEXT_ENABLED'		=> ($row['header_info_type'] == 'simple_db_text'),
 						'S_HEADER_INFO_PIN_CHECKED'		=> $row['header_info_pin'],

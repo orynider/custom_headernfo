@@ -110,20 +110,20 @@ class thumbnail
 		$custom_header_info_config_table,
 		\phpbb\files\factory $files_factory = null)
 	{
-		$this->config							 = $config;
-		$this->language							 = $language;
-		$this->template 						= $template;
-		$this->user 								= $user;
-		$this->log 								= $log;
-		$this->cache 							= $cache;
-		$this->db 								= $db;
-		$this->request 							= $request;
-		$this->pagination 						= $pagination;
-		$this->ext_manager	 				= $ext_manager;
-		$this->path_helper	 					= $path_helper;
-		$this->php_ext 							= $php_ext;
-		$this->root_path 						= $root_path;
-		$this->custom_header_info_table 	= $custom_header_info_table;
+		$this->config							 			= $config;
+		$this->language									= $language;
+		$this->template 									= $template;
+		$this->user 										= $user;
+		$this->log 											= $log;
+		$this->cache 										= $cache;
+		$this->db 											= $db;
+		$this->request 									= $request;
+		$this->pagination 								= $pagination;
+		$this->ext_manager	 							= $ext_manager;
+		$this->path_helper	 							= $path_helper;
+		$this->php_ext 									= $php_ext;
+		$this->root_path 									= $root_path;
+		$this->custom_header_info_table 			= $custom_header_info_table;
 		$this->custom_header_info_config_table 	= $custom_header_info_config_table;
 		$this->files_factory 		= $files_factory;
 
@@ -176,25 +176,34 @@ class thumbnail
 				WHERE header_info_id = ' . $info_id;
 		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow($result);
-		
+
 		$header_info_name = $row['header_info_name'];
 		$header_info_desc = $row['header_info_desc'];
 		$header_info_longdesc = $row['header_info_longdesc'];
 		$header_info_type = $row['header_info_type'];
 		$header_info_dir = $row['header_info_dir']; //ext/orynider/custom_headernfo/language/movies/
 		$header_info_font = $row['header_info_font'];
+		$header_info_font_size = $row['header_info_pixels'];
+		$header_info_title_font_size = $row['header_info_title_pixels'];
+		$header_info_desc_font_size = $row['header_info_desc_pixels'];
 		
 		// populate entries (all lang keys)
 		$this->language_from = (isset($this->config['default_lang'])) ? $this->config['default_lang'] : $this->user->lang['USER_LANG'];
 		$this->language_into = (isset($this->user->data['user_lang'])) ? $this->user->data['user_lang'] : $this->language_from;
-		
 		$this->language_into = is_file($this->module_root_path . 'language/' . $this->language_into . '/' . $header_info_dir . '/common.' . $this->php_ext) ? $this->language_into : $this->language_from;
-		
 		$this->language_into = is_file($this->module_root_path . 'language/' . $this->language_into . '/' . $header_info_dir . '/common.' . $this->php_ext) ? $this->language_into : 'en';
-		
 		$this->entries = $this->load_lang_file($this->module_root_path . 'language/' . $this->language_into . '/' . $header_info_dir . '/common.' . $this->php_ext);
+
 		//die(print_r($this->language_into, true));
-		
+		//$row['header_info_desc_colour'] 	= isset($this->user->lang["{$header_info_dir}_colour"]) ? $this->user->lang["{$header_info_dir}_colour"] : $row['header_info_desc_colour'];
+
+		$header_info_title_colour			= isset($row['header_info_title_colour']) ? $row['header_info_title_colour'] : '';
+		$header_info_title_colour_1		= isset($row['header_info_title_colour']) ? $this->get_gradient_colour($row['header_info_title_colour'], 1) : '';
+		$header_info_title_colour_2		= isset($row['header_info_title_colour']) ? $this->get_gradient_colour($row['header_info_title_colour'], 2) : '';
+		$header_info_desc_colour			= isset($row['header_info_desc_colour']) ? $row['header_info_desc_colour'] : '';
+		$header_info_desc_colour_1		= isset($row['header_info_desc_colour']) ? $this->get_gradient_colour($row['header_info_desc_colour'], 1) : '';
+		$header_info_desc_colour_2		= isset($row['header_info_desc_colour']) ? $this->get_gradient_colour($row['header_info_desc_colour'], 2) : '';
+
 		$i = 0;
 		$pic_title = array();
 		$pic_desc = array();
@@ -269,18 +278,30 @@ class thumbnail
 		$pic_size = @GetImageSize($src_path);
 		$pic_width = $pic_size[0];
 		$pic_height = $pic_size[1];
-		
+
 		$resize_width = $this->request->variable('resize_width', $pic_width); 
 		$resize_height = $this->request->variable('resize_height', $pic_height);
 
 		// Create some colors
-		$white = ImageColorAllocate($im, 255, 255, 255);
-		$grey = ImageColorAllocate($im, 128, 128, 128);
+		$white = ImageColorAllocate($im, 255, 255, 255); //#ffffff
+		$grey = ImageColorAllocate($im, 128, 128, 128); //#808080
 		// integer representation of the color black (rgb: 0,0,0)
-		$black = $background = ImageColorAllocate($im, 0, 0, 0);
-		$blue = ImageColorAllocate($im, 6, 108, 159);
-		$blure = ImageColorAllocate($im, 29, 36, 52);
+		$black = $background = ImageColorAllocate($im, 0, 0, 0); //#000000
+		//blue: #0000ff or #0c6a99 or #066c9f
+		$blue = ImageColorAllocate($im, 6, 108, 159); //#066c9f
+		$blure = ImageColorAllocate($im, 29, 36, 52); //#1d2434
 		$rand = ImageColorAllocate($im, rand(180, 255), rand(180, 255), rand(180, 255));
+
+		//die(print_r($this->get_hex_colour($white), true));
+
+		/* int ImageColorAllocate(resource $image, int $red, int $green, int $blue) */
+		$title_colour = ImageColorAllocate($im, $this->get_hexdec_colour($header_info_title_colour, 'r'), $this->get_hexdec_colour($header_info_title_colour, 'g'), $this->get_hexdec_colour($header_info_title_colour, 'b'));
+		$title_colour_1 = ImageColorAllocate($im, $this->get_hexdec_colour($header_info_title_colour_1, 'r'), $this->get_hexdec_colour($header_info_title_colour_1, 'g'), $this->get_hexdec_colour($header_info_title_colour_1, 'b'));
+		$title_colour_2 = ImageColorAllocate($im, $this->get_hexdec_colour($header_info_title_colour_2, 'r'), $this->get_hexdec_colour($header_info_title_colour_2, 'g'), $this->get_hexdec_colour($header_info_title_colour_2, 'b'));
+
+		$desc_colour = ImageColorAllocate($im, $this->get_hexdec_colour($header_info_desc_colour, 'r'), $this->get_hexdec_colour($header_info_desc_colour, 'g'), $this->get_hexdec_colour($header_info_desc_colour, 'b'));
+		$desc_colour_1 = ImageColorAllocate($im, $this->get_hexdec_colour($header_info_desc_colour_1, 'r'), $this->get_hexdec_colour($header_info_desc_colour_1, 'g'), $this->get_hexdec_colour($header_info_desc_colour_1, 'b'));
+		$desc_colour_2 = ImageColorAllocate($im, $this->get_hexdec_colour($header_info_desc_colour_2, 'r'), $this->get_hexdec_colour($header_info_desc_colour_2, 'g'), $this->get_hexdec_colour($header_info_desc_colour_2, 'b'));
 
 		/**/
 		if (($resize_width !== 0) && ($resize_width !== $pic_width))
@@ -339,18 +360,22 @@ class thumbnail
 
 		//ideea: https://stackoverflow.com/a/8187653/9369810
 		//credit: https://stackoverflow.com/users/1046402/jeff-wilbert
+		$middle_title = mb_strrpos(mb_substr($pic_title, 0, floor(mb_strlen($pic_title) / 2 )), ' ') + 1;
 		//$middle = strrpos(substr($pic_desc, 0, floor(strlen($pic_desc) / 2)), ' ') + 4;
-		$middle = mb_strrpos(mb_substr($pic_desc, 0, floor(mb_strlen($pic_desc) / 2 )), ' ') + 1;
+		$middle_desc = mb_strrpos(mb_substr($pic_desc, 0, floor(mb_strlen($pic_desc) / 2 )), ' ') + 1;
 
-		$pic_desc = $this->convert_encoding($pic_desc); 
 		$pic_title = $this->convert_encoding($pic_title);
+		$pic_desc = $this->convert_encoding($pic_desc); 
 
-		$pic_desc1 = $this->convert_encoding(mb_substr($pic_desc, 0, $middle)); 
-		$pic_desc2 = $this->convert_encoding(mb_substr($pic_desc, $middle)); 
+		$pic_title1 = $this->convert_encoding(mb_substr($pic_title, 0, $middle_title)); 
+		$pic_title2 = $this->convert_encoding(mb_substr($pic_title, $middle_title));
+
+		$pic_desc1 = $this->convert_encoding(mb_substr($pic_desc, 0, $middle_desc)); 
+		$pic_desc2 = $this->convert_encoding(mb_substr($pic_desc, $middle_desc)); 
 
 		//$font = $this->module_root_path . "assets/fonts/tituscbz.ttf";
 		//imageloadfont($font);
-		//die(print_r($font, true));
+		//die(print_r($blue, true));
 		//ImageTtfText($im, 2, 20, $dimension_x, $dimension_y, $blue, 'DejaVuSerif.ttf', $pic_title_reg);
 		Header($file_header);
 
@@ -361,34 +386,225 @@ class thumbnail
 		Header("Pragma: no-cache");
 
 		//4 x 138 >= 458
-		//ImageString ( resource 1 $image , int 2 $font , 3 int $x , 4 int $y , string 5 $string , int 6 $color )
-		//ImageTtfText ( resource 1 $image , float 2 $size ie 18, float 3 $angle ie 0, int 4 $x , int 5 $y , int 6 $color , string 7 $fontfile , string 8 $text )
+		//ImageString (resource 1 $image , int 2 $font , 3 int $x , 4 int $y , string 5 $string , int 6 $color)
+		//ImageTtfText (resource 1 $image , float 2 $size ie 18, float 3 $angle ie 0, int 4 $x , int 5 $y , int 6 $color , string 7 $fontfile , string 8 $text)
 		if (((6 * mb_strlen($pic_desc, 'utf-8')) >= $resize_width) || (mb_strlen($pic_desc2, 'utf-8') >= $resize_width))
 		{
 			//ImageString($im, 2, 10, $dimension_y, $pic_desc1, $blue);
-			ImageTtfText($im, 10, 0, 10, $dimension_y + 8, $blue, $font, $pic_desc1);
+			ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 8, $desc_colour, $font, $pic_desc1);
 			//ImageString($im, 2, 10, 36, $pic_desc2, $blue);
-			ImageTtfText($im, 10, 0, 10, $dimension_y + 43, $blue, $font, $pic_desc2);
+			ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 43, $desc_colour, $font, $pic_desc2);
 		}
 		else
 		{
 			//ImageString($im, 2, 10, $dimension_y, $pic_desc, $blue);
-			ImageTtfText($im, 10, 0, 10, $dimension_y + 10, $blue, $font, $pic_desc);
+			ImageTtfText($im, $header_info_font_size, 0, 10, $dimension_y + 10, $desc_colour, $font, $pic_desc);
 		}
 
+		/* return with no uppercase if patern not in string */
+		if (strpos($pic_title, ',') !== false)
+		{
+			$header_info_title_font_size = $header_info_title_font_size - 2;
+		}
+	
 		//ImageString($im, 2, 20, 17, $pic_desc, $blue);
 		//$bbox = ImageTtfBBox(20, 0, $font , $pic_title);
 		//$textWidth = $bbox[2] - $bbox[0];
-
+		if (((6 * mb_strlen($pic_title, 'utf-8')) >= $resize_width) || (mb_strlen($pic_title2, 'utf-8') >= $resize_width))
+		{
+			//ImageString($im, 2, 10, $dimension_y, $pic_desc1, $blue);
+			ImageTtfText($im, $header_info_title_font_size, 0, 12, $dimension_y + 8, $title_colour, $font, $pic_title1);
+			//ImageString($im, 2, 10, 36, $pic_desc2, $blue);
+			ImageTtfText($im, $header_info_title_font_size, 0, 12, $dimension_y + 43, $title_colour, $font, $pic_title2);
+		}
+		else
+		{
+			//ImageString($im, 2, 10, $dimension_y, $pic_desc, $blue);
 		// Add some shadow to the text
-		ImageTtfText($im, 18, 0, 12, $dimension_y + 29, $grey, $font, $pic_title);
+			ImageTtfText($im,  $header_info_title_font_size, 0, 11, $dimension_y + 28, $grey, $font, $pic_title);
 
-		// Add the text
-		ImageTtfText($im, 18, 0, 12, $dimension_y + 29, $black, $font, $pic_title);
-
+			// Add the text
+			ImageTtfText($im, $header_info_title_font_size, 0, 10, $dimension_y + 29, $title_colour, $font, $pic_title);
+		}
+		
 		ImagePNG($im);
 		//ImageDestroy($im);
 		exit;
+	}
+
+	/**
+	* Description: converting a color string
+	*
+	* by orynider (c) 2019
+	*
+	* @return $r color string;
+	* @return $b color string;
+	* @return $g color string;
+	* @return $dec_colour dec string;
+	* @return $hex_colour;
+	* @return $hex_colour hex string
+	* @return $dec_colour array(r, b, g)
+	* @access ?
+	*/
+	function get_hexdec_colour($hex_colour, $offset)
+	{
+		$dec_colour = array();
+		
+		//Check if first character of hex colour
+		if ((int) ord(substr($hex_colour, 1, 1)) > 57)
+		{
+			//array conversion switch
+			switch($hex_colour)
+			{
+				case 'white': 
+					$hex_colour = "#ffffff";
+				break;
+				case 'red': 
+					$hex_colour = "#ff0000";
+				break;
+			    case 'orange': 
+					$hex_colour = "#ffa500";
+				break;
+				case 'yellow': 
+					$hex_colour = "#ffff00"; 
+				break;
+			    case 'fuchsia': 
+					$hex_colour = "#ff00ff";
+				break;
+			    case 'green': 
+					$hex_colour = "#008000";
+				break;
+			    case 'grey': 
+					$hex_colour = "#808080";
+				break;
+			    case 'lime': 
+					$hex_colour = "#00ff00";
+				break;
+			    case 'maroon': 
+					$hex_colour = "#800000";
+				break;
+			    case 'navy': 
+					$hex_colour = "#000080";
+				break;
+			    case 'olive': 
+					$hex_colour = "#808000";
+				break;
+			    case 'purple': 
+					$hex_colour = "#800080";
+				break;
+				case 'aqua': 
+					$hex_colour = "#00ffff";
+				break;
+			    case 'black': 
+					$hex_colour = "#000000";
+				break;
+			    case 'blue': 
+					$hex_colour = "#0000ff";
+				break;
+			    case 'silver': 
+					$hex_colour = "#c0c0c0";
+				break;
+			    case 'teal': 
+					$hex_colour = "#008080";
+				break;
+				default:
+					$hex_colour = "#12a3eb";
+				break;
+			}
+			
+		}
+		
+		list($r, $g, $b) = sscanf($hex_colour, "#%02x%02x%02x");
+		
+		$dec_colour['r'] = $r;
+		$dec_colour['b'] = $b;
+		$dec_colour['g'] = $g;
+		
+		switch($offset)
+		{
+			case 'r': 
+				return $r;
+			break;
+			case 'b': 
+				return $b;
+			break;
+			case 'g': 
+				return $g;
+			break;
+			case 'd': 
+				return hexdec(ltrim($hex_colour, '#'));
+			break;
+			case 'h': 
+				return $hex_colour;
+			break;
+			default:
+				return $dec_colour;
+			break;
+		}
+	}
+
+	/**
+	* Based on get_hex_colour() by david63
+	* Ported by orynider in 2019
+	* Description:
+	* Get a offset color we need for a gradient
+	* Uses about same offset as prosilver
+	*
+	* @return $offset_colour hex colour
+	* @access ?
+	*/
+	function get_gradient_colour($header_colour, $offset)
+	{
+		//Check if first character of hex colour
+		if ((int) ord(substr($header_colour, 1, 1)) > 57)
+		{
+			$offset_colour = $header_colour;
+		}
+		else
+		{
+			$header_colour	= hexdec(ltrim($header_colour, '#'));
+			$offset_colour		= '#' . dechex(($offset == 1) ? $header_colour + 5778196 : $header_colour - 1191226);
+		}
+		return $offset_colour;
+	}
+
+	/**
+	* Based on get_hex_colour() by david63
+	* Ported by orynider in 2019
+	* Description:
+	* Get the hex color of a decimal color
+	* Uses about same offset as prosilver
+	*
+	* @return $hex_colour hex colour
+	* @access ?
+	*/
+	function get_hex_colour($dec_colour)
+	{
+		//Check first character of number if is not an english color
+		if ((int) ord(substr($dec_colour, 1, 1)) > 57)
+		{
+			$hex_colour = $this->get_hexdec_colour($dec_colour, 'h');
+		}
+		else
+		{
+			$hex_numb		= dechex($dec_colour);
+			switch(strlen($hex_numb))
+			{
+				case 3:
+					$hex_colour	= '#000' . $hex_numb;
+				break;
+				case 4:
+					$hex_colour	= '#00' . $hex_numb;
+				break;
+				case 5:
+					$hex_colour	= '#0' . $hex_numb;
+				break;
+				default:
+					$hex_colour	= '#' . $hex_numb;
+				break;
+			}
+		}
+		return $hex_colour;
 	}
 
 	/**
@@ -417,8 +633,8 @@ class thumbnail
 		{
 			case 'he':
 			case 'ar':
-				preg_match_all ('/./us' , $text, $rtl);
-				$text = join ('' , array_reverse($rtl[0])); 
+				preg_match_all('/./us' , $text, $rtl);
+				$text = join('' , array_reverse($rtl[0])); 
 			break;
 			
 			default:
