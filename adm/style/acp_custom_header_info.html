@@ -14,18 +14,45 @@
 				<dd><input type="text" size="40" id="module_name" name="module_name" value="{MODULE_NAME}" /></dd>
 		</dl>
 	<!-- ENDIF -->
-	<!-- IF SHOW_AMOUNT -->
-		<dl>
-			<dt><label for="show_amount">{{ lang('SHOW_AMOUNT') }}{{ lang('COLON') }}</label><br /><span>{L_SHOW_AMOUNT_EXPLAIN}</span></dt>
-			<dd><input type="number" id="show_amount" name="show_amount" value="{SHOW_AMOUNT}" size="3" maxlength="3" min="0" max="999" /> </dd>
-		</dl>
-	<!-- ENDIF -->
 	<!-- IF HEADER_INFOVERSION -->
         <dl>
 				<dt><label for="header_info_version">{{ lang('HEADER_INFO_VERSION') }}</label><br /><span>{L_HEADER_INFO_CHECK}</span></dt>
 				<dd><input type="text" size="40" id="header_info_version" name="header_info_version" value="{HEADER_INFOVERSION}"  {READONLY} /></dd>
 		</dl>
 	<!-- ENDIF -->
+		<dl>
+			<dt><label for="row_height">{{ lang('ROW_HEIGHT') }}{{ lang('COLON') }}</label><br /><span>{{ lang('ROW_HEIGHT_EXPLAIN') }}</span></dt>
+			<dd><input name="row_height" type="number" id="row_height" value="{{ ROW_HEIGHT }}" min="48" max="1024" /> {{ lang('PIXELS') }}</dd>
+		</dl>
+		<dl>
+			<dt><label for="speed">{{ lang('SPEED') }}{{ lang('COLON') }}</label><br /><span>{{ lang('SPEED_EXPLAIN') }}</span></dt>
+			<dd><input name="speed" type="number" id="speed" value="{{ SPEED }}" min="100" max="999" /> {{ lang('PIXELS') }}</dd>
+		</dl>
+		<dl>
+			<dt><label for="interval">{{ lang('INTERVAL') }}{{ lang('COLON') }}</label><br /><span>{{ lang('INTERVAL_EXPLAIN') }}</span></dt>
+			<dd><input name="interval" type="number" id="interval" value="{{ INTERVAL }}" min="1000" max="9999" /> {{ lang('PIXELS') }}</dd>
+		</dl>
+	<!-- IF SHOW_AMOUNT -->
+		<dl>
+			<dt><label for="show_amount">{{ lang('SHOW_AMOUNT') }}{{ lang('COLON') }}</label><br /><span>{L_SHOW_AMOUNT_EXPLAIN}</span></dt>
+			<dd><input type="number" id="show_amount" name="show_amount" value="{SHOW_AMOUNT}" size="3" maxlength="3" min="0" max="999" /> </dd>
+		</dl>
+	<!-- ENDIF -->
+      <dl>
+		<dt class="bg1"><label>{{ lang('MOUSESTOP') }}{{ lang('COLON') }}</label><br><span>{{ lang('MOUSESTOP_EXPLAIN') }}</span></dt>
+		<dt class="bg2">
+		  <span class="genmed">
+				<label><input type="radio" class="radio" name="mousestop" value="1"{% if S_MOUSESTOP_ENABLED %} id="mousestop" checked="checked"{% endif %} /> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="mousestop" value="0"{% if not S_MOUSESTOP_ENABLED %} id="mousestop" checked="checked"{% endif %} /> {{ lang('NO') }}</label>
+		  </span>
+		</dt>
+	</dl>
+	<dl>
+			<dt><label for="type">{{ lang('INFO_DIRECTION') }}{{ lang('COLON') }}</label><br /><span class="explain">{{ lang('INFO_DIRECTION_EXPLAIN') }}</span></dt>
+			<dd>
+			{DIRECTION_SELECT}
+			</dd>
+	</dl>
 	<!-- IF WYSIWYG_PATH -->
         <dl>
 				<dt><label for="wysiwyg_path">{{ lang('WYSIWYG_PATH') }}</label><br /><span>{L_WYSIWYG_PATH_EXPLAIN}</span></dt>
@@ -43,6 +70,43 @@
 				<dt><label for="banners_dir">{{ lang('BANNERS_DIR') }}</label><br /><span>{L_BANNERS_DIR_EXPLAIN}</span></dt>
 				<dd><input type="text" size="40" id="banners_dir" name="banners_dir" value="{BANNERS_DIR}" /></dd>
 		</dl>
+	<dl>
+		<dt>
+			<label for="banner_position">{{ lang('SP_WATERMARK') }}{{ lang('COLON') }}</label>
+			<span>{{ lang('SP_WATERMARK_EXPLAIN') }}<br />
+		</dt>
+	</dl>
+		<dl>
+		  <dt class="bg1"><span class="genmed">{{ lang('WATERMARK') }}{{ lang('COLON') }}</span></dt>
+		  <dt class="bg2">
+		  <span class="genmed">
+				<label><input type="radio" class="radio" name="use_watermark" value="1"{% if S_WATERMARK_ENABLED %} id="use_watermark" checked="checked"{% endif %} /> {{ lang('YES') }} &nbsp;&nbsp;</label>
+				<label><input type="radio" class="radio" name="use_watermark" value="0"{% if not S_WATERMARK_ENABLED %} id="use_watermark" checked="checked"{% endif %} /> {{ lang('NO') }}</label>
+		  </span>
+		  </dt>
+		</dl>
+		<dl>
+		<dt class="bg1"><label>{{ lang('WATERMARK_PLACENT') }}{{ lang('COLON') }}</label><br /><span>{{ lang('WATERMARK_PLACENT_EXPLAIN') }}</span></dt>
+		<dt class="bg2">
+	  	<table class="table1" cellpadding="4" cellspacing="1">
+	  	  <tr>
+	  	  	<td><label><input type="radio" {WATERMAR_PLACEMENT_0} name="disp_watermark_at" value="0" />1</label></td>
+	  		<td><label><input type="radio" {WATERMAR_PLACEMENT_1} name="disp_watermark_at" value="1" />2</label></td>
+	  		<td><label><input type="radio" {WATERMAR_PLACEMENT_2} name="disp_watermark_at" value="2" />3</label></td>
+	  	  </tr>
+	  	  <tr>
+	  	  	<td><label><input type="radio" {WATERMAR_PLACEMENT_3} name="disp_watermark_at" value="3" />4</label></td>
+	  	  	<td><label><input type="radio" {WATERMAR_PLACEMENT_4} name="disp_watermark_at" value="4" />5</label></td>
+	  	  	<td><label><input type="radio" {WATERMAR_PLACEMENT_5} name="disp_watermark_at" value="5" />6</label></td>
+	  	  </tr>
+	  	  <tr>
+	  	  	<td><label><input type="radio" {WATERMAR_PLACEMENT_6} name="disp_watermark_at" value="6" />7</label></td>
+	  	  	<td><label><input type="radio" {WATERMAR_PLACEMENT_7} name="disp_watermark_at" value="7" />8</label></td>
+	  	  	<td><label><input type="radio" {WATERMAR_PLACEMENT_8} name="disp_watermark_at" value="8" />9</label></td>
+	  	  </tr>
+	  	 </table>
+		</dt>
+	</dl>
       <dl>
 		<dt class="bg1"><label>{L_THUMB_CACHE}</label><br><span>{L_THUMB_CACHE_EXPLAIN}</span></dt>
 		<dt class="bg2">

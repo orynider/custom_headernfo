@@ -1,15 +1,18 @@
-<!-- INCLUDEJS @orynider_custom_headernfo/js/jquery.totemtickerb.js -->
-<script type="text/javascript">
+<!-- INCLUDEJS @orynider_custom_headernfo/js/jquery.totemticker.js -->
+<script>
 // <![CDATA[
-	$(function(){
+    $(function(){
         $('#vertical-tickerb').totemticker({
         row_height   :   '100px',
+        speed        :      {SPEED},
+        interval      :      {INTERVAL},
         next         :   '#tickerb-next',
         previous     :   '#tickerb-previous',
         stop         :   '#stopb',
         start        :   '#startb',
-        mousestop    :   true
-		});
-	});
-// ]]>	
+        mousestop    :   true,
+        up        :   'up'
+        });
+    });
+// ]]>
 </script>

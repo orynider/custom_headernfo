@@ -301,18 +301,29 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 		'banner_position2' => '0', //Pos 2
 		'banner_position3' => '0', //Pos 3
 		'banner_position' => '1', //Pos 4 (Default)
-		
+
 		'module_name' => 'Custom Header Info', // settings_dbname
 		'wysiwyg_path' => 'assets/javascript/',
 		'banners_dir' => 'ext/orynider/custom_headernfo/styles/prosilver/theme/images/banners/',
 		'backgrounds_dir' => 'ext/orynider/custom_headernfo/styles/prosilver/theme/images/backgrounds/',
 		'thumb_cache' => '1',
-		'show_amount' => '15',  //New 01.01.2019 by orynider
+
+  		 //new items added 01.01.2019 by orynider for all ticker rows
+
+		'row_height' =>'120',	/* Height of each ticker row in PX. Should be uniform. */
+		'speed' => '800',		/* Speed of transition animation in milliseconds */
+		'interval' => '4000',		/* Time between change in milliseconds */
+		'show_amount' => '15',		/* Integer for how many items to query and display at once. Resizes height accordingly (OPTIONAL) */
+		'mousestop' => '1',	/* If set to true, the ticker will stop on mouseover */
+		'direction' => 'up',		/* Direction that list will scroll */
+
+		'use_watermark' => '1',
+		'disp_watermark_at' => '3',
 
 		//Version
 		'header_info_version'		=> '0.9.0',
 	);
-	
+
 	/**
 	 * Custom function to add sample data to the database
 	 *
@@ -352,7 +363,7 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 				'header_info_last'				=> 0,
 				'header_info_pin'				=> '1',
 				'header_info_pic_width'		=> '458',
-				'header_info_pic_height'		=> '50',
+				'header_info_pic_height'		=> '70',
 				'header_info_disable'			=> 0,
 				'forum_id'						=> 0,
 				'user_id'							=> $user->data['user_id'],
@@ -371,7 +382,7 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 				'header_info_dir'				=> 'wlcodex', //ext/orynider/custom_headernfo/language/wlcodex/
 				'header_info_font'				=>  'tituscbz.ttf',
 				'header_info_type'				=> 'language',
-				'header_info_image'			=> generate_board_url() . '/ext/orynider/custom_headernfo/styles/prosilver/theme/images/banners/custom_header_bg.png', //str_replace('prosilver' 'all', $data_files['header_info_image'])
+				'header_info_image'			=> generate_board_url() . '/ext/orynider/custom_headernfo/styles/prosilver/theme/images/banners/linen.png', //str_replace('prosilver' 'all', $data_files['header_info_image'])
 				'header_info_image_link'	=> 0,	
 				'header_info_banner_radius' => 0,
 				'header_info_title_pixels'		=> '18',
@@ -385,7 +396,7 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 				'header_info_last'				=> 0,
 				'header_info_pin'				=> 0,
 				'header_info_pic_width'		=> '458',
-				'header_info_pic_height'		=> '50',
+				'header_info_pic_height'		=> '70',
 				'header_info_disable'			=> 0,
 				'forum_id'						=> 0,
 				'user_id'							=> $user->data['user_id'],
@@ -418,7 +429,7 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 				'header_info_last'				=> 1,
 				'header_info_pin'				=> 1,
 				'header_info_pic_width'		=> '458',
-				'header_info_pic_height'		=> '50',
+				'header_info_pic_height'		=> '70',
 				'header_info_disable'			=> 0,
 				'forum_id'						=> 0,
 				'user_id'							=> $user->data['user_id'],
@@ -451,7 +462,7 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 				'header_info_last'				=> 0,
 				'header_info_pin'				=> '1',
 				'header_info_pic_width'		=> '458',
-				'header_info_pic_height'		=> '50',
+				'header_info_pic_height'		=> '70',
 				'header_info_disable'			=> 0,
 				'forum_id'						=> 0,
 				'user_id'							=> $user->data['user_id'],

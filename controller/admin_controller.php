@@ -161,7 +161,7 @@ class admin_controller
 														'simple_bg_logo' => $this->user->lang('SIMPLE_BG_LOGO')
 														), 
 														$row['header_info_type']);
-			
+
 			//Populate info to display starts
 			$info_title = array();
 			$info_desc = array();
@@ -261,7 +261,13 @@ class admin_controller
 
 		// Read out config values
 		$custom_header_info_config = $this->config_values();
-		
+
+		$header_info_direction_select	= $this->get_list_static('direction', 
+											array('up' => $this->user->lang('UP'),
+														'down' => $this->user->lang('DOWN')
+														), 
+														$custom_header_info_config['direction']);
+
 		$this->template->assign_vars(array(
 			'S_HEADER_INFO_ENABLED'   		=> $custom_header_info_config['header_info_enable'], // settings_disable
 			'S_HEADER_INFO_POSITION1'		=> $custom_header_info_config['banner_position1'],
@@ -272,7 +278,38 @@ class admin_controller
 			'HEADER_INFO_DIR_SELECT' 		=> $this->gen_lang_dirs_select_list('html', 'header_info_dir', 'politics'), //ext/orynider/custom_headernfo/language/movies/
 			'HEADER_INFO_FONT_SELECT'		=> $this->gen_fonts_select_list('html', 'header_info_font', ''), //ext/orynider/custom_headernfo/assets/fonts/
 			'HEADER_INFO_IMAGE'				=> generate_board_url() . '/' . $custom_header_info_config['banners_dir'] . 'custom_header_bg.png',
-			'SHOW_AMOUNT'				   		=> $custom_header_info_config['show_amount'],
+
+			'ROW_HEIGHT'							=> $custom_header_info_config['row_height'],		/* Height of each ticker row in PX. Should be uniform. */
+			'SPEED'										=> $custom_header_info_config['speed'],		/* Speed of transition animation in milliseconds */
+			'INTERVAL'								=> $custom_header_info_config['interval'],		/* Time between change in milliseconds */
+			'SHOW_AMOUNT'						=> $custom_header_info_config['show_amount'],		/* Integer for how many items to query and display at once. Resizes height accordingly (OPTIONAL) */
+			'S_MOUSESTOP_ENABLED'			=> $custom_header_info_config['mousestop'],		/* If set to true, the ticker will stop on mouseover */
+			'DIRECTION_SELECT'					=> $header_info_direction_select,		/* Direction that list will scroll */
+
+			/*--------------------
+			* WaterMark Section
+			* From admin_album_clown_SP.php
+			* Credits: clown@pimprig.com, Volodymyr (CLowN) Skoryk
+			*--------------------*/
+			//watermark
+			//'L_WATERMARK' => $lang['SP_Watermark'],
+			'S_WATERMARK_ENABLED' => $custom_header_info_config['use_watermark'],
+			'WATERMARK_ENABLED' => ($custom_header_info_config['use_watermark'] == 1) ? 'checked="checked"' : '',
+			'WATERMARK_DISABLED' => ($custom_header_info_config['use_watermark'] == 0) ? 'checked="checked"' : '',
+
+			//watermark placement
+			//'L_WATERMARK_PLACENT' => $lang['SP_Watermark_placent'],
+			'WATERMAR_PLACEMENT_AT' => $custom_header_info_config['disp_watermark_at'],
+			'WATERMAR_PLACEMENT_0' => ($custom_header_info_config['disp_watermark_at'] == 0) ? 'checked="checked"' : '',
+			'WATERMAR_PLACEMENT_1' => ($custom_header_info_config['disp_watermark_at'] == 1) ? 'checked="checked"' : '',
+			'WATERMAR_PLACEMENT_2' => ($custom_header_info_config['disp_watermark_at'] == 2) ? 'checked="checked"' : '',
+			'WATERMAR_PLACEMENT_3' => ($custom_header_info_config['disp_watermark_at'] == 3) ? 'checked="checked"' : '',
+			'WATERMAR_PLACEMENT_4' => ($custom_header_info_config['disp_watermark_at'] == 4) ? 'checked="checked"' : '',
+			'WATERMAR_PLACEMENT_5' => ($custom_header_info_config['disp_watermark_at'] == 5) ? 'checked="checked"' : '',
+			'WATERMAR_PLACEMENT_6' => ($custom_header_info_config['disp_watermark_at'] == 6) ? 'checked="checked"' : '',
+			'WATERMAR_PLACEMENT_7' => ($custom_header_info_config['disp_watermark_at'] == 7) ? 'checked="checked"' : '',
+			'WATERMAR_PLACEMENT_8' => ($custom_header_info_config['disp_watermark_at'] == 8) ? 'checked="checked"' : '',
+
 			'S_FORUM_OPTIONS'					=> make_forum_select(1, array(), true, false, false),
 			'S_THUMBNAIL'   						=> (@function_exists('gd_info') && (@count(@gd_info()) !== 0)), 
 			'S_THUMB_CACHE_ENABLED'		=> $custom_header_info_config['thumb_cache'],
@@ -525,6 +562,12 @@ class admin_controller
 														), 
 														$row['header_info_type']);
 
+					$header_info_direction_select	= $this->get_list_static('direction', 
+											array('up' => $this->user->lang('UP'),
+														'down' => $this->user->lang('DOWN')
+														), 
+														'up');
+
 					//Populate info to display starts
 					$info_title = array();
 					$info_desc = array();
@@ -597,9 +640,11 @@ class admin_controller
 						'HEADER_INFO_RANDDESC'				=> $info_desc,
 						'HEADER_INFO_USE_EXTDESC'			=> $row['header_info_use_extdesc'],
 						'EXTENED_SITE_DESC'						=> $row['header_info_use_extdesc'],
+
 						//New 0.9.0 start
 						'HEADER_INFO_TITLE_COLOUR'		=> isset($row['header_info_title_colour']) ? $row['header_info_title_colour'] : '',
 						'HEADER_INFO_DESC_COLOUR'		=> isset($row['header_info_desc_colour']) ? $row['header_info_desc_colour'] : '',
+
 						//New 0.9.0 ends
 						'HEADER_INFO_TYPE'						=> $row['header_info_type'],
 						'HEADER_INFO_TYPE_SELECT'			=> $header_info_type_select,
@@ -609,6 +654,7 @@ class admin_controller
 						'HEADER_INFO_DB_FONT' 				=> substr($header_info_font, 0, strrpos($header_info_font, '.')),
 						'HEADER_INFO_IMAGE'					=> $row['header_info_image'],
 						'THUMBNAIL_URL'   						=> generate_board_url() . '/app.php/thumbnail',
+
 						//New 0.9.0 start
 						'HEADER_INFO_RADIUS'					=> isset($row['header_info_banner_radius']) ? $row['header_info_banner_radius'] : '',
 						'HEADER_INFO_PIXELS'					=> isset($row['header_info_pixels']) ? $row['header_info_pixels'] : '',
@@ -616,12 +662,14 @@ class admin_controller
 						'HEADER_INFO_DESC_PIXELS'			=> isset($row['header_info_desc_pixels']) ? $row['header_info_desc_pixels'] : '',
 						'HEADER_INFO_LEFT'						=> isset($row['header_info_left']) ? $row['header_info_left'] : '',
 						'HEADER_INFO_RIGHT'					=> isset($row['header_info_right']) ? $row['header_info_right'] : '',
+
 						//New 0.9.0 ends
 						'S_HEADER_INFO_LINK_CHECKED'	=> $row['header_info_link'],
 						'HEADER_INFO_URL'						=> $row['header_info_url'],
 						'HEADER_INFO_LICENSE'					=> $row['header_info_license'],
 						'HEADER_INFO_TIME'						=> $row['header_info_time'],
 						'HEADER_INFO_LAST'						=> $row['header_info_last'],
+
 						'S_FORUM_OPTIONS'						=> make_forum_select($row['forum_id'], array(), true, false, false),
 						'S_HTML_MULTI_TEXT_ENABLED'		=> ($row['header_info_type'] == 'lang_html_text'),
 						'S_SIMPLE_DB_TEXT_ENABLED'		=> ($row['header_info_type'] == 'simple_db_text'),

@@ -54,11 +54,13 @@
 							</div>
 						</div>
 						<!-- ELSE -->
+					<div style="text-align: center;">
 	                    <a href="{header_info_scroll.HEADER_INFO_URL}">
-							<img src="<!-- IF S_THUMBNAIL -->{header_info_scroll.THUMBNAIL_URL}?info_id={header_info_scroll.HEADER_INFO_ID}&amp;resize_width={header_info_scroll.HEADER_INFO_PIC_WIDTH}&amp;resize_height={header_info_scroll.HEADER_INFO_PIC_HEIGHT}<!-- ELSE -->{header_info_scroll.HEADER_INFO_IMAGE} <!-- ENDIF -->" title="{header_info_scroll.HEADER_INFO_NAME}{{ lang('COLON') }}" alt="{header_info_scroll.HEADER_INFO_URL}" style="width: {header_info_scroll.HEADER_INFO_PIC_WIDTH}px; height: {header_info_scroll.HEADER_INFO_PIC_HEIGHT}px;" />
+							<img src="<!-- IF S_THUMBNAIL -->{header_info_scroll.THUMBNAIL_URL}?info_id={header_info_scroll.HEADER_INFO_ID}&amp;resize_width={header_info_scroll.HEADER_INFO_PIC_WIDTH}&amp;resize_height={header_info_scroll.HEADER_INFO_PIC_HEIGHT}<!-- ELSE -->{header_info_scroll.HEADER_INFO_IMAGE} <!-- ENDIF -->" title="{header_info_scroll.HEADER_INFO_NAME}{{ lang('COLON') }}" alt="{header_info_scroll.HEADER_INFO_URL}" />
 						</a>
-						<!-- ENDIF -->
 					</div>
+						<!-- ENDIF -->
+					
 				 <!-- IF header_info_scroll.S_SIMPLE_DB_TEXT_ENABLED --></div><!-- ENDIF -->
 			    </li>
 		    <!-- BEGINELSE -->

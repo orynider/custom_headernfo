@@ -125,7 +125,7 @@ class thumbnail
 		$this->root_path 									= $root_path;
 		$this->custom_header_info_table 			= $custom_header_info_table;
 		$this->custom_header_info_config_table 	= $custom_header_info_config_table;
-		$this->files_factory 		= $files_factory;
+		$this->files_factory 								= $files_factory;
 
 		$this->ext_name 		= $this->request->variable('ext_name', 'orynider/custom_headernfo');
 		$this->module_root_path	= $this->ext_path = $this->ext_manager->get_extension_path($this->ext_name, true);
@@ -162,7 +162,10 @@ class thumbnail
 		// Request vars
 		// =======================================================
 		$info_id = $this->request->variable('info_id', 1);
-		
+
+		// Read out config values
+		$custom_header_info_config = $this->config_values();
+
 		// get languages installed
 		//$this->countries = $this->get_countries();
 
@@ -183,10 +186,15 @@ class thumbnail
 		$header_info_type = $row['header_info_type'];
 		$header_info_dir = $row['header_info_dir']; //ext/orynider/custom_headernfo/language/movies/
 		$header_info_font = $row['header_info_font'];
-		$header_info_font_size = $row['header_info_pixels'];
+
+		$db_width = $row['header_info_pic_width'];
+		$db_height = $row['header_info_pic_height'];
+
 		$header_info_title_font_size = $row['header_info_title_pixels'];
 		$header_info_desc_font_size = $row['header_info_desc_pixels'];
-		
+
+		$header_info_font_size = !empty($row['header_info_desc_pixels']) ? $row['header_info_desc_pixels'] : $row['header_info_title_pixels'];
+
 		// populate entries (all lang keys)
 		$this->language_from = (isset($this->config['default_lang'])) ? $this->config['default_lang'] : $this->user->lang['USER_LANG'];
 		$this->language_into = (isset($this->user->data['user_lang'])) ? $this->user->data['user_lang'] : $this->language_from;
@@ -223,8 +231,8 @@ class thumbnail
 		else
 		{
 			$i = count($this->entries);
-			$j = rand(0, $i);
-			//$j = 4;
+			$j = $this->request->variable('rand', rand(0, $i));
+			//$j = 29;
 			$l_keys = array_keys($this->entries);
 			$l_values = array_values($this->entries);
 			$pic_title = $l_keys[$j];
@@ -232,6 +240,8 @@ class thumbnail
 		}
 		//die(print_r($pic_desc, true));
 		//$pic_desc = "ויענך וירעבך ויאכלך את המן אשר לא ידעת ולא ידעון אבתיך  למען הודיעך כי לא על הלחם לבדו יחיה האדם—כי על כל מוצא פי יהוה יחיה האדם";
+		//$pic_title = 'Test... Benjamin Netanyahu on ISIS and Nuclear Weapons, before the UN General Assembly, 03.03.2015.';
+		//$pic_desc = '"Test... They just disagree among themselves who will be the ruler of that empire. In this deadly game of thrones, there is no place for America or for Israel, no peace for Christians, Jews, or Muslims who don\'t share the Islamist medieval creed. No rights for women. No freedom for anyone. So when it comes to Iran and ISIS, the enemy of your enemy is your enemy."';
 
 		$header_info_image	= $row['header_info_image'];
 
@@ -263,8 +273,10 @@ class thumbnail
 		}
 
 		$header_info_image = $header_info_image ? str_replace('_info.', '_bg.', $header_info_image) : $this->module_root_path . "styles/prosilver/theme/images/banners/custom_header_bg.png";
-
-		$src = str_replace('php', 'png', $header_info_image);
+		$header_info_image = str_replace(basename($header_info_image), $this->request->variable('image', basename($header_info_image)), $header_info_image);
+		$header_info_image = str_replace(array('.php', '.pal'), '.png', $header_info_image);
+		
+		//die(print_r(basename($header_info_image), true));
 		$src_path = str_replace($phpbb_url, $this->root_path, $header_info_image);
 		$pic_filename = basename($src_path);
 		$pic_filetype = strtolower(substr($pic_filename, strlen($pic_filename) - 4, 4)); // .png
@@ -303,45 +315,6 @@ class thumbnail
 		$desc_colour_1 = ImageColorAllocate($im, $this->get_hexdec_colour($header_info_desc_colour_1, 'r'), $this->get_hexdec_colour($header_info_desc_colour_1, 'g'), $this->get_hexdec_colour($header_info_desc_colour_1, 'b'));
 		$desc_colour_2 = ImageColorAllocate($im, $this->get_hexdec_colour($header_info_desc_colour_2, 'r'), $this->get_hexdec_colour($header_info_desc_colour_2, 'g'), $this->get_hexdec_colour($header_info_desc_colour_2, 'b'));
 
-		/**/
-		if (($resize_width !== 0) && ($resize_width !== $pic_width))
-		{
-			//$resize = $im;
-			$resize = ($this->gdVersion() == 1) ? ImageCreate($resize_width, $resize_height) : ImageCreateTrueColor($resize_width, $resize_height);
-			$resize_function = ($this->gdVersion() == 1) ? 'imagecopyresized' : 'imagecopyresampled';
-
-			$resize_function($resize, $im, 0, 0, 0, 0, $resize_width, $resize_height, $pic_width, $pic_height);
-			ImageDestroy($im);
-			$pic_width = $resize_width;
-			$pic_height = $resize_height;
-			
-			$im = $resize;
-			
-			ImageFilledRectAngle($im, 0, 0, $resize_width, $pic_height, $white);
-			
-			if (function_exists('imageantialias'))
-			{
-				ImageAntialias($im, true);
-			}
-			ImageAlphaBlending($im, false);
-			if (function_exists('imagesavealpha'))
-			{
-				ImageSaveAlpha($im, true);
-			}
-		}
-		else
-		{
-			if (function_exists('imageantialias'))
-			{
-				ImageAntialias($im, true);
-			}
-			ImageAlphaBlending($im, false);
-			if (function_exists('imagesavealpha'))
-			{
-				ImageSaveAlpha($im, true);
-			}
-		}
-		/**/
 		$dimension_filesize = @FileSize($src_path);
 
 		$dimension_font = 1;
@@ -370,8 +343,103 @@ class thumbnail
 		$pic_title1 = $this->convert_encoding(mb_substr($pic_title, 0, $middle_title)); 
 		$pic_title2 = $this->convert_encoding(mb_substr($pic_title, $middle_title));
 
+		$middle_title1 = mb_strrpos(mb_substr($pic_title1, 0, floor(mb_strlen($pic_title1) / 2 )), ' ') + 1;
+		$middle_title2 = mb_strrpos(mb_substr($pic_title2, 0, floor(mb_strlen($pic_title2) / 2 )), ' ') + 1;
+
+		//Title Split Level 2
+		$pic_title1_1 = $this->convert_encoding(mb_substr($pic_title1, 0, $middle_title1));
+		$pic_title1_2 = $this->convert_encoding(mb_substr($pic_title1, $middle_title1));
+		$pic_title2_1 = $this->convert_encoding(mb_substr($pic_title2, 0, $middle_title2));
+		$pic_title2_2 = $this->convert_encoding(mb_substr($pic_title2, $middle_title2));
+
 		$pic_desc1 = $this->convert_encoding(mb_substr($pic_desc, 0, $middle_desc)); 
 		$pic_desc2 = $this->convert_encoding(mb_substr($pic_desc, $middle_desc)); 
+
+		$middle_desc1 = mb_strrpos(mb_substr($pic_desc1, 0, floor(mb_strlen($pic_desc1) / 2 )), ' ') + 1;
+		$middle_desc2 = mb_strrpos(mb_substr($pic_desc2, 0, floor(mb_strlen($pic_desc2) / 2 )), ' ') + 1;
+
+		//Description Split Level 2
+		$pic_desc1_1 = $this->convert_encoding(mb_substr($pic_desc1, 0, $middle_desc1));
+		$pic_desc1_2 = $this->convert_encoding(mb_substr($pic_desc1, $middle_desc1));
+		$pic_desc2_1 = $this->convert_encoding(mb_substr($pic_desc2, 0, $middle_desc2));
+		$pic_desc2_2 = $this->convert_encoding(mb_substr($pic_desc2, $middle_desc2));
+
+		//die(print_r($pic_offset_desc1, true));
+		$resize_height = (($header_info_font_size * mb_strlen($pic_desc, 'utf-8')) >= $resize_width) ? $resize_height + (2 * $header_info_font_size) : ((!empty($pic_desc2_2)) ? $resize_height + $header_info_font_size  : $resize_height);
+		//$resize_height = (!empty($pic_desc2_2)) ? $resize_height + $header_info_font_size : $resize_height;
+
+		if (((6 * mb_strlen($pic_title, 'utf-8')) >= $resize_width) || (mb_strlen($pic_title2, 'utf-8') >= $resize_width))
+		{
+			$resize_height = $resize_height + $header_info_font_size;
+			$dimension_title_y = 0;
+		}
+		else
+		{
+			$dimension_title_y = 8;
+		}
+
+		$pic_offset_desc1 = !empty($pic_desc1_2) ? mb_strlen($pic_desc1_2, 'utf-8') - $resize_height + $header_info_title_font_size + 14 : 0;
+		$pic_offset_desc2 =!empty($pic_desc2_2) ? mb_strlen($pic_desc2_2, 'utf-8') - $resize_height + $header_info_title_font_size + 9 : 0;
+
+		//die(print_r($pic_offset_desc1 * mb_strlen($pic_desc1, 'utf-8'), true));
+		if ((($pic_offset_desc1 * mb_strlen($pic_desc1, 'utf-8')) >= $resize_width) && (($pic_offset_desc2 * mb_strlen($pic_desc2, 'utf-8')) >= $resize_width))
+		{
+			//Description Split Level 3
+			if (($pic_offset_desc1 * mb_strlen($pic_desc2_1, 'utf-8')) >= $resize_width)
+			{
+				$resize_height = $resize_height + (2 * $header_info_font_size);
+				$dimension_desc_y = 6;
+				$dimension_title_y = $dimension_title_y + 2;
+			}
+			else
+			{
+				$resize_height = $resize_height + $header_info_font_size;
+				$dimension_desc_y = 6;
+			}
+		}
+
+		/**/
+		if ((($resize_width !== 0) && ($resize_width !== $pic_width)) || (!empty($pic_desc2_2) && ($resize_width !== $pic_width)))
+		{
+			$resize = ($this->gdVersion() == 1) ? ImageCreate($resize_width, $resize_height) : ImageCreateTrueColor($resize_width, $resize_height);
+			$resize_function = ($this->gdVersion() == 1) ? 'imagecopyresized' : 'imagecopyresampled';
+
+			$resize_function($resize, $im, 0, 0, 0, 0, $resize_width, $resize_height, $pic_width, $pic_height);
+			ImageDestroy($im);
+			$pic_width = $resize_width;
+			$pic_height = $resize_height;
+			
+			$im = $resize;
+			
+			ImageFilledRectAngle($im, 0, 0, $resize_width, $pic_height, $white);
+			ImageColorTransparent($im, $white);
+			if (function_exists('imageantialias'))
+			{
+				//ImageAntialias($im, true);
+			}
+			//ImageAlphaBlending($im, false);
+			// removing the black from the placeholder
+			//
+			if (function_exists('imagesavealpha'))
+			{
+				ImageSaveAlpha($im, true);
+			}
+		}
+		else
+		{
+			if (function_exists('imageantialias'))
+			{
+				ImageAntialias($im, true);
+			}
+			ImageAlphaBlending($im, false);
+			// removing the black from the placeholder
+			//ImageColorTransparent($im, $white);
+			if (function_exists('imagesavealpha'))
+			{
+				ImageSaveAlpha($im, true);
+			}
+		}
+		/**/
 
 		//$font = $this->module_root_path . "assets/fonts/tituscbz.ttf";
 		//imageloadfont($font);
@@ -385,22 +453,6 @@ class thumbnail
 		Header("Cache-Control: post-check=0, pre-check=0", false);
 		Header("Pragma: no-cache");
 
-		//4 x 138 >= 458
-		//ImageString (resource 1 $image , int 2 $font , 3 int $x , 4 int $y , string 5 $string , int 6 $color)
-		//ImageTtfText (resource 1 $image , float 2 $size ie 18, float 3 $angle ie 0, int 4 $x , int 5 $y , int 6 $color , string 7 $fontfile , string 8 $text)
-		if (((6 * mb_strlen($pic_desc, 'utf-8')) >= $resize_width) || (mb_strlen($pic_desc2, 'utf-8') >= $resize_width))
-		{
-			//ImageString($im, 2, 10, $dimension_y, $pic_desc1, $blue);
-			ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 8, $desc_colour, $font, $pic_desc1);
-			//ImageString($im, 2, 10, 36, $pic_desc2, $blue);
-			ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 43, $desc_colour, $font, $pic_desc2);
-		}
-		else
-		{
-			//ImageString($im, 2, 10, $dimension_y, $pic_desc, $blue);
-			ImageTtfText($im, $header_info_font_size, 0, 10, $dimension_y + 10, $desc_colour, $font, $pic_desc);
-		}
-
 		/* return with no uppercase if patern not in string */
 		if (strpos($pic_title, ',') !== false)
 		{
@@ -412,24 +464,209 @@ class thumbnail
 		//$textWidth = $bbox[2] - $bbox[0];
 		if (((6 * mb_strlen($pic_title, 'utf-8')) >= $resize_width) || (mb_strlen($pic_title2, 'utf-8') >= $resize_width))
 		{
-			//ImageString($im, 2, 10, $dimension_y, $pic_desc1, $blue);
-			ImageTtfText($im, $header_info_title_font_size, 0, 12, $dimension_y + 8, $title_colour, $font, $pic_title1);
-			//ImageString($im, 2, 10, 36, $pic_desc2, $blue);
-			ImageTtfText($im, $header_info_title_font_size, 0, 12, $dimension_y + 43, $title_colour, $font, $pic_title2);
+			ImageTtfText($im, $header_info_title_font_size, 0, 12, $dimension_y + $dimension_title_y + 30, $title_colour, $font, $pic_title1);
+			$dimension_y = $dimension_y + $header_info_font_size;
+			ImageTtfText($im, $header_info_title_font_size, 0, 12, $dimension_y + $dimension_title_y + 30, $title_colour, $font, $pic_title2);
 		}
 		else
 		{
-			//ImageString($im, 2, 10, $dimension_y, $pic_desc, $blue);
-		// Add some shadow to the text
+			// Add some shadow to the text
 			ImageTtfText($im,  $header_info_title_font_size, 0, 11, $dimension_y + 28, $grey, $font, $pic_title);
 
 			// Add the text
 			ImageTtfText($im, $header_info_title_font_size, 0, 10, $dimension_y + 29, $title_colour, $font, $pic_title);
 		}
-		
+
+		//4 x 138 >= 458
+		//ImageString (resource 1 $image , int 2 $font , 3 int $x , 4 int $y , string 5 $string , int 6 $color)
+		//ImageTtfText (resource 1 $image , float 2 $size ie 18, float 3 $angle ie 0, int 4 $x , int 5 $y , int 6 $color , string 7 $fontfile , string 8 $text)
+		if (((6 * mb_strlen($pic_desc, 'utf-8')) >= $resize_width) || (mb_strlen($pic_desc2, 'utf-8') >= $resize_width))
+		{
+			if ((($pic_offset_desc1 * mb_strlen($pic_desc1, 'utf-8')) >= $resize_width) && (($pic_offset_desc2 * mb_strlen($pic_desc2, 'utf-8')) >= $resize_width))
+			{
+				//Description Split Level 3
+				$middle_desc1_1 = mb_strrpos(mb_substr($pic_desc1_1, 0, floor(mb_strlen($pic_desc1_1) / 2 )), ' ') + 1;
+				$middle_desc1_2 = mb_strrpos(mb_substr($pic_desc1_2, 0, floor(mb_strlen($pic_desc1_2) / 2 )), ' ') + 1;
+
+				//Description Split Level 3
+				$pic_desc1_1_1 = $this->convert_encoding(mb_substr($pic_desc1_1, 0, $middle_desc1_1));
+				$pic_desc1_1_2 = $this->convert_encoding(mb_substr($pic_desc1_1, $middle_desc1_1));
+				$pic_desc1_2_1 = $this->convert_encoding(mb_substr($pic_des1_2, 0, $middle_desc1_2));
+				$pic_desc1_2_2 = $this->convert_encoding(mb_substr($pic_desc1_2, $middle_desc1_2));
+				
+				ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + $dimension_desc_y, $desc_colour, $font, $pic_desc1_1);
+				//ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 8 + $header_info_font_size, $desc_colour, $font, $pic_desc1_1_2);
+				ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + $dimension_desc_y + $header_info_font_size, $desc_colour, $font, $pic_desc1_2);
+				//ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 8 + (2 * $header_info_font_size), $desc_colour, $font, $pic_desc1_2_2);
+				
+				//Description Split Level 3
+				$middle_desc2_1 = mb_strrpos(mb_substr($pic_desc2_1, 0, floor(mb_strlen($pic_desc2_1) / 2 )), ' ') + 1;
+				$middle_desc2_2 = mb_strrpos(mb_substr($pic_desc2_2, 0, floor(mb_strlen($pic_desc2_2) / 2 )), ' ') + 1;
+
+				//Description Split Level 3
+				$pic_desc2_1_1 = $this->convert_encoding(mb_substr($pic_desc2_1, 0, $middle_desc2_1));
+				$pic_desc2_1_2 = $this->convert_encoding(mb_substr($pic_desc2_1, $middle_desc2_1));
+				$pic_desc2_2_1 = $this->convert_encoding(mb_substr($pic_desc2_2, 0, $middle_desc2_2));
+				$pic_desc2_2_2 = $this->convert_encoding(mb_substr($pic_desc2_2, $middle_desc2_2));
+				//die(print_r($pic_desc2_2_1, true));
+				
+				if (($pic_offset_desc1 * mb_strlen($pic_desc2_1, 'utf-8')) >= $resize_width)
+				{
+					//ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 43, $desc_colour, $font, $pic_desc2_1_1 . $pic_desc2_1_2);
+					ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 43, $desc_colour, $font, $pic_desc2_1_1);
+					$dimension_y = $dimension_y + $header_info_font_size;
+					ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 43, $desc_colour, $font, $pic_desc2_1_2);
+					$dimension_y = $dimension_y + $header_info_font_size;
+				}
+				else
+				{
+					ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 43, $desc_colour, $font, $pic_desc2_1);
+					$dimension_y = $dimension_y + $header_info_font_size;
+				}
+
+				if (($pic_offset_desc1 * mb_strlen($pic_desc2_2, 'utf-8')) >= $resize_width)
+				{
+					//ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 43, $desc_colour, $font, $pic_desc2_2_1 . $pic_desc2_2_2);
+					ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 43, $desc_colour, $font, $pic_desc2_2_1);
+					$dimension_y = $dimension_y + $header_info_font_size;
+					ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 43, $desc_colour, $font, $pic_desc2_2_2);
+					$dimension_y = $dimension_y + $header_info_font_size;
+				}
+				else
+				{
+					ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 43, $desc_colour, $font, $pic_desc2_2);
+				}
+			}
+			elseif (($pic_offset_desc1 * mb_strlen($pic_desc1, 'utf-8')) >= $resize_width)
+			{
+				ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 8, $desc_colour, $font, $pic_desc1_1);
+				ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 8 + $header_info_font_size, $desc_colour, $font, $pic_desc1_2);
+			
+				ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 43, $desc_colour, $font, $pic_desc2);
+			}
+			elseif (($pic_offset_desc2 * mb_strlen($pic_desc2, 'utf-8')) >= $resize_width)
+			{
+				ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 8, $desc_colour, $font, $pic_desc1);
+			
+				ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 43, $desc_colour, $font, $pic_desc2_1);
+				ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 43 + $header_info_font_size, $desc_colour, $font, $pic_desc2_2);
+			}
+			else
+			{
+				ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 8, $desc_colour, $font, $pic_desc1);
+				ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 43, $desc_colour, $font, $pic_desc2);
+			}
+		}
+		else
+		{
+			//ImageString($im, 2, 10, $dimension_y, $pic_desc, $blue);
+			ImageTtfText($im, $header_info_font_size, 0, 10, $dimension_y + 10, $desc_colour, $font, $pic_desc);
+		}
+
+		$wm = isset($this->user->lang[$row['header_info_dir']]) ? $this->user->lang[$row['header_info_dir']] : $dimension_filesize;
+		/* Position watermark and place on image */
+		switch($custom_header_info_config['disp_watermark_at'])
+		{
+			case 0: // 1 top left
+				$dest_x = 0;
+				$dest_y = 0;
+			break;
+
+			case 1: // 2 top middle
+				$dest_x = (($resize_width - mb_strlen($wm, 'utf-8')) / 2);
+				$dest_y = 0;
+			break;
+
+			case 2: // 3 top right
+				$dest_x = $resize_width - mb_strlen($wm, 'utf-8');
+				$dest_y = 0;
+			break;
+
+			case 3: // 4 middle left
+				$dest_x = 0;
+				$dest_y = ($resize_width / 2) - ($header_info_font_size / 2);
+			break;
+
+			case 4: // 5 middle
+				$dest_x = ($resize_width / 2 ) - (mb_strlen($wm, 'utf-8') / 2);
+				$dest_y = ($resize_height / 2 ) - $header_info_font_size;
+			break;
+
+			case 5: // 6 middle right
+				$dest_x = $resize_width - mb_strlen($wm, 'utf-8') - 100;
+				$dest_y = ($resize_height / 2) - ($dimension_y + $header_info_font_size / 2);
+			break;
+
+			case 6: // 7 bottom left
+				$dest_x = 0;
+				$dest_y = $resize_height - $header_info_font_size;
+			break;
+
+			case 7: // 8 bottom middle
+				$dest_x = (($resize_width - mb_strlen($wm, 'utf-8')) / 2);
+				$dest_y = $resize_height - $header_info_font_size;
+			break;
+
+			case 8: // 9 bottom right
+				$dest_x = $resize_width - 60 - mb_strlen($wm, 'utf-8');
+				$dest_y =  $resize_height - $header_info_font_size;
+			break;
+
+			default:
+			break;
+		}
+		/* */
+
+		//****************************************************************************
+		// How add watermark at position
+		//   Usage : WatermarkPos(Filename of the 24-bit PNG watermark file,
+		//										position as 1 to 9 matrix,
+		//										1		2		3
+		//										4		5		6
+		//										7		8		9
+		//										maxsize as percentage,
+		//										transition is the transparency level to be applied on the watermark)
+		//   Returns : true on success and false on fail
+		//****************************************************************************
+		//die(print_r($custom_header_info_config['disp_watermark_at'], true));
+		if ($custom_header_info_config['use_watermark'] == 1)
+		{
+			ImageTtfText($im, $header_info_font_size, 0,  $dest_x, $dest_y, $desc_colour, $font, $wm);
+		}
 		ImagePNG($im);
-		//ImageDestroy($im);
-		exit;
+		ImageDestroy($im);
+		//exit;
+	}
+
+	/**
+	 * Enter description here...
+	 *
+	 * @return unknown
+	 */
+	function config_values($use_cache = true)
+	{
+		if (($config = $this->cache->get('custom_header_info_config')) && ($use_cache))
+		{
+			return $config;
+		}
+		else
+		{
+			$sql = "SELECT *
+				FROM " . $this->custom_header_info_config_table;
+			if ( !( $result = $this->db->sql_query($sql) ) )
+			{
+				$this->message_die( GENERAL_ERROR, 'Couldnt query portal configuration', '', __LINE__, __FILE__, $sql );
+			}
+			while ( $row = $this->db->sql_fetchrow( $result ) )
+			{
+				$config[$row['config_name']] = trim($row['config_value']);
+			}
+			$this->db->sql_freeresult($result);
+			
+			$this->cache->put('custom_header_info_config', $config);
+			
+			return($config);
+		}
 	}
 
 	/**
@@ -1514,7 +1751,7 @@ class thumbnail
 				break;
 				case 'punjabi':
 				case 'panjabi':
-				case 'gurmiki':				
+				case 'gurmiki':
 					$lang_name = 'pa';
 				break;
 				case 'pali':

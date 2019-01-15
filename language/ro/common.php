@@ -61,4 +61,6 @@ $lang = array_merge($lang, array(
 	'NEXT_SCROLL'									=> 'Înainte',
 	'START_SCROLL'								=> 'Play',
 	'STOP_SCROLL'									=> 'Stop',
+	'UP'													=> 'Sus',
+	'DOWN'												=> 'Jos',
 ));

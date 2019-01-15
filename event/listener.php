@@ -82,7 +82,13 @@ class listener implements EventSubscriberInterface
 			'BACKGROUNDS_DIR'				=> $this->header_info_config['backgrounds_dir'],
 			'BANNERS_DIR'		   				=> $this->header_info_config['banners_dir'],
 			'HEADER_INFOVERSION'			=> $this->header_info_config['header_info_version'],
-			'SITE_HOME_URL'   				=> $this->config['site_home_url'], //PORTAL_URL
+			'ROW_HEIGHT'						=> $this->header_info_config['row_height'],	/* Height of each ticker row in PX. Should be uniform. */
+			'SPEED'									=> $this->header_info_config['speed'],	/* Speed of transition animation in milliseconds */
+			'INTERVAL'							=> $this->header_info_config['interval'],		/* Time between change in milliseconds */
+			'MAX_ITEMS'							=> $this->header_info_config['show_amount'],	/* Integer for how many items to query and display at once. Resizes height accordingly (OPTIONAL) */
+			'MOUSESTOP'						=> $this->header_info_config['mousestop'],	/* If set to true, the ticker will stop on mouseover */
+			'DIRECTION'							=> $this->header_info_config['direction'],	/* Direction that list will scroll */
+			'SITE_HOME_URL'   				=> $this->header_info_config['site_home_url'], //PORTAL_URL
 			'PHPBB_URL'   						=> generate_board_url() . '/', //FORUM_URL
 			'READONLY'							=> ' readonly="readonly"'
 		));
@@ -155,6 +161,7 @@ class listener implements EventSubscriberInterface
 			break;
 		}
 
+		//max_items
 		$show_amount = isset($this->header_info_config['show_amount']) ? $this->header_info_config['show_amount'] : 3;
 
         $sql = "SELECT * FROM " . $this->custom_header_info_table . "

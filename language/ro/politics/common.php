@@ -26,27 +26,29 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge($lang, array(
 	//Transcript: Donald Trump's Foreign Policy Speech, The New York Times (27 April 2016)
-	'Donald Trump on Israel, Foreign Policy Speech (27 April 2016).'	=> '"Israel, our great friend and the one true democracy in the Middle East has been snubbed and criticized by an administration that lacks moral clarity..."',
+	'Donald Trump despre Israel, Foreign Policy Speech (27 April 2016).'	=> '"Israel, marele nost prieten şi o adevărată democraţie în Orientul Mijlociu a fost înmărmurit şi criticizat de o administrare care nevoieşte claritate morală..."',
 	//WikiQuotes from Trump: The Art of the Deal (1987) by Donald J. Trump with Tony Schwartz.
-	'Donald Trump: The Art of the Deal (1987)'	=> '"I try to learn from the past, but I plan for the future by focusing exclusively on the present."',
+	'Donald Trump: Arta Afacerii (1987)'	=> '"Încerc să învăţ din trecut, dar planific pentru viitor prin focalizare exclusivă pe prezent."',
 	//BARACK HUSSEIN OBAMA ON ISLAM AND CHRISTIANITY BY GEOFFREY GRIDER
-	'Barack Obama on Bible.'	=> '“Which passages of scripture should guide our public policy? Should we go with Leviticus, which suggests slavery is OK and that eating shellfish is an abomination?  Or we could go with Deuteronomy, which suggests stoning your child if he strays from the faith?”',
+	//www.nytimes.com/2006/06/28/us/politics/2006obamaspeech.html
+	'Barack Obama despre Bible, Washigton D.C., Iunie 28, 2006.'	=> '“Care pasaj din scriptură ar trebui să ne ghideze poliţa publică? Ar trebui să mergem cu Leviticul, care sugerează că slavia este OK şi că a mânca scoici este o abominaţie?  Ori ar trebui să mergem cu Deuteronom, care sugerează pietruirea copilului tău dacă se abate de la credinţă?”',
 	//Cairo University, Cairo, Egypt (4 June 2009), Full text at Wikisource
-	'Barack Obama on Koran, A New Beginning (June 2009)'	=> 'The Holy Koran tells us, "O mankind! We have created you male and a female; and we have made you into nations and tribes so that you may know one another."',
-	'Barack Obama on Torah, A New Beginning (June 2009)'	=> 'The Talmud tells us, "The whole of the Torah is for the purpose of promoting peace."',
-	'Barack Obama on Bible, A New Beginning (June 2009)'	=> 'The Holy Bible tells us, "Blessed are the peacemakers, for they shall be called sons of God."',
-	'Barack Obama on Islam.'	=> '“These rituals remind us of the principles that we hold in common, and Islam’s role in advancing justice, progress, tolerance, and the dignity of all human beings.”',
+	'Barack Obama despre Koran, Un Nou Început (Iunie 2009)' => 'Sfântul Coran ne spune, "O omenire! Noi v-am creat mascul şi o femelă; şi v-am făcut întru naţiuni şi triburi astfel ca voi să vă puteţi cunoaşte unii pe alţii."',
+	'Barack Obama despre Torah, Un Nou Început (Iunie 2009)' => 'Talmudul ne spune, "Plinătatea Torei este pentru scopul să promoveze pace."',
+	'Barack Obama despre Bible, Un Nou Început (Iunie 2009)' => 'Biblia Sfântă ne spune, "Binecuvântaţi sunt pacificatorii, căci ei vor fi chemaţi fii de Dumnezeu."',
+	'Barack Obama despre Islam.'	=> '“Aceste rituale ne amintesc de principiile care noi le ţinem în common, şi rolul Islamului în a avansa justiţie, progres, toleranţă, şi dignitatea a tuturor fiinţelor umane.”',
 	//Trump's interview with David Brody, CBN News (29 January 2017)
-	'Donald Trump on God, interview with David Brody, CBN News (29 January 2017).'	=>  '“I\'ve always felt the need to pray... I would say that the office is so powerful that you need God even more.”',
+	'Donald Trump despre God, intervieu cu David Brody, CBN News (29 Ianuarie 2017).'	=>  '“Eu întotdeauna am simţit nevoia să mă rog... Eu aşi spune căci biroul este atât de puternic căci ai nevoie de Dumnezeu chiar mai mult.”',
 	//Donald Trump 2016 RNC draft speech transcript, Politico (21 July 2016)
-	'Donald Trump on America, 2016 Republican National Convention (21 July 2016).'	=>  'I make this promise: We will make America proud again, we will make America strong again, we will make America safe again, and we will Make America Great Again! God bless you and good night! I love you!.”',
+	'Donald Trump despre America, 2016 Convenţia Naţională Republicană (21 Iulie 2016).'	=>  '	Eu fac această promisiune: Noi vom face America mândră iar, noi vom face America puternică iar, noi vom face America sigură iar, şi noi vom Face America Măreaţă Iar! Dumnezeu să să te binecuvinte şi noapte bună! Vă iubesc!.”',
 	//HuffPost
-	'Barack Obama, From an Easter Prayer Breakfast, 06.04.2010, White House.'	=> '“For even after the passage of 2,000 years, we can still picture the moment in our mind’s eye. The young man from Nazareth marched through Jerusalem; [...] — that the Son of Man was not to be found in his tomb and that Jesus Christ had risen..',
-	//www.goodreads.com/author/quotes/190119.Vladimir_Putin
-	'Vladimir Putin on Terorism'	=> '“To forgive the terrorists is up to God, but to send them to him is up to me.”',
-	'Vladimir Putin on Demoralisation'	=> '“I have always reacted negatively to those who with their snotty noses and erotic fantasies prowl into others\' lives.”',
-	'Vladimir Putin on Soviet Union'	=> '“Whoever does not miss the Soviet Union has no heart. Whoever wants it back has no brain.”',
-	'Adrian Năstase\'s as Prime Minister on Taxes and Chicken Farm'	=> '“Iar pe cei care s-au apucat să-mi numere găinile, îi rog să-mi numere şi ouăle. (I invite those who started to count my hens, to count also my eggs.)”',
+	'Barack Obama, Dintr-o Rugăciune cu ocazia unui Mic Dejun Paşti, 06.04.2010, Casa Albă.'	=> '“Pentru chiar după trecerea a 2,000 ani, noi încă putem picture the moment in our mind’s eye. The young man from Nazareth marched through Jerusalem; [...] — that the Son of Man was not to be found in his tomb and that Jesus Christ had risen..',
+	//en.wikiquote.org/wiki/Vladimir_Putin#Cooperation,_Terrorism,_UK_&_USA,_President_Trump,_Resolving_Conflict,_Defense,_Crimea,_The_Media,_Nuclear_Weapons_Policy:_15th_Plenary_Session_(18_October_2018)
+	'Vladimir Putin despre Terrorism, 15.11.2001.'	=> '“Î-mi plec capul victimelor terorismului. Sunt puternic impresionat de courajul rezidenţilor din New York. Marea cetate şi marea naţiune Americană are să câştige!”',
+	//content.time.com/time/magazine/article/0,9171,1734814,00.html
+	'Vladimir Putin despre Demoralisation, 24.04.2008'	=> '“Eu întotdeauna am reacţionat negativ la cei care cu nasul lor mucos şi fantazii erotice buznesc întru vieţile altora.”',
+	'Vladimir Putin despre Soviet Union'	=> '“Oricărui nu-i lipseşte Uniunea Sovietică n-are inimă. Oricine o vrea înapoi n-are creier.”',
+	'Adrian Năstase\'s as Prime Minister despre Taxes and Chicken Farm'	=> '“Iar pe cei care s-au apucat să-mi numere găinile, îi rog să-mi numere şi ouăle.”',
 	'Traian Băsescu despre Israel, 18-21.01.2014, la Ramallah'	=> '“...Nimeni nu va nega istoria, dar scopul procesului de pace nu este restabilirea adevarului istoric, ci pacea.”',
 	//www.bugetul.ro/traian-basescu-face-un-anunt-exploziv-cum-poate-romania-sa-zgaltaie-ue-in-urmatoarele-sase-luni/
 	//Andreea Corina Chiriac, redactor, actual
@@ -70,9 +72,9 @@ $lang = array_merge($lang, array(
 	'Klaus Iohannis ca preşedinte, în cadrul Galei „Regăsește România”, 22.10.2018.'	=> '"Natura, în ansamblul ei, nu trebuie percepută ca un dat definitiv, ci trebuie preţuită şi îngrijită continuu de către noi toţi.."',
 	'Benjamin Netanyahu, The Times of Israel,17 May 2015.'	=> '"There is no room for racism and discrimination in our society, none... We will turn racism into something contemptible and despicable."',
 	//www.gov.il/he/departments/news/speechcong030315
-	'Benjamin Netanyahu on ISIS, 03.03.2015'	=> '"They just disagree among themselves who will be the ruler of that empire. In this deadly game of thrones, there is no place for America or for Israel, no peace for Christians, Jews, or Muslims who don\'t share the Islamist medieval creed. No rights for women. No freedom for anyone. So when it comes to Iran and ISIS, the enemy of your enemy is your enemy."',
+	'Benjamin Netanyahu despre ISIS, 03.03.2015'	=> '"They just disagree among themselves who will be the ruler of that empire. In this deadly game of thrones, there is no place for America or for Israel, no peace for Christians, Jews, or Muslims who don\'t share the Islamist medieval creed. No rights for women. No freedom for anyone. So when it comes to Iran and ISIS, the enemy of your enemy is your enemy."',
 	'בנימין נתניהו על , 03.03.2015 ISIS'	=> '"במשחקי כס קטלניים אלה, אין כל מקום לאמריקה או לישראל, אין כל שלום לנוצרים, יהודים או מוסלמים שאינם חולקים את אותה אמונה אסלאמיסטית ימי ביניימית, אין כל זכויות לנשים ואין כל חירות לאיש. לכן, ככל שהדבר נוגע לאיראן ודאע"ש, האויב של האויב שלך הוא האויב שלך."',
 	//www.haaretz.com/transcript-of-netanyahu-speech-1.5343049
-	'Benjamin Netanyahu on Iran\'s Nuclear Weapons, before the UN General Assembly, 01.10.2013.'	=> '“If Israel is forced to stand alone, Israel will stand alone. Yet, in standing alone, Israel will know that we will be defending many, many others.”',
+	'Benjamin Netanyahu despre Iran\'s Nuclear Weapons, before the UN General Assembly, 01.10.2013.'	=> '“If Israel is forced to stand alone, Israel will stand alone. Yet, in standing alone, Israel will know that we will be defending many, many others.”',
 	'Benjamin Netanyahu vowed, “as PM of Israel in a speech before a joint session of US Congress, 03.03.2015.'	=> '“Even if Israel has to stand alone, Israel will stand. But I know that Israel does not stand alone, I know that America stands with Israel, I know that you stand with Israel.”',
 ));

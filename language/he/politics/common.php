@@ -30,7 +30,8 @@ $lang = array_merge($lang, array(
 	//WikiQuotes from Trump: The Art of the Deal (1987) by Donald J. Trump with Tony Schwartz.
 	'Donald Trump: The Art of the Deal (1987)'	=> '"I try to learn from the past, but I plan for the future by focusing exclusively on the present."',
 	//BARACK HUSSEIN OBAMA ON ISLAM AND CHRISTIANITY BY GEOFFREY GRIDER
-	'Barack Obama on Bible.'	=> '“Which passages of scripture should guide our public policy? Should we go with Leviticus, which suggests slavery is OK and that eating shellfish is an abomination?  Or we could go with Deuteronomy, which suggests stoning your child if he strays from the faith?”',
+	//www.nytimes.com/2006/06/28/us/politics/2006obamaspeech.html
+	'Barack Obama on Bible, Washigton D.C., June 28, 2006.'	=> '“Which passages of scripture should guide our public policy? Should we go with Leviticus, which suggests slavery is OK and that eating shellfish is an abomination?  Or we could go with Deuteronomy, which suggests stoning your child if he strays from the faith?”',
 	//Cairo University, Cairo, Egypt (4 June 2009), Full text at Wikisource
 	'Barack Obama on Koran, A New Beginning (June 2009)'	=> 'The Holy Koran tells us, "O mankind! We have created you male and a female; and we have made you into nations and tribes so that you may know one another."',
 	'Barack Obama on Torah, A New Beginning (June 2009)'	=> 'The Talmud tells us, "The whole of the Torah is for the purpose of promoting peace."',
@@ -42,9 +43,10 @@ $lang = array_merge($lang, array(
 	'Donald Trump on America, 2016 Republican National Convention (21 July 2016).'	=>  'I make this promise: We will make America proud again, we will make America strong again, we will make America safe again, and we will Make America Great Again! God bless you and good night! I love you!.”',
 	//HuffPost
 	'Barack Obama, From an Easter Prayer Breakfast, 06.04.2010, White House.'	=> '“For even after the passage of 2,000 years, we can still picture the moment in our mind’s eye. The young man from Nazareth marched through Jerusalem; [...] — that the Son of Man was not to be found in his tomb and that Jesus Christ had risen..',
-	//www.goodreads.com/author/quotes/190119.Vladimir_Putin
-	'Vladimir Putin on Terorism'	=> '“To forgive the terrorists is up to God, but to send them to him is up to me.”',
-	'Vladimir Putin on Demoralisation'	=> '“I have always reacted negatively to those who with their snotty noses and erotic fantasies prowl into others\' lives.”',
+	//en.wikiquote.org/wiki/Vladimir_Putin#Cooperation,_Terrorism,_UK_&_USA,_President_Trump,_Resolving_Conflict,_Defense,_Crimea,_The_Media,_Nuclear_Weapons_Policy:_15th_Plenary_Session_(18_October_2018)
+	'Vladimir Putin on Terrorism, 15.11.2001.'	=> '“I bow my head to the victims of terrorism. I am highly impressed of the courage of New York residents. The great city and the great American nation are to win!”',
+	//content.time.com/time/magazine/article/0,9171,1734814,00.html
+	'Vladimir Putin on Demoralisation, 24.04.2008'	=> '“I have always reacted negatively to those who with their snotty noses and erotic fantasies prowl into others\' lives.”',
 	'Vladimir Putin on Soviet Union'	=> '“Whoever does not miss the Soviet Union has no heart. Whoever wants it back has no brain.”',
 	'Adrian Năstase\'s as Prime Minister on Taxes and Chicken Farm'	=> '“Iar pe cei care s-au apucat să-mi numere găinile, îi rog să-mi numere şi ouăle. (I invite those who started to count my hens, to count also my eggs.)”',
 	'Traian Băsescu despre Israel, 18-21.01.2014, la Ramallah'	=> '“...Nimeni nu va nega istoria, dar scopul procesului de pace nu este restabilirea adevarului istoric, ci pacea.”',
