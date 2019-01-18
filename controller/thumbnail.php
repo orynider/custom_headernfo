@@ -635,7 +635,7 @@ class thumbnail
 		}
 		ImagePNG($im);
 		ImageDestroy($im);
-		//exit;
+		exit;
 	}
 
 	/**
