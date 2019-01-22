@@ -415,7 +415,7 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 				'header_info_dir'				=> 'hisquotes', //ext/orynider/custom_headernfo/language/hisquotes/
 				'header_info_font'				=>  'tituscbz.ttf',
 				'header_info_type'				=> 'language',
-				'header_info_image'			=> generate_board_url() . '/ext/orynider/custom_headernfo/styles/prosilver/theme/images/banners/custom_header_bg.png', //str_replace('prosilver' 'all', $data_files['header_info_image'])
+				'header_info_image'			=> generate_board_url() . '/ext/orynider/custom_headernfo/styles/prosilver/theme/images/banners/signature_bg.png', //str_replace('prosilver' 'all', $data_files['header_info_image'])
 				'header_info_image_link'	=> 0,
 				'header_info_banner_radius' => '8',
 				'header_info_title_pixels'		=> '18',

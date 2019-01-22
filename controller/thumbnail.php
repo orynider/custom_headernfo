@@ -198,6 +198,8 @@ class thumbnail
 		// populate entries (all lang keys)
 		$this->language_from = (isset($this->config['default_lang'])) ? $this->config['default_lang'] : $this->user->lang['USER_LANG'];
 		$this->language_into = (isset($this->user->data['user_lang'])) ? $this->user->data['user_lang'] : $this->language_from;
+		// Replace language with our request language
+		$this->language_into = $this->request->variable('lang', $this->language_into); //$this->language_into = 'sy_lat';
 		$this->language_into = is_file($this->module_root_path . 'language/' . $this->language_into . '/' . $header_info_dir . '/common.' . $this->php_ext) ? $this->language_into : $this->language_from;
 		$this->language_into = is_file($this->module_root_path . 'language/' . $this->language_into . '/' . $header_info_dir . '/common.' . $this->php_ext) ? $this->language_into : 'en';
 		$this->entries = $this->load_lang_file($this->module_root_path . 'language/' . $this->language_into . '/' . $header_info_dir . '/common.' . $this->php_ext);
@@ -266,7 +268,18 @@ class thumbnail
 		// Replace path by your own font path
 		$font_name = $this->request->variable('font', $header_info_font);
 		$font = $this->module_root_path . "assets/fonts/" . $font_name . '.ttf';
-
+		
+		//fonts overwrite for other languages 
+		switch($this->language_into)
+		{
+			case 'sy':
+				//$font = $this->module_root_path . "assets/fonts/SyrCOMEdessa.ttf";
+			break;
+			
+			default:
+			break;
+		}
+		
 		if (!is_file($font))
 		{
 			$font = $this->module_root_path . "assets/fonts/" . $header_info_font; //. '.ttf';
@@ -275,6 +288,18 @@ class thumbnail
 		$header_info_image = $header_info_image ? str_replace('_info.', '_bg.', $header_info_image) : $this->module_root_path . "styles/prosilver/theme/images/banners/custom_header_bg.png";
 		$header_info_image = str_replace(basename($header_info_image), $this->request->variable('image', basename($header_info_image)), $header_info_image);
 		$header_info_image = str_replace(array('.php', '.pal'), '.png', $header_info_image);
+		
+		//user logged in ? user has custom style ?
+		if (($this->user->data['user_id'] !== 1))
+		{
+			$this->default_style = (isset($this->config['default_style'])) ? $this->config['default_style'] : $this->user->data['user_style'];
+			$this->user_style = (isset($this->user->data['user_style'])) ? $this->user->data['user_style'] : $this->default_style;
+			
+			if (is_file(str_replace('prosilver', $this->user_style, $header_info_image)))
+			{
+				$header_info_image = str_replace('prosilver', $this->user_style, $header_info_image);
+			}
+		}
 		
 		//die(print_r(basename($header_info_image), true));
 		$src_path = str_replace($phpbb_url, $this->root_path, $header_info_image);
@@ -399,7 +424,7 @@ class thumbnail
 		}
 
 		/**/
-		if ((($resize_width !== 0) && ($resize_width !== $pic_width)) || (!empty($pic_desc2_2) && ($resize_width !== $pic_width)))
+		if ((($resize_width !== 0) && ($resize_width !== $pic_width)) || ($dimension_desc_y == 6) || (!empty($pic_desc2_2) && ($resize_width !== $pic_width)))
 		{
 			$resize = ($this->gdVersion() == 1) ? ImageCreate($resize_width, $resize_height) : ImageCreateTrueColor($resize_width, $resize_height);
 			$resize_function = ($this->gdVersion() == 1) ? 'imagecopyresized' : 'imagecopyresampled';
@@ -870,6 +895,7 @@ class thumbnail
 		{
 			case 'he':
 			case 'ar':
+			case 'sy':
 				preg_match_all('/./us' , $text, $rtl);
 				$text = join('' , array_reverse($rtl[0])); 
 			break;
