@@ -3,7 +3,7 @@
 // <![CDATA[
     $(function(){
         $('#vertical-tickerb').totemticker({
-        row_height   :   '100px',
+        row_height   :   "{ROW_HEIGHT}px",
         speed        :      {SPEED},
         interval      :      {INTERVAL},
         next         :   '#tickerb-next',
@@ -11,7 +11,7 @@
         stop         :   '#stopb',
         start        :   '#startb',
         mousestop    :   true,
-        up        :   'up'
+        up        :   {DIRECTION}
         });
     });
 // ]]>
