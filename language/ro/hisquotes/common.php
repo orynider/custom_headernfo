@@ -30,13 +30,13 @@ $lang = array_merge($lang, array(
 	//To do: 6:47
 	'Iūoḥēnān 6:48, Khabouris_C'	=> 'Eu! Eu pâine vieţii (pl. art: de vieţi) .',
 	'Iūoḥēnān 6:51, Khabouris_C'	=> 'Eu! Eu pâine! Viu dintru ceruri coborât! Şi dacă ins va mânca din acestă pâine va trăi (vii) veşniciei. Şi pâine cărui de Eu dau trupu-Mi, el de la faţa-Mi trăire lui de veac dau Eu .',
-	'Iūoḥēnān 8:28, Khabouris_C'	=> 'Spune (lu)lor bine Iêşūoa: -Cândva-i de-nălţat Fiul de Ins atunci cunoaşteţi de Mine! Eu şi lucruri din dorinţă sufletu-Mi nu fac Eu precum de-nvăţătu-Mi Tati-Mi astfel Eu de cuvântat Eu .',
+	'Iūoḥēnān 8:28, Khabouris_C'	=> 'Spune (lu)lor bine Iêşūoa: -Cândva-i de-nălţat Fiul de Ins atunci cunoaşteţi de Mine! Eu şi lucruri din dorinţă sufletu-Mi nu fac Eu, ci precum de-nvăţătu-Mi Tati-Mi astfel Lui am cuvântat Eu .',
 	'Iūoḥēnān 10:7, Khabouris_C'	=> 'Spune (lu)lor, aşadar, bine Iêşūoa. -Amin! Amin spun Eu vouă: Eu! Eu Uşar (uşă) de turmă .',
-	'Iūoḥēnān 10:9, Khabouris_C'	=> 'Eu! Eu Uşar (lit: uşă) şi chiar dacă ins va intra va trăi (viii) şi va intra şi va ieşi şi păşunat va găsi .',
+	'Iūoḥēnān 10:9, Khabouris_C'	=> 'Eu! Eu Uşar (lit: uşă) şi chiar dacă ins va intra va trăi (vieţui) şi va intra şi va ieşi şi păşunat va găsi .',
 	'Iūoḥēnān 10:11, Khabouris_C'	=> 'Eu! Eu Păstor Bun! Păstor bun sufletu-şi pune înloc turmă Lui .',
 	'Iūoḥēnān 10:14, Khabouris_C'	=> 'Eu! Eu păstor bun şi ştiu Eu însele-Mi şi de-tot-ştiut Eu din însele-Mi .',
 	'Iūoḥēnān 11:25, Khabouris_C'	=> 'Spune lui Iêşūoa: Eu! Eu Confortator (Nūoḥāmāe)! Şi viaţă din (cei care) decred în Mine chiar-dacă vor muri vor trăi (vii) .',
-	'Iūoḥēnān 13:19, Khabouris_C'	=> 'Din moment spun Eu vouă din nainte de va fi de ce de este veţi crede de Eu, Eu! .',
+	'Iūoḥēnān 13:19, Khabouris_C'	=> 'Din (acest) moment spun Eu vouă din nainte de va fi, de ce de este, veţi crede de (sunt) Eu, Eu! .',
 	'Iūoḥēnān 14:6, Khabouris_C'	=> 'Spune lui Iêşūoa: -Eu! Eu Cale şi Veridicitate şi Viaţă! Nu ins vine spre Tati-Mi ci/decât dacă în Mine .',
 	'Fapte de Emisari 9:5'	=> 'Eu, eram! Şi spun: Din Tine Domnu-mi şi Domn (nouă) spune: Eu! Eu Iêşūoa Nazarinul (Nāṭârāiāe); Eu de Tine persecutat; Tu !'
 ));
