@@ -17,12 +17,12 @@ class custom_headernfo_module
 	public $u_action;
 	protected $action;
 	protected $table;
-    protected $config;
-    protected $db;
-    protected $user;
-    protected $template;
+	protected $config;
+	protected $db;
+	protected $user;
+	protected $template;
 	protected $request;
-
+	
 	public function main ($id, $mode)
 	{
 		global $config, $db, $phpbb_container, $user, $template, $request, $table_prefix;

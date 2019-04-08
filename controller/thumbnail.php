@@ -74,23 +74,23 @@ class thumbnail
 	/**
 	* Constructor
 	*
-	 * @param \phpbb\config\config							              $config
-	 * @param \phpbb\language\language							         $language
-	* @param \phpbb\template\template		 							$template
-	* @param \phpbb\user														$user
-	* @param \phpbb\log														$log
-	* @param \phpbb\cache\service										$cache
-	* @param \orynider\pafiledb\core\functions_cache				$functions_cache
-	* @param \phpbb\db\driver\driver_interface						$db
-	* @param \phpbb\request\request		 								$request
-	* @param \phpbb\pagination												$pagination
-	* @param \phpbb\extension\manager									$ext_manager
-	* @param \phpbb\path_helper											$path_helper
-	* @param string 																$php_ext
-	* @param string 																$root_path
-	* @param string 																$custom_header_info
-	* @param string 																$custom_header_info_config
-	* @param \phpbb\files\factory											$files_factory
+	 * @param \phpbb\config\config							        $config
+	 * @param \phpbb\language\language							$language
+	* @param \phpbb\template\template		 						$template
+	* @param \phpbb\user													$user
+	* @param \phpbb\log													$log
+	* @param \phpbb\cache\service									$cache
+	* @param \orynider\pafiledb\core\functions_cache			$functions_cache
+	* @param \phpbb\db\driver\driver_interface					$db
+	* @param \phpbb\request\request		 							$request
+	* @param \phpbb\pagination										$pagination
+	* @param \phpbb\extension\manager							$ext_manager
+	* @param \phpbb\path_helper										$path_helper
+	* @param string 															$php_ext
+	* @param string 															$root_path
+	* @param string 															$custom_header_info
+	* @param string 															$custom_header_info_config
+	* @param \phpbb\files\factory										$files_factory
 	*
 	*/
 	public function __construct(
@@ -110,21 +110,21 @@ class thumbnail
 		$custom_header_info_config_table,
 		\phpbb\files\factory $files_factory = null)
 	{
-		$this->config							 			= $config;
+		$this->config							 				= $config;
 		$this->language									= $language;
 		$this->template 									= $template;
-		$this->user 										= $user;
+		$this->user 											= $user;
 		$this->log 											= $log;
 		$this->cache 										= $cache;
-		$this->db 											= $db;
-		$this->request 									= $request;
-		$this->pagination 								= $pagination;
+		$this->db 												= $db;
+		$this->request 										= $request;
+		$this->pagination 									= $pagination;
 		$this->ext_manager	 							= $ext_manager;
-		$this->path_helper	 							= $path_helper;
-		$this->php_ext 									= $php_ext;
+		$this->path_helper	 								= $path_helper;
+		$this->php_ext 										= $php_ext;
 		$this->root_path 									= $root_path;
 		$this->custom_header_info_table 			= $custom_header_info_table;
-		$this->custom_header_info_config_table 	= $custom_header_info_config_table;
+		$this->custom_header_info_config_table	= $custom_header_info_config_table;
 		$this->files_factory 								= $files_factory;
 
 		$this->ext_name 		= $this->request->variable('ext_name', 'orynider/custom_headernfo');
@@ -157,21 +157,18 @@ class thumbnail
 	 */
 	function handle_thumbnail( $action  = false )
 	{
-
 		// =======================================================
 		// Request vars
 		// =======================================================
 		$info_id = $this->request->variable('info_id', 1);
-
+		
 		// Read out config values
 		$custom_header_info_config = $this->config_values();
-
+		
 		// get languages installed
 		//$this->countries = $this->get_countries();
-
 		// get packs installed and init some variables
 		$this->packs = $this->load_lang_dirs($this->module_root_path);
-
 		// =======================================================
 		// =======================================================
 		$sql = 'SELECT *
@@ -179,22 +176,22 @@ class thumbnail
 				WHERE header_info_id = ' . $info_id;
 		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow($result);
-
+		
 		$header_info_name = $row['header_info_name'];
 		$header_info_desc = $row['header_info_desc'];
 		$header_info_longdesc = $row['header_info_longdesc'];
 		$header_info_type = $row['header_info_type'];
 		$header_info_dir = $row['header_info_dir']; //ext/orynider/custom_headernfo/language/movies/
 		$header_info_font = $row['header_info_font'];
-
+		
 		$db_width = $row['header_info_pic_width'];
 		$db_height = $row['header_info_pic_height'];
-
+		
 		$header_info_title_font_size = $row['header_info_title_pixels'];
 		$header_info_desc_font_size = $row['header_info_desc_pixels'];
-
+		
 		$header_info_font_size = !empty($row['header_info_desc_pixels']) ? $row['header_info_desc_pixels'] : $row['header_info_title_pixels'];
-
+		
 		// populate entries (all lang keys)
 		$this->language_from = (isset($this->config['default_lang'])) ? $this->config['default_lang'] : $this->user->lang['USER_LANG'];
 		$this->language_into = (isset($this->user->data['user_lang'])) ? $this->user->data['user_lang'] : $this->language_from;
@@ -203,22 +200,22 @@ class thumbnail
 		$this->language_into = is_file($this->module_root_path . 'language/' . $this->language_into . '/' . $header_info_dir . '/common.' . $this->php_ext) ? $this->language_into : $this->language_from;
 		$this->language_into = is_file($this->module_root_path . 'language/' . $this->language_into . '/' . $header_info_dir . '/common.' . $this->php_ext) ? $this->language_into : 'en';
 		$this->entries = $this->load_lang_file($this->module_root_path . 'language/' . $this->language_into . '/' . $header_info_dir . '/common.' . $this->php_ext);
-
+		
 		//die(print_r($this->language_into, true));
 		//$row['header_info_desc_colour'] 	= isset($this->user->lang["{$header_info_dir}_colour"]) ? $this->user->lang["{$header_info_dir}_colour"] : $row['header_info_desc_colour'];
-
-		$header_info_title_colour			= isset($row['header_info_title_colour']) ? $row['header_info_title_colour'] : '';
+		
+		$header_info_title_colour		= isset($row['header_info_title_colour']) ? $row['header_info_title_colour'] : '';
 		$header_info_title_colour_1		= isset($row['header_info_title_colour']) ? $this->get_gradient_colour($row['header_info_title_colour'], 1) : '';
 		$header_info_title_colour_2		= isset($row['header_info_title_colour']) ? $this->get_gradient_colour($row['header_info_title_colour'], 2) : '';
-		$header_info_desc_colour			= isset($row['header_info_desc_colour']) ? $row['header_info_desc_colour'] : '';
-		$header_info_desc_colour_1		= isset($row['header_info_desc_colour']) ? $this->get_gradient_colour($row['header_info_desc_colour'], 1) : '';
-		$header_info_desc_colour_2		= isset($row['header_info_desc_colour']) ? $this->get_gradient_colour($row['header_info_desc_colour'], 2) : '';
-
+		$header_info_desc_colour		= isset($row['header_info_desc_colour']) ? $row['header_info_desc_colour'] : '';
+		$header_info_desc_colour_1	= isset($row['header_info_desc_colour']) ? $this->get_gradient_colour($row['header_info_desc_colour'], 1) : '';
+		$header_info_desc_colour_2	= isset($row['header_info_desc_colour']) ? $this->get_gradient_colour($row['header_info_desc_colour'], 2) : '';
+		
 		$i = 0;
 		$pic_title = array();
 		$pic_desc = array();
 		srand ((float) microtime() * 10000000);
-
+		
 		if ((count($this->entries) == 0) || ($header_info_type != 'language')) 
 		{
 			$l_keys[0] = $header_info_name;
@@ -244,9 +241,8 @@ class thumbnail
 		//$pic_desc = "ויענך וירעבך ויאכלך את המן אשר לא ידעת ולא ידעון אבתיך  למען הודיעך כי לא על הלחם לבדו יחיה האדם—כי על כל מוצא פי יהוה יחיה האדם";
 		//$pic_title = 'Test... Benjamin Netanyahu on ISIS and Nuclear Weapons, before the UN General Assembly, 03.03.2015.';
 		//$pic_desc = '"Test... They just disagree among themselves who will be the ruler of that empire. In this deadly game of thrones, there is no place for America or for Israel, no peace for Christians, Jews, or Muslims who don\'t share the Islamist medieval creed. No rights for women. No freedom for anyone. So when it comes to Iran and ISIS, the enemy of your enemy is your enemy."';
-
+		
 		$header_info_image	= $row['header_info_image'];
-
 		/* * /
 		$s_header_info_link_checked	= $row['header_info_link'];
 		$header_info_url = $row['header_info_url'];
@@ -284,9 +280,10 @@ class thumbnail
 		{
 			$font = $this->module_root_path . "assets/fonts/" . $header_info_font; //. '.ttf';
 		}
-
+		
 		$header_info_image = $header_info_image ? str_replace('_info.', '_bg.', $header_info_image) : $this->module_root_path . "styles/prosilver/theme/images/banners/custom_header_bg.png";
 		$header_info_image = str_replace(basename($header_info_image), $this->request->variable('image', basename($header_info_image)), $header_info_image);
+		$header_info_image	= ($this->config['board_disable'] || ($row['header_info_id'] == 0)) ? generate_board_url() . '/ext/orynider/custom_headernfo/styles/prosilver/theme/images/banners/under_construction.gif' : $header_info_image;
 		$header_info_image = str_replace(array('.php', '.pal'), '.png', $header_info_image);
 		
 		//user logged in ? user has custom style ?
@@ -682,7 +679,7 @@ class thumbnail
 			{
 				$this->message_die( GENERAL_ERROR, 'Couldnt query portal configuration', '', __LINE__, __FILE__, $sql );
 			}
-			while ( $row = $this->db->sql_fetchrow( $result ) )
+			while ( $row = $this->db->sql_fetchrow($result) )
 			{
 				$config[$row['config_name']] = trim($row['config_value']);
 			}

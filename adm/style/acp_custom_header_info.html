@@ -10,13 +10,13 @@
   <fieldset>
 	<!-- IF MODULE_NAME -->
         <dl>
-				<dt><label for="module_name">{{ lang('MODULE_NAME') }}</label><br /><span>{L_MODULE_NAME_EXPLAIN}</span></dt>
+				<dt><label for="module_name">{{ lang('MODULE_NAME') }}</label><br /><span>{{ lang('MODULE_NAME_EXPLAIN') }}</span></dt>
 				<dd><input type="text" size="40" id="module_name" name="module_name" value="{MODULE_NAME}" /></dd>
 		</dl>
 	<!-- ENDIF -->
 	<!-- IF HEADER_INFOVERSION -->
         <dl>
-				<dt><label for="header_info_version">{{ lang('HEADER_INFO_VERSION') }}</label><br /><span>{L_HEADER_INFO_CHECK}</span></dt>
+				<dt><label for="header_info_version">{{ lang('HEADER_INFO_VERSION') }}</label><br /><span>{{ lang('HEADER_INFO_CHECK') }}</span></dt>
 				<dd><input type="text" size="40" id="header_info_version" name="header_info_version" value="{HEADER_INFOVERSION}"  {READONLY} /></dd>
 		</dl>
 	<!-- ENDIF -->
@@ -34,7 +34,7 @@
 		</dl>
 	<!-- IF SHOW_AMOUNT -->
 		<dl>
-			<dt><label for="show_amount">{{ lang('SHOW_AMOUNT') }}{{ lang('COLON') }}</label><br /><span>{L_SHOW_AMOUNT_EXPLAIN}</span></dt>
+			<dt><label for="show_amount">{{ lang('SHOW_AMOUNT') }}{{ lang('COLON') }}</label><br /><span>{{ lang('SHOW_AMOUNT_EXPLAIN') }}</span></dt>
 			<dd><input type="number" id="show_amount" name="show_amount" value="{SHOW_AMOUNT}" size="3" maxlength="3" min="0" max="999" /> </dd>
 		</dl>
 	<!-- ENDIF -->
@@ -55,19 +55,19 @@
 	</dl>
 	<!-- IF WYSIWYG_PATH -->
         <dl>
-				<dt><label for="wysiwyg_path">{{ lang('WYSIWYG_PATH') }}</label><br /><span>{L_WYSIWYG_PATH_EXPLAIN}</span></dt>
+				<dt><label for="wysiwyg_path">{{ lang('WYSIWYG_PATH') }}</label><br /><span>{{ lang('WYSIWYG_PATH_EXPLAIN') }}</span></dt>
 				<dd><input type="text" size="40" id="wysiwyg_path" name="wysiwyg_path" value="{WYSIWYG_PATH}" /></dd>
 		</dl>
 	<!-- ENDIF -->
 	<!-- IF BACKGROUNDS_DIR --><!-- ENDIF -->
         <dl>
-				<dt><label for="backgrounds_dir">{{ lang('BACKGROUNDS_DIR') }}</label><br /><span>{L_BACKGROUNDS_DIR_EXPLAIN}</span></dt>
+				<dt><label for="backgrounds_dir">{{ lang('BACKGROUNDS_DIR') }}</label><br /><span>{{ lang('BACKGROUNDS_DIR_EXPLAIN') }}</span></dt>
 				<dd><input type="text" size="40" id="backgrounds_dir" name="backgrounds_dir" value="{BACKGROUNDS_DIR}" /></dd>
 		</dl>
 	
 	<!-- IF BANNERS_DIR--><!-- ENDIF -->
         <dl>
-				<dt><label for="banners_dir">{{ lang('BANNERS_DIR') }}</label><br /><span>{L_BANNERS_DIR_EXPLAIN}</span></dt>
+				<dt><label for="banners_dir">{{ lang('BANNERS_DIR') }}</label><br /><span>{{ lang('BANNERS_DIR_EXPLAIN') }}</span></dt>
 				<dd><input type="text" size="40" id="banners_dir" name="banners_dir" value="{BANNERS_DIR}" /></dd>
 		</dl>
 	<dl>
@@ -108,7 +108,7 @@
 		</dt>
 	</dl>
       <dl>
-		<dt class="bg1"><label>{L_THUMB_CACHE}</label><br><span>{L_THUMB_CACHE_EXPLAIN}</span></dt>
+		<dt class="bg1"><label>{{ lang('THUMB_CACHE') }}</label><br><span>{{ lang('THUMB_CACHE_EXPLAIN') }}</span></dt>
 		<dt class="bg2">
 		  <span class="genmed">
 				<label><input type="radio" class="radio" name="thumb_cache" value="1"{% if S_THUMB_CACHE_ENABLED %} id="thumb_cache" checked="checked"{% endif %} /> {{ lang('YES') }}</label>
@@ -171,8 +171,8 @@
 	<br style="margin-bottom:8px;"/>
 	
     <p class="submit-buttons">
-		  <input class="button1" type="submit" id="submit" name="enable_submit" value="{L_SUBMIT}" />&nbsp;
-		  <input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+		  <input class="button1" type="submit" id="submit" name="enable_submit" value="{{ lang('SUBMIT') }}" />&nbsp;
+		  <input class="button2" type="reset" id="reset" name="reset" value="{{ lang('RESET') }}" />
     </p>
     {S_FORM_TOKEN}
 	</fieldset>
@@ -180,17 +180,17 @@
 
 <form id="acp_header_info" method="post" action="{U_ACTION}">  
   <fieldset>
-    <legend><!-- IF HEADER_INFO_EDIT -->{{ lang('HEADER_INFO_EDIT') }}{{ lang('COLON') }}<!-- ELSE -->{L_HEADER_INFO_ADD}<!-- ENDIF --></legend>
+    <legend><!-- IF HEADER_INFO_EDIT -->{{ lang('HEADER_INFO_EDIT') }}{{ lang('COLON') }}<!-- ELSE -->{{ lang('HEADER_INFO_ADD') }}<!-- ENDIF --></legend>
         <dl>
-			<dt><label for="name">{{ lang('HEADER_INFO_NAME') }}{{ lang('COLON') }}</label><br /><span>{L_HEADER_INFO_NAME_EXPLAIN}</span></dt>
+			<dt><label for="name">{{ lang('HEADER_INFO_NAME') }}{{ lang('COLON') }}</label><br /><span>{{ lang('HEADER_INFO_NAME_EXPLAIN') }}</span></dt>
 			<dd><input type="text" size="40" id="name" name="header_info_name"<!-- IF HEADER_INFO_NAME --> value="{HEADER_INFO_NAME}"<!-- ENDIF --> /></dd>
 		</dl>
         <dl>
-			<dt><label for="desc">{{ lang('HEADER_INFO_DESC') }}{{ lang('COLON') }}</label><br /><span>{L_HEADER_INFO_DESC_EXPLAIN}</span></dt>
+			<dt><label for="desc">{{ lang('HEADER_INFO_DESC') }}{{ lang('COLON') }}</label><br /><span>{{ lang('HEADER_INFO_DESC_EXPLAIN') }}</span></dt>
 			<dd><input type="text" size="40" id="desc" name="header_info_desc"<!-- IF HEADER_INFO_DESC --> value="{HEADER_INFO_DESC}"<!-- ENDIF --> /></dd>
 		</dl>
         <dl>
-			<dt><label for="longdesc">{{ lang('HEADER_INFO_LONGDESC') }}{{ lang('COLON') }}</label><br /><span>{L_HEADER_INFO_LONGDESC_EXPLAIN}</span></dt>
+			<dt><label for="longdesc">{{ lang('HEADER_INFO_LONGDESC') }}{{ lang('COLON') }}</label><br /><span>{{ lang('HEADER_INFO_LONGDESC_EXPLAIN') }}</span></dt>
 			<dd><input type="text" size="40" id="longdesc" name="header_info_longdesc"<!-- IF HEADER_INFO_LONGDESC --> value="{HEADER_INFO_LONGDESC}"<!-- ENDIF --> /></dd>
 		</dl>
 		<dl>
@@ -257,7 +257,7 @@
 			<dt>
 				<label for="dir">{{ lang('HEADER_INFO_DIR') }}{{ lang('COLON') }}</label>
 				<br />
-				<span>{L_HEADER_INFO_DIR_EXPLAIN}</span>
+				<span>{{ lang('HEADER_INFO_DIR_EXPLAIN') }}</span>
 			</dt>
 			<dd>{HEADER_INFO_DIR_SELECT}</dd>
 		</dl>
@@ -266,16 +266,16 @@
 			<dt>
 				<label for="font">{{ lang('HEADER_INFO_FONT') }}{{ lang('COLON') }}</label>
 				<br />
-				<span>{L_HEADER_INFO_FONT_EXPLAIN}</span>
+				<span>{{ lang('HEADER_INFO_FONT_EXPLAIN') }}</span>
 			</dt>
 			<dd>{HEADER_INFO_FONT_SELECT}</dd>
 		</dl>
-		<dl>
+		<!--dl>
 			<dt><label for="forum">{{ lang('LOOK_UP_FORUM') }}{{ lang('COLON') }}</label><br /><span>{{ lang('HEADER_INFO_FORUM_DESC') }}</span></dt>
 			<dd><select id="forum" name="forum_id" size="10">{S_FORUM_OPTIONS}</select></dd>
-		</dl>
+		</dl-->
 		<dl>
-			<dt><label for="image">{{ lang('HEADER_INFO_IMAGE') }}{{ lang('COLON') }}</label><br /><span>{L_HEADER_INFO_IMAGE_EXPLAIN}</span></dt>
+			<dt><label for="image">{{ lang('HEADER_INFO_IMAGE') }}{{ lang('COLON') }}</label><br /><span>{{ lang('HEADER_INFO_IMAGE_EXPLAIN') }}</span></dt>
 			<dd><input type="text" size="40" id="image" name="header_info_image"<!-- IF HEADER_INFO_IMAGE --> value="{HEADER_INFO_IMAGE}"<!-- ENDIF --> /></dd>
 		</dl>
         <dl>
@@ -288,11 +288,11 @@
 			</dd>
 		</dl>
 		<dl>
-			<dt><label for="type">{{ lang('HEADER_INFO_LICENSE') }}{{ lang('COLON') }}</label><br /><span>{L_HEADER_INFO_LICENSE_EXPLAIN}</span></dt>
+			<dt><label for="type">{{ lang('HEADER_INFO_LICENSE') }}{{ lang('COLON') }}</label><br /><span>{{ lang('HEADER_INFO_LICENSE_EXPLAIN') }}</span></dt>
 			<dd><input type="text" size="40" id="licence" name="header_info_license"<!-- IF HEADER_INFO_LICENSE --> value="{HEADER_INFO_LICENSE}"<!-- ENDIF --> /></dd>
 		</dl>
 	  <dl>
-		<dt class="bg1"><label for="pin">{{ lang('HEADER_INFO_PINNED') }}{{ lang('COLON') }}</label><br><span>{L_HEADER_INFO_PINNED_EXPLAIN}</span></dt>
+		<dt class="bg1"><label for="pin">{{ lang('HEADER_INFO_PINNED') }}{{ lang('COLON') }}</label><br><span>{{ lang('HEADER_INFO_PINNED_EXPLAIN') }}</span></dt>
 		<dt class="bg2">
 			<label><input type="radio" class="radio" id="pin" name="header_info_pin" value="1"{% if S_HEADER_INFO_PIN_CHECKED %} id="header_info_pin" checked="checked"{% endif %} /> {{ lang('YES') }}</label>
 			<label><input type="radio" class="radio" id="pin" name="header_info_pin" value="0"{% if not S_HEADER_INFO_PIN_CHECKED %} id="header_info_pin" checked="checked"{% endif %} /> {{ lang('NO') }}</label>
@@ -301,20 +301,20 @@
 	<dl>
 	</dl>
 	  <dl>
-		<dt class="bg1"><label for="pic_width">{{ lang('HEADER_INFO_PIC_WIDTH') }}{{ lang('COLON') }}</label><br><span>{L_HEADER_INFO_PIC_WIDTH_EXPLAIN}</span></dt>
+		<dt class="bg1"><label for="pic_width">{{ lang('HEADER_INFO_PIC_WIDTH') }}{{ lang('COLON') }}</label><br><span>{{ lang('HEADER_INFO_PIC_WIDTH_EXPLAIN') }}</span></dt>
 		<dt class="bg2">
 			<input type="number" class="number" id="pic_width" name="header_info_pic_width" value="{HEADER_INFO_PIC_WIDTH}" size="3" maxlength="3" min="0" max="999" />
 		</dt>
 	   </dl>
 	  </dl>
 	  <dl>
-		<dt class="bg1"><label for="pic_height">{{ lang('HEADER_INFO_PIC_HEIGHT') }}{{ lang('COLON') }}</label><br /><span>{L_HEADER_INFO_PIC_HEIGHT_EXPLAIN}</span></dt>
+		<dt class="bg1"><label for="pic_height">{{ lang('HEADER_INFO_PIC_HEIGHT') }}{{ lang('COLON') }}</label><br /><span>{{ lang('HEADER_INFO_PIC_HEIGHT_EXPLAIN') }}</span></dt>
 		<dt class="bg2">
 			<input type="number" class="number" id="pic_height" name="header_info_pic_height" value="{HEADER_INFO_PIC_HEIGHT}" size="3" maxlength="3" min="0" max="999" /> 
 		</dt>
 	  </dl>
         <dl>
-			<dt><label for="header_info_disable">{{ lang('HEADER_INFO_DISABLE') }}{{ lang('COLON') }}</label><br /><span>{L_HEADER_INFO_DISABLE_EXPLAIN}</span></dt>
+			<dt><label for="header_info_disable">{{ lang('HEADER_INFO_DISABLE') }}{{ lang('COLON') }}</label><br /><span>{{ lang('HEADER_INFO_DISABLE_EXPLAIN') }}</span></dt>
 			<dd>
 			<label><input type="radio" class="radio" id="disable" name="header_info_disable" value="1"{% if S_HEADER_INFO_DISABLE %} id="header_info_disable" checked="checked"{% endif %} /> {{ lang('YES') }}</label>
 			<label><input type="radio" class="radio" id="disable" name="header_info_disable" value="0"{% if not S_HEADER_INFO_DISABLE %} id="header_info_disable" checked="checked"{% endif %} /> {{ lang('NO') }}</label>
@@ -324,8 +324,8 @@
 		  <!-- IF HEADER_INFO_EDIT -->
 		  <input type="hidden" name="edit" value="{HEADER_INFO_EDIT}" />
 		  <!-- ENDIF -->
-		  <input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />
-		  <input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+		  <input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />
+		  <input class="button2" type="reset" id="reset" name="reset" value="{{ lang('RESET') }}" />
     </p>
     {S_FORM_TOKEN}
 	</fieldset>
@@ -334,10 +334,10 @@
 <table class="table1 zebra-table" id="down">
 	<thead>
 	<tr>
-		<th>{L_ID}</th>	
-		<th>{L_HEADER_INFO_IMAGE_B}</th>
-		<th>{L_HEADER_INFO_NAME_B}</th>
-		<th>{L_ACTION}</th>
+		<th>{{ lang('ID') }}</th>	
+		<th>{{ lang('HEADER_INFO_IMAGE_B') }}</th>
+		<th>{{ lang('HEADER_INFO_NAME_B') }}</th>
+		<th>{{ lang('ACTION') }}</th>
 	</tr>
 	</thead>
 	<tbody>
@@ -363,7 +363,7 @@
 								{header_info_scroll.HEADER_INFO_TITLE}
 							</div>
 				<!-- ELSE -->
-				<img src="<!-- IF S_THUMBNAIL -->{header_info_scroll.THUMBNAIL_URL}?info_id={header_info_scroll.HEADER_INFO_ID}&resize_width={header_info_scroll.HEADER_INFO_PIC_WIDTH}&resize_height={header_info_scroll.HEADER_INFO_PIC_HEIGHT}<!-- ELSE -->{header_info_scroll.HEADER_INFO_IMAGE} <!-- ENDIF -->" title="{L_HEADER_INFO_URL_B}{{ lang('COLON') }} {header_info_scroll.HEADER_INFO_URL}" alt="" />
+				<img src="<!-- IF S_THUMBNAIL -->{header_info_scroll.THUMBNAIL_URL}?info_id={header_info_scroll.HEADER_INFO_ID}&resize_width={header_info_scroll.HEADER_INFO_PIC_WIDTH}&resize_height={header_info_scroll.HEADER_INFO_PIC_HEIGHT}<!-- ELSE -->{header_info_scroll.HEADER_INFO_IMAGE} <!-- ENDIF -->" title="{{ lang('HEADER_INFO_URL_B') }}{{ lang('COLON') }} {header_info_scroll.HEADER_INFO_URL}" alt="" />
 				<!-- ENDIF -->
 				 <!-- IF header_info_scroll.S_SIMPLE_DB_TEXT_ENABLED --></div><!-- ENDIF -->
 			</td>
@@ -372,14 +372,14 @@
 		</tr>
 	<!-- BEGINELSE -->
 		<tr class="row3">
-			<td colspan="3">{L_ACP_NO_BANNER}</td>
+			<td colspan="3">{{ lang('ACP_NO_BANNER') }}</td>
 		</tr>
 	<!-- END header_info_scroll -->
 	</tbody>
 	</table>
     <br />
 	<div class="successbox">
-    <div style="text-align: center;">&copy; {L_HEADER_INFO_COPYRIGHT} {L_HEADER_INFO_VERSION} {BANNER_VERSION}</div>
+    <div style="text-align: center;">&copy; {{ lang('HEADER_INFO_COPYRIGHT') }} {{ lang('HEADER_INFO_VERSION') }} {BANNER_VERSION}</div>
 	</div>
 
 {% INCLUDEJS '@orynider_custom_headernfo/jscolor.js' %}

@@ -62,20 +62,20 @@ class admin_controller
 	/**
 	* Constructor
 	*
-	* @param \phpbb\template\template		 						$template
-	* @param \phpbb\user													$user
-	* @param \phpbb\log														$log
-	* @param \phpbb\cache\service										$cache
+	* @param \phpbb\template\template		 				$template
+	* @param \phpbb\user											$user
+	* @param \phpbb\log												$log
+	* @param \phpbb\cache\service								$cache
 	* @param \phpbb\db\driver\driver_interface				$db
-	* @param \phpbb\request\request		 							$request
-	* @param \phpbb\pagination											$pagination
-	* @param \phpbb\extension\manager								$ext_manager
-	* @param \phpbb\path_helper										$path_helper
-	* @param string 																$php_ext
-	* @param string 																$root_path
-	* @param string 																$custom_header_info
-	* @param string 																$custom_header_info_config
-	* @param \phpbb\files\factory										$files_factory
+	* @param \phpbb\request\request		 					$request
+	* @param \phpbb\pagination									$pagination
+	* @param \phpbb\extension\manager						$ext_manager
+	* @param \phpbb\path_helper									$path_helper
+	* @param string 													$php_ext
+	* @param string 													$root_path
+	* @param string 													$custom_header_info
+	* @param string 													$custom_header_info_config
+	* @param \phpbb\files\factory									$files_factory
 	*
 	*/
 	public function __construct(
@@ -100,12 +100,14 @@ class admin_controller
 		$this->db 						= $db;
 		$this->request 				= $request;
 		$this->pagination 			= $pagination;
-		$this->ext_manager	 		= $ext_manager;
+		$this->ext_manager	 	= $ext_manager;
 		$this->path_helper	 		= $path_helper;
 		$this->php_ext 				= $php_ext;
-		$this->root_path 				= $root_path;
+		$this->root_path 			= $root_path;
+		
 		$this->custom_header_info_table 	= $custom_header_info_table;
 		$this->custom_header_info_config_table 	= $custom_header_info_config_table;
+		
 		$this->files_factory 		= $files_factory;
 
 		$this->ext_name 		= $this->request->variable('ext_name', 'orynider/custom_headernfo');
@@ -242,17 +244,17 @@ class admin_controller
 				'HEADER_INFO_DESC_COLOUR'		=> isset($row['header_info_desc_colour']) ? $row['header_info_desc_colour'] : '',
 				//New 0.9.0 ends
 				'S_HEADER_INFO_LINK_CHECKED'	=> $row['header_info_link'],
-				'HEADER_INFO_URL'						=> $row['header_info_url'],
-				'HEADER_INFO_LICENSE'					=> $row['header_info_license'],
-				'HEADER_INFO_TIME'						=> $row['header_info_time'],
-				'HEADER_INFO_LAST'						=> $row['header_info_last'],
-				'HEADER_INFO_PIC_WIDTH'				=> $row['header_info_pic_width'],
-				'HEADER_INFO_PIC_HEIGHT'			=> $row['header_info_pic_height'],
-				'S_FORUM_OPTIONS'						=> make_forum_select($row['forum_id'], array(), true, false, false),
-				'S_HTML_MULTI_TEXT_ENABLED'		=> ($row['header_info_type'] == 'lang_html_text'),
+				'HEADER_INFO_URL'					=> $row['header_info_url'],
+				'HEADER_INFO_LICENSE'				=> $row['header_info_license'],
+				'HEADER_INFO_TIME'					=> $row['header_info_time'],
+				'HEADER_INFO_LAST'					=> $row['header_info_last'],
+				'HEADER_INFO_PIC_WIDTH'			=> $row['header_info_pic_width'],
+				'HEADER_INFO_PIC_HEIGHT'		=> $row['header_info_pic_height'],
+				'S_FORUM_OPTIONS'					=> make_forum_select($row['forum_id'], array(), true, false, false),
+				'S_HTML_MULTI_TEXT_ENABLED'	=> ($row['header_info_type'] == 'lang_html_text'),
 				'S_SIMPLE_DB_TEXT_ENABLED'		=> ($row['header_info_type'] == 'simple_db_text'),
-				'S_HEADER_INFO_PIN_CHECKED'		=> $row['header_info_pin'],
-				'S_HEADER_INFO_DISABLE'				=> $row['header_info_disable'], // settings_disable,
+				'S_HEADER_INFO_PIN_CHECKED'	=> $row['header_info_pin'],
+				'S_HEADER_INFO_DISABLE'			=> $row['header_info_disable'], // settings_disable,
 				'U_EDIT'										=> $this->u_action . "&amp;id=" . $row['header_info_id'] . "&amp;action=edit",
 				'U_DELETE'									=> $this->u_action . "&amp;id=" . $row['header_info_id'] . "&amp;action=delete"
 			));
@@ -320,7 +322,7 @@ class admin_controller
 			'BACKGROUNDS_DIR'					=> $custom_header_info_config['backgrounds_dir'],
 			'BANNERS_DIR'		   					=> $custom_header_info_config['banners_dir'],
 			'HEADER_INFOVERSION'				=> $custom_header_info_config['header_info_version'],
-			'SITE_HOME_URL'   					=> $custom_header_info_config['site_home_url'], //PORTAL_URL
+			'SITE_HOME_URL'   						=> $custom_header_info_config['site_home_url'], //PORTAL_URL
 			'PHPBB_URL'   							=> generate_board_url() . '/', //FORUM_URL
 			'READONLY'								=> ' readonly="readonly"'
 		));
@@ -380,34 +382,34 @@ class admin_controller
 				$sql_array = array(
 					'header_info_name'				=> $name,
 					'header_info_desc'				=> $desc,
-					'header_info_longdesc'			=> $longdesc,
-					'header_info_use_extdesc'		=> $use_extdesc,
+					'header_info_longdesc'		=> $longdesc,
+					'header_info_use_extdesc'	=> $use_extdesc,
 					'header_info_title_colour'		=> $title_colour,
-					'header_info_desc_colour'		=> $desc_colour,
+					'header_info_desc_colour'	=> $desc_colour,
 					'header_info_dir'					=> $dir, //ext/orynider/custom_headernfo/language/movies/
-					'header_info_type'					=> $type,
-					'header_info_font'					=> $font,
-					'header_info_image'				=> $image, //str_replace('prosilver' 'all', $data_files['header_info_image'])
+					'header_info_type'				=> $type,
+					'header_info_font'				=> $font,
+					'header_info_image'			=> $image, //str_replace('prosilver' 'all', $data_files['header_info_image'])
 					'header_info_image_link'		=> $link,
-					'header_info_banner_radius' 	=> $radius,
+					'header_info_banner_radius' => $radius,
 					'header_info_pixels'				=> $pixels,
-					'header_info_title_pixels'			=> $title_pixels,
+					'header_info_title_pixels'		=> $title_pixels,
 					'header_info_desc_pixels'		=> $desc_pixels,
-					'header_info_left'					=> $left,
+					'header_info_left'				=> $left,
 					'header_info_right'				=> $right,
 					'header_info_url'					=> $url,
-					'header_info_license'				=> $license,
+					'header_info_license'			=> $license,
 					'header_info_time'				=> time(),
-					'header_info_last'					=> 0,
-					'header_info_pin'					=> $pin,
-					'header_info_pic_width'			=> $pic_width,
-					'header_info_pic_height'			=> $pic_height,
-					'header_info_disable'				=> $disable, // settings_disable,
+					'header_info_last'				=> 0,
+					'header_info_pin'				=> $pin,
+					'header_info_pic_width'		=> $pic_width,
+					'header_info_pic_height'		=> $pic_height,
+					'header_info_disable'			=> $disable, // settings_disable,
 					'forum_id'							=> 0,
-					'user_id'								=> $this->user->data['user_id'],
+					'user_id'							=> $this->user->data['user_id'],
 					'bbcode_bitfield'					=> 'QQ==',
 					'bbcode_uid'						=> '2p5lkzzx',
-					'bbcode_options'					=> '',
+					'bbcode_options'				=> '',
 				);
 
 				$sql = 'INSERT INTO ' . $this->custom_header_info_table . ' ' . $this->db->sql_build_array('INSERT', $sql_array);
@@ -419,31 +421,31 @@ class admin_controller
 				$sql_array = array(
 					'header_info_name'				=> $name,
 					'header_info_desc'				=> $desc,
-					'header_info_longdesc'			=> $longdesc,
-					'header_info_use_extdesc'		=> $use_extdesc,
+					'header_info_longdesc'		=> $longdesc,
+					'header_info_use_extdesc'	=> $use_extdesc,
 					'header_info_title_colour'		=> $title_colour,
-					'header_info_desc_colour'		=> $desc_colour,
+					'header_info_desc_colour'	=> $desc_colour,
 					'header_info_dir'					=> $dir, //ext/orynider/custom_headernfo/language/movies/
-					'header_info_type'					=> $type,
-					'header_info_font'					=> $font,
-					'header_info_image'				=> $image, //str_replace('prosilver' 'all', $data_files['header_info_image'])
+					'header_info_type'				=> $type,
+					'header_info_font'				=> $font,
+					'header_info_image'			=> $image, //str_replace('prosilver' 'all', $data_files['header_info_image'])
 					'header_info_image_link'		=> $link,
-					'header_info_banner_radius' 	=> $radius,
+					'header_info_banner_radius' => $radius,
 					'header_info_pixels'				=> $pixels,
-					'header_info_title_pixels'			=> $title_pixels,
+					'header_info_title_pixels'		=> $title_pixels,
 					'header_info_desc_pixels'		=> $desc_pixels,
-					'header_info_left'					=> $left,
+					'header_info_left'				=> $left,
 					'header_info_right'				=> $right,
 					'header_info_url'					=> $url,
-					'header_info_license'				=> $license,
+					'header_info_license'			=> $license,
 					'header_info_time'				=> $time,
-					'header_info_last'					=> time(),
-					'header_info_pin'					=> $pin,
-					'header_info_pic_width'			=> $pic_width,
-					'header_info_pic_height'			=> $pic_height,
-					'header_info_disable'				=> $disable, // settings_disable,
+					'header_info_last'				=> time(),
+					'header_info_pin'				=> $pin,
+					'header_info_pic_width'		=> $pic_width,
+					'header_info_pic_height'		=> $pic_height,
+					'header_info_disable'			=> $disable, // settings_disable,
 					'forum_id'							=> 0,
-					'user_id'								=> $this->user->data['user_id'],
+					'user_id'							=> $this->user->data['user_id'],
 				);
 
 				$sql = 'UPDATE ' . $this->custom_header_info_table . ' SET ' . $this->db->sql_build_array('UPDATE', $sql_array) . ' WHERE header_info_id = ' . $edit_id;
@@ -540,9 +542,9 @@ class admin_controller
 		$screenshots_dir = $new['screenshots_dir'];
 
 		$action = $this->request->variable('action', '');
-		$id_header_info = $this->request->variable('id', 0);
+		$id_header_info = $this->request->variable('id', -1);
 
-		if ($action && $id_header_info != 0)
+		if ($action && $id_header_info != -1)
 		{
 			$action = $this->request->variable('action', '');
 			switch ($action)
@@ -670,13 +672,13 @@ class admin_controller
 						'HEADER_INFO_TIME'						=> $row['header_info_time'],
 						'HEADER_INFO_LAST'						=> $row['header_info_last'],
 
-						'S_FORUM_OPTIONS'						=> make_forum_select($row['forum_id'], array(), true, false, false),
-						'S_HTML_MULTI_TEXT_ENABLED'		=> ($row['header_info_type'] == 'lang_html_text'),
+						'S_FORUM_OPTIONS'					=> make_forum_select($row['forum_id'], array(), true, false, false),
+						'S_HTML_MULTI_TEXT_ENABLED'	=> ($row['header_info_type'] == 'lang_html_text'),
 						'S_SIMPLE_DB_TEXT_ENABLED'		=> ($row['header_info_type'] == 'simple_db_text'),
-						'S_HEADER_INFO_PIN_CHECKED'		=> $row['header_info_pin'],
-						'HEADER_INFO_PIC_WIDTH'				=> $row['header_info_pic_width'],
-						'HEADER_INFO_PIC_HEIGHT'			=> $row['header_info_pic_height'],
-						'S_HEADER_INFO_DISABLE'				=> $row['header_info_disable'], // settings_disable,
+						'S_HEADER_INFO_PIN_CHECKED'	=> $row['header_info_pin'],
+						'HEADER_INFO_PIC_WIDTH'			=> $row['header_info_pic_width'],
+						'HEADER_INFO_PIC_HEIGHT'		=> $row['header_info_pic_height'],
+						'S_HEADER_INFO_DISABLE'			=> $row['header_info_disable'], // settings_disable,
 					));
 					$this->db->sql_freeresult($result);
 				break;

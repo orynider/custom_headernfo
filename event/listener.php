@@ -82,7 +82,7 @@ class listener implements EventSubscriberInterface
 			'BACKGROUNDS_DIR'				=> $this->header_info_config['backgrounds_dir'],
 			'BANNERS_DIR'		   				=> $this->header_info_config['banners_dir'],
 			'HEADER_INFOVERSION'			=> $this->header_info_config['header_info_version'],
-			'ROW_HEIGHT'						=> $this->header_info_config['row_height'],	/* Height of each ticker row in PX. Should be uniform. */
+			'ROW_HEIGHT'						=> $this->config['board_disable'] ? 193 : $this->header_info_config['row_height'],	/* Height of each ticker row in PX. Should be uniform. */
 			'SPEED'									=> $this->header_info_config['speed'],	/* Speed of transition animation in milliseconds */
 			'INTERVAL'							=> $this->header_info_config['interval'],		/* Time between change in milliseconds */
 			'MAX_ITEMS'							=> $this->header_info_config['show_amount'],	/* Integer for how many items to query and display at once. Resizes height accordingly (OPTIONAL) */
@@ -140,40 +140,76 @@ class listener implements EventSubscriberInterface
 
 	public function display_custom_header($event)
 	{
-	    //Custom DB Background
+		//Custom DB Background
 		$sql_layer = $this->db->get_sql_layer();
 		switch ($sql_layer)
 		{
-			case 'postgres':
-				$random = 'RANDOM()';
-			break;
+				case 'postgres':
+					$random = 'RANDOM()';
+				break;
 
-			case 'mssql':
-			case 'mssql_odbc':
-				$random = 'NEWID()';
-			break;
+				case 'mssql':
+				case 'mssql_odbc':
+					$random = 'NEWID()';
+				break;
 
-			//To Do:
-			//sqlite3
-			//mysqli
-			default:
-				$random = 'RAND()';
-			break;
+				//To Do:
+				//sqlite3
+				//mysqli
+				default:
+					$random = 'RAND()';
+				break;
 		}
-
+		
+		//First Banner is reserved for Board Disable state, so if else we exclude it from query
+		$sql_where = ($this->config['board_disable']) ? ' ORDER BY ' . $random : ' WHERE header_info_id <> 1 ORDER BY ' . $random;	
+		
 		//max_items
 		$show_amount = isset($this->header_info_config['show_amount']) ? $this->header_info_config['show_amount'] : 3;
-
-        $sql = "SELECT * FROM " . $this->custom_header_info_table . "
-        ORDER BY $random";
-        $result= $this->db->sql_query_limit($sql, $show_amount);
-
-		while($row = $this->db->sql_fetchrow($result)) 
+		
+		$sql = "SELECT * FROM " . $this->custom_header_info_table . "" . $sql_where;
+		$result = $this->db->sql_query_limit($sql, $show_amount);
+		
+		while ($row = $this->db->sql_fetchrow($result)) 
 		{
 			//Populate info to display starts
 			$info_title = array();
 			$info_desc = array();
 			
+			$row_disable = array(
+					'header_info_id'					=> count($row) + 1,
+					'header_info_name'			=> 'Board Disabled',
+					'header_info_desc'				=> 'Board Disabled Info for the Custom Header Info extension.',
+					'header_info_longdesc'		=> 'This is the Board Disabled Logo for the Custom Header Info extension.',
+					'header_info_use_extdesc'	=> 0,
+					'header_info_title_colour'	=> '#000000',
+					'header_info_desc_colour'	=> '#0c6a99',
+					'header_info_dir'				=> 'politics', 
+					'header_info_font'				=>  'tituscbz.ttf',
+					'header_info_type'				=> 'simple_bg_logo',
+					'header_info_image'			=> generate_board_url() . '/ext/orynider/custom_headernfo/styles/prosilver/theme/images/banners/under_construction.gif', //str_replace('prosilver' 'all', $data_files['header_info_image'])
+					'header_info_image_link'		=> 0,	
+					'header_info_banner_radius' => '10',
+					'header_info_title_pixels'		=> '12',
+					'header_info_desc_pixels'	=> '10',
+					'header_info_pixels'			=> '10',
+					'header_info_left'				=> 0,
+					'header_info_right'				=> 0,
+					'header_info_url'				=> 'http://mxpcms.sourceforge.net/',
+					'header_info_license'			=> 'GNU GPL-2',
+					'header_info_time'				=> time(),
+					'header_info_last'				=> 0,
+					'header_info_pin'				=> '0',
+					'header_info_pic_width'		=> '458',
+					'header_info_pic_height'		=> '193',
+					'header_info_disable'			=> 0,
+					'forum_id'							=> 1,
+					'user_id'							=> $this->user->data['user_id'],
+					'bbcode_bitfield'				=> 'QQ==',
+					'bbcode_uid'						=> '2p5lkzzx',
+					'bbcode_options'				=> '',
+			) ;
+				
 			$header_info_name = $row['header_info_name'];
 			$header_info_desc = $row['header_info_desc'];
 			$header_info_longdesc = $row['header_info_longdesc'];
@@ -190,7 +226,7 @@ class listener implements EventSubscriberInterface
 				//die(print_r($this->entries, true));
 				$i = 0;
 				srand ((float) microtime() * 10000000);
-
+				
 				if (count($this->entries) == 0)
 				{
 					$l_keys[0] = $header_info_name;
@@ -206,7 +242,6 @@ class listener implements EventSubscriberInterface
 				{
 					$i = count($this->entries);
 					$j = rand(0, $i);
-					//$j = 4;
 					$l_keys = array_keys($this->entries);
 					$l_values = array_values($this->entries);
 					$info_title = $l_keys[$j];
@@ -241,8 +276,8 @@ class listener implements EventSubscriberInterface
 				'HEADER_INFO_NAME'					=> $row['header_info_name'],
 				'HEADER_INFO_TITLE'						=> $info_title,
 				'HEADER_INFO_DESC'						=> $row['header_info_desc'],
-				'HEADER_INFO_LONGDESC'				=> $row['header_info_longdesc'],
-				'HEADER_INFO_RANDDESC'				=> ($row['header_info_use_extdesc'] == 1) ? $this->config['site_desc'] : $info_desc,
+				'HEADER_INFO_LONGDESC'			=> $row['header_info_longdesc'],
+				'HEADER_INFO_RANDDESC'			=> ($row['header_info_use_extdesc'] == 1) ? $this->config['site_desc'] : $info_desc,
 				'HEADER_INFO_SITE_DESC'				=> $this->config['site_desc'],
 				//New 0.9.0 start
 				'HEADER_INFO_TITLE_COLOUR'		=> isset($row['header_info_title_colour']) ? $row['header_info_title_colour'] : '',
@@ -256,15 +291,16 @@ class listener implements EventSubscriberInterface
 				'HEADER_INFO_DIR'						=> $row['header_info_dir'], //ext/orynider/custom_headernfo/language/movies/
 				'HEADER_INFO_DB_FONT' 				=> substr($row['header_info_font'], 0, strrpos($row['header_info_font'], '.')), 
 				'HEADER_INFO_IMAGE'					=> $row['header_info_image'],
-				'THUMBNAIL_URL'   						=> generate_board_url() . '/app.php/thumbnail',
+				'THUMBNAIL_URL'   						=> ($this->config['board_disable'] && ($row['header_info_id']  == 1)) ? $row_disable['header_info_image'] : generate_board_url() . '/app.php/thumbnail',
+				'LOGO_URL'   								=> generate_board_url() . '/app.php/thumbnail',
 				//New 0.9.0 start
 				'HEADER_INFO_RADIUS'					=> isset($row['header_info_banner_radius']) ? $row['header_info_banner_radius'] : '',
 				'HEADER_INFO_PIXELS'					=> isset($row['header_info_pixels']) ? $row['header_info_pixels'] : '',
 				'HEADER_INFO_LEFT'						=> isset($row['header_info_left']) ? $row['header_info_left'] : '',
 				'HEADER_INFO_RIGHT'					=> isset($row['header_info_right']) ? $row['header_info_right'] : '',
 				'HEADER_INFO_CORNERS'				=> $header_corners,
-				'HEADER_INFO_WIDTH'					=> $row['header_info_width'],
-				'HEADER_INFO_HEIGHT'					=> $row['header_info_height'],
+				'HEADER_INFO_WIDTH'					=> isset($row['header_info_width']) ? $row['header_info_width'] : $row['header_info_pic_width'],
+				'HEADER_INFO_HEIGHT'					=> ($this->config['board_disable'] && ($row['header_info_id'] == 0 || $row['header_info_id']  == 1)) ? 193 : (isset($row['header_info_height']) ? $row['header_info_height'] : $row['header_info_pic_height']),
 				//New 0.9.0 ends
 				'S_HEADER_INFO_LINK_CHECKED'	=> $row['header_info_link'],
 				'HEADER_INFO_URL'						=> $row['header_info_url'],
@@ -272,9 +308,10 @@ class listener implements EventSubscriberInterface
 				'HEADER_INFO_TIME'						=> $row['header_info_time'],
 				'HEADER_INFO_LAST'						=> $row['header_info_last'],
 				'HEADER_INFO_PIC_WIDTH'				=> $row['header_info_pic_width'],
-				'HEADER_INFO_PIC_HEIGHT'			=> $row['header_info_pic_height'],
+				'HEADER_INFO_PIC_HEIGHT'			=> ($this->config['board_disable'] && ($row['header_info_id'] == 0 || $row['header_info_id']  == 1)) ? 193 : $row['header_info_pic_height'],
 				'S_HTML_MULTI_TEXT_ENABLED'		=> ($row['header_info_type'] == 'lang_html_text'),
 				'S_SIMPLE_DB_TEXT_ENABLED'		=> ($row['header_info_type'] == 'simple_db_text'),
+				'S_SIMPLE_DB_LOGO_ENABLED'		=> ($row['header_info_type'] == 'simple_bg_logo'),
 				'S_HEADER_INFO_PIN_CHECKED'		=> $row['header_info_pin'],
 				'S_USE_SITE_DESC'							=> $row['header_info_use_extdesc'],
 				'S_HEADER_INFO_DISABLE'				=> $row['header_info_disable'], // settings_disable,
