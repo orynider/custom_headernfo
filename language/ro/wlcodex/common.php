@@ -29,6 +29,6 @@ $lang = array_merge($lang, array(
 	'Exodul ori Ieşirea 33:20'	=> 'Şi să spună: -Nu apuci vederei tot Feţe-Mi căci nu să vadă-Mi omul şi trăiască!',
 	'Leviticul 23:6'	=> '‘Şi în cincizeci zi lunii, Festival Paştile lui IÂHUAH! Şapte zile paşti vei mânca Lui!',
 	'Numeri 10:35'	=> 'Şi să fie, în luare de chivot, şi să spună Moise, Ridică Lui IÂHUAH, şi să scuture vrăşmaşi-Ţi, şi să ia Lui urâţi-Ţi dinaintea-Ţi.',
-	'Deuteronom 8:3'	=> '"...to make it known that not alone by the bread to his belly lives the man, but on every takes out mouth of YAHWEH lives the man."',
+	'Deuteronom 8:3'	=> '"... cunoşte tu căci nu la pâine doar lui să trăiască omul, ci la orice scos gura lui IÂHUAH să trăiască omul."',
 
 ));
