@@ -1,4 +1,4 @@
-# custom_headernfo
+# customheadernfo
 <span style="color:purple"><span style="font-size:120%;line-height:116%"><strong class="text-strong">Extension Name:</strong></span></span> Custom Header NFO<br>
 <span style="color:purple"><span style="font-size:120%;line-height:116%"><strong class="text-strong">Author:</strong></span></span>  <a href="http://www.phpbb.com/community/memberlist.php?mode=viewprofile&amp;u=orynider" class="postlink"><strong class="text-strong">Author Username</strong></a><br>
 <br>
