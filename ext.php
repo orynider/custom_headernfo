@@ -8,7 +8,7 @@
 *
 */
 
-namespace orynider\custom_headernfo;
+namespace orynider\customheadernfo;
 
 /**
 * This ext class is optional and can be omitted if left empty.

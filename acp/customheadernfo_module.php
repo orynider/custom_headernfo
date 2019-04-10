@@ -7,12 +7,12 @@
  *
  */
 
-namespace orynider\custom_headernfo\acp;
+namespace orynider\customheadernfo\acp;
 
 /**
  * Custom Header Info ACP module.
  */
-class custom_headernfo_module
+class customheadernfo_module
 {
 	public $u_action;
 	protected $action;
@@ -28,7 +28,7 @@ class custom_headernfo_module
 		global $config, $db, $phpbb_container, $user, $template, $request, $table_prefix;
 
 		// Get an instance of the admin controller
-		$admin_controller = $phpbb_container->get('orynider.custom_headernfo.controller.admin.controller');
+		$admin_controller = $phpbb_container->get('orynider.customheadernfo.controller.admin.controller');
 		
 		// Requests
 		$action = $request->variable('action', '');

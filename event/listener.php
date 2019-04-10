@@ -7,7 +7,7 @@
 *
 */
 
-namespace orynider\custom_headernfo\event;
+namespace orynider\customheadernfo\event;
 
 /**
 * @ignore
@@ -60,7 +60,7 @@ class listener implements EventSubscriberInterface
 		$this->custom_header_info_config_table = $custom_header_info_config_table;
 		$this->operator = $operator;
 		
-		$this->ext_name 		= $this->request->variable('ext_name', 'orynider/custom_headernfo');
+		$this->ext_name 		= $this->request->variable('ext_name', 'orynider/customheadernfo');
 		$this->module_root_path	= $this->ext_path = $this->ext_manager->get_extension_path($this->ext_name, true);
 		
 		// Read out config values
@@ -124,7 +124,7 @@ class listener implements EventSubscriberInterface
 	{
 		$lang_set_ext = $event['lang_set_ext'];
 		$lang_set_ext[] = array(
-			'ext_name' => 'orynider/custom_headernfo',
+			'ext_name' => 'orynider/customheadernfo',
 			'lang_set' => 'common',
 		);
 		$event['lang_set_ext'] = $lang_set_ext;
@@ -187,7 +187,7 @@ class listener implements EventSubscriberInterface
 					'header_info_dir'				=> 'politics', 
 					'header_info_font'				=>  'tituscbz.ttf',
 					'header_info_type'				=> 'simple_bg_logo',
-					'header_info_image'			=> generate_board_url() . '/ext/orynider/custom_headernfo/styles/prosilver/theme/images/banners/under_construction.gif', //str_replace('prosilver' 'all', $data_files['header_info_image'])
+					'header_info_image'			=> generate_board_url() . '/ext/orynider/customheadernfo/styles/prosilver/theme/images/banners/under_construction.gif', //str_replace('prosilver' 'all', $data_files['header_info_image'])
 					'header_info_image_link'		=> 0,	
 					'header_info_banner_radius' => '10',
 					'header_info_title_pixels'		=> '12',
@@ -288,7 +288,7 @@ class listener implements EventSubscriberInterface
 				'HEADER_INFO_DESC_COLOUR_2'	=> isset($row['header_info_desc_colour']) ? $this->get_gradient_colour($row['header_info_desc_colour'], 2) : '',
 				//New 0.9.0 ends
 				'HEADER_INFO_TYPE'						=> $row['header_info_type'],
-				'HEADER_INFO_DIR'						=> $row['header_info_dir'], //ext/orynider/custom_headernfo/language/movies/
+				'HEADER_INFO_DIR'						=> $row['header_info_dir'], //ext/orynider/customheadernfo/language/movies/
 				'HEADER_INFO_DB_FONT' 				=> substr($row['header_info_font'], 0, strrpos($row['header_info_font'], '.')), 
 				'HEADER_INFO_IMAGE'					=> $row['header_info_image'],
 				'THUMBNAIL_URL'   						=> ($this->config['board_disable'] && ($row['header_info_id']  == 1)) ? $row_disable['header_info_image'] : generate_board_url() . '/app.php/thumbnail',

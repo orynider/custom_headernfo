@@ -1,8 +1,8 @@
 {
-	"name": "orynider/custom_headernfo",
+	"name": "orynider/customheadernfo",
 	"type": "phpbb-extension",
 	"description": "This extension allows you to insert custom text in the header bar. Fully configurable from ACP.",
-	"homepage": "https://github.com/orynider/custom_headernfo",
+	"homepage": "https://github.com/orynider/customheadernfo",
 	"version": "1.0.0",
 	"time": "2019-04-10",
 	"keywords": ["phpbb", "extension", "custom", "header"],

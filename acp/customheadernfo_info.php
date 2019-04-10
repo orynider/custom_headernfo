@@ -7,22 +7,22 @@
 *
 */
 
-namespace orynider\custom_headernfo\acp;
+namespace orynider\customheadernfo\acp;
 
 /**
  * Header Info ACP module info.
  */
-class custom_headernfo_info
+class customheadernfo_info
 {
 	function module()
 	{
 		return array(
-			'filename'		=> '\orynider\custom_headernfo\acp\custom_headernfo_module',
+			'filename'		=> '\orynider\customheadernfo\acp\customheadernfo_module',
 			'title'			=> 'ACP_HEADER_INFO_TITLE',
 			'modes'			=> array(
-				'config'		=> array('title' => 'ACP_HEADER_INFO_CONFIG', 'auth' => 'ext_orynider/custom_headernfo && acl_a_headernfo', 'cat' => array('ACP_HEADER_INFO_TITLE')),
-				//'forums'		=> array('title' => 'ACP_MANAGE_FORUMS', 'auth' => 'ext_orynider/custom_headernfo && acl_a_headernfo', 'cat' => array('ACP_HEADER_INFO_TITLE')),
-				//'pages'		=> array('title' => 'ACP_MANAGE_PAGES', 'auth' => 'ext_orynider/custom_headernfo && acl_a_headernfo', 'cat' => array('ACP_HEADER_INFO_TITLE')),
+				'config'		=> array('title' => 'ACP_HEADER_INFO_CONFIG', 'auth' => 'ext_orynider/customheadernfo && acl_a_headernfo', 'cat' => array('ACP_HEADER_INFO_TITLE')),
+				//'forums'		=> array('title' => 'ACP_MANAGE_FORUMS', 'auth' => 'ext_orynider/customheadernfo && acl_a_headernfo', 'cat' => array('ACP_HEADER_INFO_TITLE')),
+				//'pages'		=> array('title' => 'ACP_MANAGE_PAGES', 'auth' => 'ext_orynider/customheadernfo && acl_a_headernfo', 'cat' => array('ACP_HEADER_INFO_TITLE')),
 			),
 		);
 	}

@@ -11,7 +11,7 @@
 /**#@+
 * @ignore
 */
-namespace orynider\custom_headernfo\migrations\v09x;
+namespace orynider\customheadernfo\migrations\v09x;
 
 use \phpbb\db\migration\container_aware_migration;
 /**#@-*/
@@ -30,7 +30,7 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 	}
 
 	/**
-	 * Add the custom_headernfo table schema to the database
+	 * Add the customheadernfo table schema to the database
 	 *
 	 * @return void
 	 * @access public
@@ -131,7 +131,7 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 					'module_enabled'  => 1,
 					'module_display'  => 1,
 					'module_langname' => 'ACP_HEADER_INFO_TITLE',
-					'module_auth'     => 'ext_orynider/custom_headernfo && acl_a_headernfo',
+					'module_auth'     => 'ext_orynider/customheadernfo && acl_a_headernfo',
 				)
 			)),
 			// Add Settings link to the extension group
@@ -139,7 +139,7 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 				'acp', 
 				'ACP_HEADER_INFO_TITLE',
 				array(
-					'module_basename' => '\orynider\custom_headernfo\acp\custom_headernfo_module',
+					'module_basename' => '\orynider\customheadernfo\acp\customheadernfo_module',
 					'modes' => array('config', 
 											//'forums', 
 											//'pages'
@@ -150,7 +150,7 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 	}
 
 	/**
-	 * Drop the custom_headernfo table schema from the database
+	 * Drop the customheadernfo table schema from the database
 	 *
 	 * @return void
 	 * @access public
@@ -190,17 +190,17 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 	* @param string $config_name Name of config entry to add or update
 	* @param mixed $config_value Value of config entry to add or update
 	*/
-	private function set_custom_headernfo_config($config_name, $config_value, $use_cache = true)
+	private function set_customheadernfo_config($config_name, $config_value, $use_cache = true)
 	{
 		// Read out config values
-		$custom_headernfo_config = $this->config_values();
+		$customheadernfo_config = $this->config_values();
 
 		$sql = 'UPDATE ' . $this->table_prefix . "custom_header_info_config
 			SET config_value = '" . $this->db->sql_escape($config_value) . "'
 			WHERE config_name = '" . $this->db->sql_escape($config_name) . "'";
 		$this->db->sql_query($sql);
 
-		if (!$this->db->sql_affectedrows() && !isset($custom_headernfo_config[$config_name]))
+		if (!$this->db->sql_affectedrows() && !isset($customheadernfo_config[$config_name]))
 		{
 			$sql = 'INSERT INTO ' . $this->table_prefix . 'custom_header_info_config ' . $this->db->sql_build_array('INSERT', array(
 				'config_name'	=> $config_name,
@@ -208,7 +208,7 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 			$this->db->sql_query($sql);
 		}
 
-		$this->custom_headernfo_config[$config_name] = $config_value;
+		$this->customheadernfo_config[$config_name] = $config_value;
 	}
 
 	/**
@@ -217,14 +217,14 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 	public function install_config()
 	{
 		// Read out config values
-		$custom_headernfo_config = $this->config_values();
+		$customheadernfo_config = $this->config_values();
 		$this->custom_header_info_config_table = $this->table_prefix . 'custom_header_info_config';
 		foreach (self::$configs as $key => $new_value)
 		{
 			// Read out old config db values
-			$old_value = !isset($custom_headernfo_config[$key]) ? $custom_headernfo_config[$key] : false;
+			$old_value = !isset($customheadernfo_config[$key]) ? $customheadernfo_config[$key] : false;
 			// We keep out old config db values
-			//$new_value = !isset($custom_headernfo_config[$key]) ? $custom_headernfo_config[$key] : $new_value;		
+			//$new_value = !isset($customheadernfo_config[$key]) ? $customheadernfo_config[$key] : $new_value;		
 			
 			if ($old_value !== false)
 			{
@@ -240,7 +240,7 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 				$use_cache  = false;
 			}
 			// Read out config values
-			if (isset($custom_headernfo_config[$key]))
+			if (isset($customheadernfo_config[$key]))
 			{
 				$sql = 'UPDATE ' . $this->custom_header_info_config_table . "
 					SET config_value = '" . $this->db->sql_escape($new_value) . "'
@@ -254,13 +254,13 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 					'is_dynamic'	=> ($use_cache) ? 0 : 1));
 			}
 			$this->db->sql_query($sql);
-			$this->custom_headernfo_config[$key] = $custom_headernfo_config[$key] = $new_value;
+			$this->customheadernfo_config[$key] = $customheadernfo_config[$key] = $new_value;
 		}
 		return true;
 	}
 
 	/**
-	* Obtain custom_headernfo config values
+	* Obtain customheadernfo config values
 	*/
 	public function config_values()
 	{	
@@ -273,8 +273,8 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 			$this->db->sql_freeresult($result);
 			if (!empty($row))
 			{
-				$custom_headernfo_config[$row['config_name']] = $row['config_value'];
-				return $custom_headernfo_config;
+				$customheadernfo_config[$row['config_name']] = $row['config_value'];
+				return $customheadernfo_config;
 			}
 		}
 		else
@@ -304,8 +304,8 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 
 		'module_name' => 'Custom Header Info', // settings_dbname
 		'wysiwyg_path' => 'assets/javascript/',
-		'banners_dir' => 'ext/orynider/custom_headernfo/styles/prosilver/theme/images/banners/',
-		'backgrounds_dir' => 'ext/orynider/custom_headernfo/styles/prosilver/theme/images/backgrounds/',
+		'banners_dir' => 'ext/orynider/customheadernfo/styles/prosilver/theme/images/banners/',
+		'backgrounds_dir' => 'ext/orynider/customheadernfo/styles/prosilver/theme/images/backgrounds/',
 		'thumb_cache' => '1',
 
   		 //new items added 01.01.2019 by orynider for all ticker rows
@@ -349,7 +349,7 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 				'header_info_dir'				=> 'politics', 
 				'header_info_font'				=>  'tituscbz.ttf',
 				'header_info_type'				=> 'simple_bg_logo',
-				'header_info_image'			=> generate_board_url() . '/ext/orynider/custom_headernfo/styles/prosilver/theme/images/banners/under_construction.gif', //str_replace('prosilver' 'all', $data_files['header_info_image'])
+				'header_info_image'			=> generate_board_url() . '/ext/orynider/customheadernfo/styles/prosilver/theme/images/banners/under_construction.gif', //str_replace('prosilver' 'all', $data_files['header_info_image'])
 				'header_info_image_link'		=> 0,	
 				'header_info_banner_radius' => '10',
 				'header_info_title_pixels'		=> '12',
@@ -379,10 +379,10 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 				'header_info_use_extdesc'	=> 0,
 				'header_info_title_colour'	=> '#000000',
 				'header_info_desc_colour'	=> '#0000ff',
-				'header_info_dir'				=> 'movies', //ext/orynider/custom_headernfo/language/movies/
+				'header_info_dir'				=> 'movies', //ext/orynider/customheadernfo/language/movies/
 				'header_info_font'				=>  'tituscbz.ttf',
 				'header_info_type'				=> 'language',
-				'header_info_image'			=> generate_board_url() . '/ext/orynider/custom_headernfo/styles/prosilver/theme/images/banners/custom_header_bg.png', //str_replace('prosilver' 'all', $data_files['header_info_image'])
+				'header_info_image'			=> generate_board_url() . '/ext/orynider/customheadernfo/styles/prosilver/theme/images/banners/custom_header_bg.png', //str_replace('prosilver' 'all', $data_files['header_info_image'])
 				'header_info_image_link'		=> 0,	
 				'header_info_banner_radius' => '10',
 				'header_info_title_pixels'		=> '12',
@@ -412,10 +412,10 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 				'header_info_use_extdesc'	=> 0,
 				'header_info_title_colour'	=> '#000000',
 				'header_info_desc_colour'	=> '#066c9f',
-				'header_info_dir'				=> 'wlcodex', //ext/orynider/custom_headernfo/language/wlcodex/
+				'header_info_dir'				=> 'wlcodex', //ext/orynider/customheadernfo/language/wlcodex/
 				'header_info_font'				=>  'tituscbz.ttf',
 				'header_info_type'				=> 'language',
-				'header_info_image'			=> generate_board_url() . '/ext/orynider/custom_headernfo/styles/prosilver/theme/images/banners/linen.png', //str_replace('prosilver' 'all', $data_files['header_info_image'])
+				'header_info_image'			=> generate_board_url() . '/ext/orynider/customheadernfo/styles/prosilver/theme/images/banners/linen.png', //str_replace('prosilver' 'all', $data_files['header_info_image'])
 				'header_info_image_link'		=> 0,	
 				'header_info_banner_radius' => 0,
 				'header_info_title_pixels'		=> '18',
@@ -445,10 +445,10 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 				'header_info_use_extdesc'	=> 0,
 				'header_info_title_colour'	=> '#000000',
 				'header_info_desc_colour'	=> '#066c9f',
-				'header_info_dir'				=> 'hisquotes', //ext/orynider/custom_headernfo/language/hisquotes/
+				'header_info_dir'				=> 'hisquotes', //ext/orynider/customheadernfo/language/hisquotes/
 				'header_info_font'				=>  'tituscbz.ttf',
 				'header_info_type'				=> 'language',
-				'header_info_image'			=> generate_board_url() . '/ext/orynider/custom_headernfo/styles/prosilver/theme/images/banners/signature_bg.png', //str_replace('prosilver' 'all', $data_files['header_info_image'])
+				'header_info_image'			=> generate_board_url() . '/ext/orynider/customheadernfo/styles/prosilver/theme/images/banners/signature_bg.png', //str_replace('prosilver' 'all', $data_files['header_info_image'])
 				'header_info_image_link'		=> 0,
 				'header_info_banner_radius' => '8',
 				'header_info_title_pixels'		=> '18',
@@ -481,7 +481,7 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 				'header_info_dir'				=> 'politics', 
 				'header_info_font'				=>  'tituscbz.ttf',
 				'header_info_type'				=> 'language',
-				'header_info_image'			=> generate_board_url() . '/ext/orynider/custom_headernfo/styles/prosilver/theme/images/banners/custom_header_bg.png', //str_replace('prosilver' 'all', $data_files['header_info_image'])
+				'header_info_image'			=> generate_board_url() . '/ext/orynider/customheadernfo/styles/prosilver/theme/images/banners/custom_header_bg.png', //str_replace('prosilver' 'all', $data_files['header_info_image'])
 				'header_info_image_link'		=> 0,	
 				'header_info_banner_radius' => '10',
 				'header_info_title_pixels'		=> '12',
@@ -514,7 +514,7 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 				'header_info_dir'				=> 'politics', 
 				'header_info_font'				=>  'tituscbz.ttf',
 				'header_info_type'				=> 'language',
-				'header_info_image'			=> generate_board_url() . '/ext/orynider/custom_headernfo/styles/prosilver/theme/images/banners/custom_header_bg.png', //str_replace('prosilver' 'all', $data_files['header_info_image'])
+				'header_info_image'			=> generate_board_url() . '/ext/orynider/customheadernfo/styles/prosilver/theme/images/banners/custom_header_bg.png', //str_replace('prosilver' 'all', $data_files['header_info_image'])
 				'header_info_image_link'	=> 0,	
 				'header_info_banner_radius' => '10',
 				'header_info_title_pixels'		=> '12',

@@ -9,7 +9,7 @@
 *
 */
 
-namespace orynider\custom_headernfo\controller;
+namespace orynider\customheadernfo\controller;
 
 /**
  * Enter description here...
@@ -127,7 +127,7 @@ class thumbnail
 		$this->custom_header_info_config_table	= $custom_header_info_config_table;
 		$this->files_factory 								= $files_factory;
 
-		$this->ext_name 		= $this->request->variable('ext_name', 'orynider/custom_headernfo');
+		$this->ext_name 		= $this->request->variable('ext_name', 'orynider/customheadernfo');
 		$this->module_root_path	= $this->ext_path = $this->ext_manager->get_extension_path($this->ext_name, true);
 		$this->ext_path_web		= $this->path_helper->update_web_root_path($this->module_root_path);
 
@@ -181,7 +181,7 @@ class thumbnail
 		$header_info_desc = $row['header_info_desc'];
 		$header_info_longdesc = $row['header_info_longdesc'];
 		$header_info_type = $row['header_info_type'];
-		$header_info_dir = $row['header_info_dir']; //ext/orynider/custom_headernfo/language/movies/
+		$header_info_dir = $row['header_info_dir']; //ext/orynider/customheadernfo/language/movies/
 		$header_info_font = $row['header_info_font'];
 		
 		$db_width = $row['header_info_pic_width'];
@@ -283,7 +283,7 @@ class thumbnail
 		
 		$header_info_image = $header_info_image ? str_replace('_info.', '_bg.', $header_info_image) : $this->module_root_path . "styles/prosilver/theme/images/banners/custom_header_bg.png";
 		$header_info_image = str_replace(basename($header_info_image), $this->request->variable('image', basename($header_info_image)), $header_info_image);
-		$header_info_image	= ($this->config['board_disable'] || ($row['header_info_id'] == 0)) ? generate_board_url() . '/ext/orynider/custom_headernfo/styles/prosilver/theme/images/banners/under_construction.gif' : $header_info_image;
+		$header_info_image	= ($this->config['board_disable'] || ($row['header_info_id'] == 0)) ? generate_board_url() . '/ext/orynider/customheadernfo/styles/prosilver/theme/images/banners/under_construction.gif' : $header_info_image;
 		$header_info_image = str_replace(array('.php', '.pal'), '.png', $header_info_image);
 		
 		//user logged in ? user has custom style ?

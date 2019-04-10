@@ -2,8 +2,8 @@ imports:
     - { resource: tables.yml }
 
 services:
-    orynider.custom_headernfo.listener:
-        class: orynider\custom_headernfo\event\listener
+    orynider.customheadernfo.listener:
+        class: orynider\customheadernfo\event\listener
         arguments:
             - '@dbal.conn'        
             - '@user'
@@ -17,13 +17,13 @@ services:
             - '@path_helper'
             - '%core.php_ext%'
             - '%core.root_path%' 
-            - '%orynider.custom_headernfo.table.custom_header_info%'
-            - '%orynider.custom_headernfo.table.custom_header_info_config%'
+            - '%orynider.customheadernfo.table.custom_header_info%'
+            - '%orynider.customheadernfo.table.custom_header_info_config%'
             - '@?phpbb.collapsiblecategories.operator'            
         tags:
             - { name: event.listener }
-    orynider.custom_headernfo.controller.admin.controller:
-        class: orynider\custom_headernfo\controller\admin_controller
+    orynider.customheadernfo.controller.admin.controller:
+        class: orynider\customheadernfo\controller\admin_controller
         arguments:
             - '@template'
             - '@user'
@@ -36,11 +36,11 @@ services:
             - '@path_helper'
             - '%core.php_ext%'
             - '%core.root_path%'
-            - '%orynider.custom_headernfo.table.custom_header_info%'
-            - '%orynider.custom_headernfo.table.custom_header_info_config%'
+            - '%orynider.customheadernfo.table.custom_header_info%'
+            - '%orynider.customheadernfo.table.custom_header_info_config%'
             - '@?files.factory'
-    orynider.custom_headernfo.controller.thumbnail:
-        class: orynider\custom_headernfo\controller\thumbnail
+    orynider.customheadernfo.controller.thumbnail:
+        class: orynider\customheadernfo\controller\thumbnail
         arguments:
             - '@config'
             - '@language'
@@ -55,6 +55,6 @@ services:
             - '@path_helper'
             - '%core.php_ext%'
             - '%core.root_path%'
-            - '%orynider.custom_headernfo.table.custom_header_info%'
-            - '%orynider.custom_headernfo.table.custom_header_info_config%'
+            - '%orynider.customheadernfo.table.custom_header_info%'
+            - '%orynider.customheadernfo.table.custom_header_info_config%'
             - '@?files.factory'

@@ -344,9 +344,9 @@
 	<!-- BEGIN header_info_scroll -->
 		<!-- IF header_info_scroll.HEADER_INFO_DB_FONT eq '' -->
 		Thumbnail Font Dadabase Error! for item id: {header_info_scroll.HEADER_INFO_ID} <br />
-		<!-- INCLUDECSS @orynider_custom_headernfo/tituscbz.css -->
+		<!-- INCLUDECSS @orynider_customheadernfo/tituscbz.css -->
 		<!-- ELSE -->
-		<!-- INCLUDECSS @orynider_custom_headernfo/{header_info_scroll.HEADER_INFO_DB_FONT}.css -->
+		<!-- INCLUDECSS @orynider_customheadernfo/{header_info_scroll.HEADER_INFO_DB_FONT}.css -->
 		<!-- ENDIF -->
 		<tr>
 		    <td width="10%">{header_info_scroll.HEADER_INFO_ID}</td>
@@ -382,5 +382,5 @@
     <div style="text-align: center;">&copy; {{ lang('HEADER_INFO_COPYRIGHT') }} {{ lang('HEADER_INFO_VERSION') }} {BANNER_VERSION}</div>
 	</div>
 
-{% INCLUDEJS '@orynider_custom_headernfo/jscolor.js' %}
+{% INCLUDEJS '@orynider_customheadernfo/jscolor.js' %}
 {% include 'overall_footer.html' %}

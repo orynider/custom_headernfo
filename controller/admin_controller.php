@@ -7,7 +7,7 @@
 *
 */
 
-namespace orynider\custom_headernfo\controller;
+namespace orynider\customheadernfo\controller;
 
 class admin_controller
 {
@@ -110,7 +110,7 @@ class admin_controller
 		
 		$this->files_factory 		= $files_factory;
 
-		$this->ext_name 		= $this->request->variable('ext_name', 'orynider/custom_headernfo');
+		$this->ext_name 		= $this->request->variable('ext_name', 'orynider/customheadernfo');
 		$this->module_root_path	= $this->ext_path = $this->ext_manager->get_extension_path($this->ext_name, true);
 		$this->ext_path_web		= $this->path_helper->update_web_root_path($this->module_root_path);
 
@@ -234,8 +234,8 @@ class admin_controller
 				'HEADER_INFO_TYPE_SELECT'			=> $header_info_type_select,
 				'HEADER_INFO_DIR'						=> $this->user->lang[$row['header_info_dir']],
 				'HEADER_INFO_TYPE'						=> $row['header_info_type'],
-				'HEADER_INFO_DIR_SELECT' 			=> $this->gen_lang_dirs_select_list('html', 'header_info_dir', $row['header_info_dir']), //ext/orynider/custom_headernfo/language/movies/
-				'HEADER_INFO_FONT_SELECT' 		=> $this->gen_fonts_select_list('html', 'header_info_font', $row['header_info_font']), //ext/orynider/custom_headernfo/assets/fonts/
+				'HEADER_INFO_DIR_SELECT' 			=> $this->gen_lang_dirs_select_list('html', 'header_info_dir', $row['header_info_dir']), //ext/orynider/customheadernfo/language/movies/
+				'HEADER_INFO_FONT_SELECT' 		=> $this->gen_fonts_select_list('html', 'header_info_font', $row['header_info_font']), //ext/orynider/customheadernfo/assets/fonts/
 				'HEADER_INFO_DB_FONT' 				=> substr($header_info_font, 0, strrpos($header_info_font, '.')),
 				'HEADER_INFO_IMAGE'					=> $row['header_info_image'],
 				'THUMBNAIL_URL'   						=> generate_board_url() . '/app.php/thumbnail',
@@ -277,8 +277,8 @@ class admin_controller
 			'S_HEADER_INFO_POSITION3'		=> $custom_header_info_config['banner_position3'],
 			'S_HEADER_INFO_POSITION4'		=> $custom_header_info_config['banner_position'],
 			'HEADER_INFO_TYPE_SELECT'		=> $header_info_type_select,
-			'HEADER_INFO_DIR_SELECT' 		=> $this->gen_lang_dirs_select_list('html', 'header_info_dir', 'politics'), //ext/orynider/custom_headernfo/language/movies/
-			'HEADER_INFO_FONT_SELECT'		=> $this->gen_fonts_select_list('html', 'header_info_font', ''), //ext/orynider/custom_headernfo/assets/fonts/
+			'HEADER_INFO_DIR_SELECT' 		=> $this->gen_lang_dirs_select_list('html', 'header_info_dir', 'politics'), //ext/orynider/customheadernfo/language/movies/
+			'HEADER_INFO_FONT_SELECT'		=> $this->gen_fonts_select_list('html', 'header_info_font', ''), //ext/orynider/customheadernfo/assets/fonts/
 			'HEADER_INFO_IMAGE'				=> generate_board_url() . '/' . $custom_header_info_config['banners_dir'] . 'custom_header_bg.png',
 
 			'ROW_HEIGHT'							=> $custom_header_info_config['row_height'],		/* Height of each ticker row in PX. Should be uniform. */
@@ -386,7 +386,7 @@ class admin_controller
 					'header_info_use_extdesc'	=> $use_extdesc,
 					'header_info_title_colour'		=> $title_colour,
 					'header_info_desc_colour'	=> $desc_colour,
-					'header_info_dir'					=> $dir, //ext/orynider/custom_headernfo/language/movies/
+					'header_info_dir'					=> $dir, //ext/orynider/customheadernfo/language/movies/
 					'header_info_type'				=> $type,
 					'header_info_font'				=> $font,
 					'header_info_image'			=> $image, //str_replace('prosilver' 'all', $data_files['header_info_image'])
@@ -425,7 +425,7 @@ class admin_controller
 					'header_info_use_extdesc'	=> $use_extdesc,
 					'header_info_title_colour'		=> $title_colour,
 					'header_info_desc_colour'	=> $desc_colour,
-					'header_info_dir'					=> $dir, //ext/orynider/custom_headernfo/language/movies/
+					'header_info_dir'					=> $dir, //ext/orynider/customheadernfo/language/movies/
 					'header_info_type'				=> $type,
 					'header_info_font'				=> $font,
 					'header_info_image'			=> $image, //str_replace('prosilver' 'all', $data_files['header_info_image'])
@@ -651,8 +651,8 @@ class admin_controller
 						'HEADER_INFO_TYPE'						=> $row['header_info_type'],
 						'HEADER_INFO_TYPE_SELECT'			=> $header_info_type_select,
 						'HEADER_INFO_DIR'						=> $this->user->lang[$row['header_info_dir']],
-						'HEADER_INFO_DIR_SELECT' 			=> $this->gen_lang_dirs_select_list('html', 'header_info_dir', $row['header_info_dir']), //ext/orynider/custom_headernfo/language/movies/
-						'HEADER_INFO_FONT_SELECT' 		=> $this->gen_fonts_select_list('html', 'header_info_font', $header_info_font), //ext/orynider/custom_headernfo/assets/fonts/
+						'HEADER_INFO_DIR_SELECT' 			=> $this->gen_lang_dirs_select_list('html', 'header_info_dir', $row['header_info_dir']), //ext/orynider/customheadernfo/language/movies/
+						'HEADER_INFO_FONT_SELECT' 		=> $this->gen_fonts_select_list('html', 'header_info_font', $header_info_font), //ext/orynider/customheadernfo/assets/fonts/
 						'HEADER_INFO_DB_FONT' 				=> substr($header_info_font, 0, strrpos($header_info_font, '.')),
 						'HEADER_INFO_IMAGE'					=> $row['header_info_image'],
 						'THUMBNAIL_URL'   						=> generate_board_url() . '/app.php/thumbnail',
@@ -1710,8 +1710,8 @@ class admin_controller
 			{
 				continue;
 			}
-			
-			if (is_dir($folder_path . '/' . $file))
+			//we user @ for php5 open_basedir restriction in effect if safemode
+			if (@is_dir($folder_path . '/' . $file))
 			{
 				$lang_dirs[$add_path . (!empty($add_path) ? '/' : '') . $file] = $add_path . (!empty($add_path) ? '/' : '') . $file;
 				$sub_dirs = $this->load_lang_dirs($folder_path, $language, $add_path . '/'. $file);
@@ -1719,8 +1719,8 @@ class admin_controller
 			}
 		}
 		@closedir($dir);
-		
-		if (is_dir($subdir_select_from . '/') && is_array($subdirs))
+		//we user @ for php5 open_basedir restriction in effect if safemode
+		if (@is_dir($subdir_select_from . '/') && is_array($subdirs))
 		{
 			$subdir = opendir($subdir_select_from);
 		}
@@ -1731,8 +1731,8 @@ class admin_controller
 			{
 				continue;
 			}
-			
-			if(is_dir($subdir_select_from . '/' . $file))
+			//we user @ for php5 open_basedir restriction in effect if safemode
+			if(@is_dir($subdir_select_from . '/' . $file))
 			{
 				$sub_dirs[$add_path . (!empty($add_path) ? '/' : '') . $file] = $add_path . (!empty($add_path) ? '/' : '') . $file;
 				$lang_dirs = array_merge($lang_dirs, $sub_dirs);
@@ -1795,8 +1795,8 @@ class admin_controller
 			{
 				continue;
 			}
-			
-			if (is_dir($folder_path . '/' . $file))
+			//we user @ for php5 open_basedir restriction in effect if safemode
+			if (@is_dir($folder_path . '/' . $file))
 			{
 				$sub_files = $this->load_lang_files($folder_path, $language, $add_path . '/'. $file);
 				$lang_files = is_array($sub_files) ? array_merge($lang_files, $sub_files) : $lang_files;
@@ -1807,8 +1807,8 @@ class admin_controller
 			}
 		}
 		@closedir($dir);
-		
-		if (is_dir($subdir_select_from . '/') && is_array($subdirs))
+		//we user @ for php5 open_basedir restriction in effect if safemode
+		if (@is_dir($subdir_select_from . '/') && is_array($subdirs))
 		{
 			$subdir = opendir($subdir_select_from);
 		}

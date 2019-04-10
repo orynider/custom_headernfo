@@ -1,0 +1,2 @@
+parameters:
+    orynider.custom_headernfo.table.custom_header_info: '%core.table_prefix%custom_header_info'

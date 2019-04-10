@@ -1,3 +1,3 @@
 parameters:
-    orynider.custom_headernfo.table.custom_header_info: '%core.table_prefix%custom_header_info'
-    orynider.custom_headernfo.table.custom_header_info_config: '%core.table_prefix%custom_header_info_config'
+    orynider.customheadernfo.table.custom_header_info: '%core.table_prefix%custom_header_info'
+    orynider.customheadernfo.table.custom_header_info_config: '%core.table_prefix%custom_header_info_config'
