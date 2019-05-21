@@ -27,7 +27,7 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, array(
 	'Genesys 1:4'	=> '.',
 	'Exodus 12:12'	=> '.',
-	'Leviticus 23:6'	=> '‘And in fifteenth day of month, Festival of Crakers to YAHWEH! Seven days crakers you eat!',
+	'Leviticul 23:6'	=> '‘Şi în cincizeci zi lunii, Festival Paştile lui IÂHUAH! Şapte zile paşti vei mânca Lui!',
 	'Numbers18:xx'	=> '.',
 	'Deuteronomy 16:3'	=> '"."',
 

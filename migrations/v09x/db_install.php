@@ -43,9 +43,9 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 				// Table structure for table 'phpbb_custom_header_info'
 				$this->table_prefix . 'custom_header_info'	=> array(
 					'COLUMNS'	=> array(
-						'header_info_id'					=> array('UINT:8', null, 'auto_increment'),
+						'header_info_id'				=> array('UINT:8', null, 'auto_increment'),
 						'header_info_name'			=> array('VCHAR:255', ''),
-						'header_info_desc'				=> array('MTEXT_UNI', ''),
+						'header_info_desc'			=> array('MTEXT_UNI', ''),
 						'header_info_longdesc'		=> array('MTEXT_UNI', ''),
 						'header_info_use_extdesc'	=> array('TINT:2', 0),
 						'header_info_title_colour'	=> array('VCHAR:8', '#000000'),
@@ -61,15 +61,15 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 						'header_info_desc_pixels'	=>  array('INT:8', 10),
 						'header_info_pixels'			=>  array('INT:8', 12),
 						'header_info_left'				=> array('TINT:2', 0),
-						'header_info_right'				=> array('TINT:2', 0),
+						'header_info_right'			=> array('TINT:2', 0),
 						'header_info_license'			=> array('MTEXT_UNI', ''),
-						'header_info_time'				=> array('UINT:8', 0),
+						'header_info_time'			=> array('UINT:8', 0),
 						'header_info_last'				=> array('INT:50', 0),
 						'header_info_pic_width'	    => array('INT:8', 458),
-						'header_info_pic_height'	 	=> array('INT:8', 50),
+						'header_info_pic_height'	=> array('INT:8', 50),
 						'header_info_pin'				=> array('TINT:2', 0),
 						'header_info_disable'			=> array('TINT:1', 0),
-						'forum_id' 							=> array('INT:8', 0),
+						'forum_id' 						=> array('INT:8', 0),
 						'user_id'							=> array('INT:8', 0),
 						'bbcode_bitfield'				=> array('VCHAR:255', ''),
 						'bbcode_uid'						=> array('VCHAR:8', ''),
@@ -135,12 +135,14 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 				)
 			)),
 			// Add Settings link to the extension group
-			array('module.add', array(
-				'acp', 
-				'ACP_HEADER_INFO_TITLE',
+			array(
+				'module.add', 
 				array(
-					'module_basename' => '\orynider\customheadernfo\acp\customheadernfo_module',
-					'modes' => array('config', 
+					'acp', 
+					'ACP_HEADER_INFO_TITLE',
+					array(
+						'module_basename' => '\orynider\customheadernfo\acp\customheadernfo_module',
+						'modes' => array('config', 
 											//'forums', 
 											//'pages'
 					),
@@ -334,7 +336,8 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 	{
 		$user = $this->container->get('user');
 		
-		add_log('admin', 'Custom Header Info extension Install/Upgrade', 'Version 1.0.0');
+		global $phpbb_log;
+		$phpbb_log->add($user->data['user_id'], $user->data['user_ip'], time(), 'admin', 'Custom Header Info extension Install/Upgrade', 'Version 1.0.0');
 		
 		// Define sample article data
 		$sample_data_files = array(

@@ -1,2 +1,14 @@
 /*!
- */@font-face{font-family:'DejaVuSerif';src:url('../../assets/fonts/DejaVuSerif.eot?v=2.29');src:url('../../assets/fonts/fontawesome-webfont.eot?#iefix&v=2.29') format('embedded-opentype'),url('../../assets/fonts/DejaVuSerif.woff2?v=2.29') format('woff2'),url('../../assets/fonts/DejaVuSerif.woff?v=2.29') format('woff'),url('../../assets/fonts/DejaVuSerif.ttf?v=2.29') format('truetype'),url('../../assets/fonts/DejaVuSerif.svg?v=2.29#DejaVuSerif') format('svg');font-weight:normal;font-style:normal}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0, 0, 0, 0);border:0}.sr-only-focusable:active,.sr-only-focusable:focus{position:static;width:auto;height:auto;margin:0;overflow:visible;clip:auto}
+ */@font-face { 
+  font-family:'DejaVuSerif'; 
+  src:url('../../assets/fonts/DejaVuSerif.eot?v=2.29'); /* IE9 Compat Modes */
+  src:url('../../assets/fonts/fontawesome-webfont.eot?#iefix&v=2.29') format('embedded-opentype'), /* IE6-IE8 */ 
+    url('../../assets/fonts/DejaVuSerif.woff2?v=2.29') format('woff2'), /* Modern Browsers */
+	url('../../assets/fonts/DejaVuSerif.woff?v=2.29') format('woff'), /* Modern Browsers */ 
+	url('../../assets/fonts/DejaVuSerif.ttf?v=2.29') format('truetype'), /* Safari, Android, iOS */ 
+	url('../../assets/fonts/DejaVuSerif.svg?v=2.29#DejaVuSerif') format('svg'); /* Legacy iOS */ 
+	font-weight:normal; 
+	font-style:normal; 
+}
+.sr-only{ position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0, 0, 0, 0);border:0 }
+.sr-only-focusable:active,.sr-only-focusable:focus{ position:static;width:auto;height:auto;margin:0;overflow:visible;clip:auto }

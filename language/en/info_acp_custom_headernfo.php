@@ -22,24 +22,27 @@ if (empty($lang) || !is_array($lang))
 }
 
 $lang = array_merge($lang, array(
-	'ACP_HEADER_INFO_TITLE'								=> 'Custom Header Info',
-    'ACP_HEADER_INFO_CONFIG'							=> 'Header Info Configuration',
-	'ACP_MANAGE_CONFIG'									=> 'Configuration',
+	'ACP_HEADER_INFO_TITLE'						=> 'Custom Header Info',
+    'ACP_HEADER_INFO_CONFIG'					=> 'Header Info Configuration',
+	'ACP_MANAGE_CONFIG'							=> 'Configuration',
+	
+	'ACP_MANAGE_FORUMS'							=> 'Forums',
+	'ACP_MANAGE_PAGES'								=> 'Pages',
 
-	'ACP_MANAGE_FORUMS'									=> 'Forums',
-	'ACP_MANAGE_PAGES'									=> 'Pages',
+	'HEADER_INFO_INTRO'								=> 'This is configuration page for the Custom Header Info Extension by orynider.',
 
-	'HEADER_INFO_INTRO'									=> 'This is configuration page for the Custom Header Info Extension by orynider.',
+	'HEADER_INFO_DONATE'				           => '<a href="https://www.paypal.me/orynider"><strong>Donate</strong></a>',
+	'HEADER_INFO_DONATE_EXPLAIN'	       => 'If you like this extension considers a donation',
 
-	'HEADER_INFO_DONATE'				                => '<a href="https://www.paypal.me/orynider"><strong>Donate</strong></a>',
-	'HEADER_INFO_DONATE_EXPLAIN'	                => 'If you like this extension considers a donation',
-
-	'HEADER_INFO_VERSION'								=> 'Version',
- 	'HEADER_INFO_CHECK'									=> 'Check Manually at <a href="http://mxpcms.sf.net/forum/index.php"><strong>Forum Home</strong></a>',
+	'HEADER_INFO_VERSION'							=> 'Version',
+ 	'HEADER_INFO_CHECK'								=> 'Check Manually at <a href="http://mxpcms.sf.net/forum/index.php"><strong>Forum Home</strong></a>',
+	'HEADER_INFO_EDIT'								=> 'Edit header info item to database.',
 
 	'ROW_HEIGHT'											=> 'Height of each ticker row in PX',
-	'ROW_HEIGHT_EXPLAIN'								=> 'Each banner is loaded in in the info ticker as a row using this JavaScript aplication. Height of each ticker row should be uniform.',
-
+	'ROW_HEIGHT_EXPLAIN'							=> 'Each banner is loaded in in the info ticker as a row using this JavaScript aplication. Height of each ticker row should be uniform.',
+	
+	'THUMBNAIL_FONT_DADABASE_ERROR_FOR_ID'	=> 'Thumbnail font dadabase error for id',
+	
 	'SPEED'														=> 'Speed of transition animation in milliseconds',
 	'SPEED_EXPLAIN'										=> 'Speed of transition animation between banner scrolling in the info ticker.',
 
@@ -47,92 +50,94 @@ $lang = array_merge($lang, array(
 	'INTERVAL_EXPLAIN'									=> 'Time to read the info before scrolling the ticker.',
 
 	'MOUSESTOP'											=> 'Stop on mouseover the ticker',
-	'MOUSESTOP_EXPLAIN'								=> 'If set to true, the ticker will stop on mouseover.',
+	'MOUSESTOP_EXPLAIN'							=> 'If set to true, the ticker will stop on mouseover.',
 
-	'INFO_DIRECTION'										=> 'The scrolling direction',
+	'INFO_DIRECTION'									=> 'The scrolling direction',
 	'INFO_DIRECTION_EXPLAIN'						=> 'Direction in witch the list will scroll. That is up or down.',
 
-	'HEADER_INFO_EDIT'										=> 'Edit header info item to database',
-	'HEADER_INFO_ADD'									    => 'Add header info item to database.',
+	'HEADER_INFO_EDIT'								=> 'Edit header info item to database',
+	'HEADER_INFO_ADD'								=> 'Add header info item to database.',
 
-	'HEADER_INFO_NAME'									=> 'Banner Title Name',
-	'HEADER_INFO_NAME_EXPLAIN'						=> 'Title of new header info item. The title will appear in the header_info tooltip when you navigate with the mouse above.',
+	'HEADER_INFO_NAME'								=> 'Banner Title Name',
+	'HEADER_INFO_NAME_EXPLAIN'				=> 'Title of new header info item. The title will appear in the header_info tooltip when you navigate with the mouse above.',
 
-	'HEADER_INFO_TITLE_PIXELS'							=> 'Banner Title Size',
-	'HEADER_INFO_TITLE_PIXELS_EXPLAIN'			=> 'Sets the number of pixels for banner title.<br /><em>The default for prosilver is 12px.</em>',
+	'HEADER_INFO_TITLE_PIXELS'					=> 'Banner Title Size',
+	'HEADER_INFO_TITLE_PIXELS_EXPLAIN'		=> 'Sets the number of pixels for banner title.<br /><em>The default for prosilver is 12px.</em>',
 
-	'HEADER_INFO_DESC'										=> 'Short Description',
-	'HEADER_INFO_DESC_EXPLAIN'						=> 'Short description of new header info item. The description will appear in the header info tooltip when you navigate with the mouse above.',
+	'HEADER_INFO_DESC'								=> 'Short Description',
+	'HEADER_INFO_DESC_EXPLAIN'				=> 'Short description of new header info item. The description will appear in the header info tooltip when you navigate with the mouse above.',
 
-	'HEADER_INFO_DESC_PIXELS'							=> 'Banner Description Size',
-	'HEADER_INFO_DESC_PIXELS_EXPLAIN'			=> 'Sets the number of pixels for banner description.',
+	'HEADER_INFO_DESC_PIXELS'					=> 'Banner Description Size',
+	'HEADER_INFO_DESC_PIXELS_EXPLAIN'		=> 'Sets the number of pixels for banner description.',
 
-	'HEADER_INFO_LONGDESC'								=> 'Long Description',
-	'HEADER_INFO_LONGDESC_EXPLAIN'				=> 'Long description of new header info item. The description will appear in the header info tooltip when you navigate with the mouse above. Note: Maximum 255 characters',
+	'HEADER_INFO_LONGDESC'						=> 'Long Description',
+	'HEADER_INFO_LONGDESC_EXPLAIN'		=> 'Long description of new header info item. The description will appear in the header info tooltip when you navigate with the mouse above. Note: Maximum 255 characters',
 
-	'HEADER_INFO_FORUM_DESC'						=> 'Note: already added forums are disabled. Edit the entry instead.',
+	'HEADER_INFO_FORUM_DESC'					=> 'Note: already added forums are disabled. Edit the entry instead.',
 	'CLICK_TO_SELECT'									=> 'Click in the box to select a colour',
 
-	'USE_EXTENED_SITE_DESC'							=> 'Use extended site description',
+	'USE_EXTENED_SITE_DESC'						=> 'Use extended site description',
 	'USE_EXTENED_SITE_DESC_EXPLAIN'			=> 'Use the standard site description with this header info item.<br /><strong>Note: This will disable the above description and the language directory selected, and so they will have no affect if this <em>extended site description</em> has been selected.</strong> ',
 
-	'HEADER_INFO_RADIUS'								=> 'Header info banner\'s border radius',
+	'HEADER_INFO_RADIUS'							=> 'Header info banner\'s border radius',
 	'HEADER_INFO_RADIUS_EXPLAIN'				=> 'Sets the number of pixels for rounding the header info banner\'s corners. Setting this to 0 means that the banner will have square corners.',
 
 	'HEADER_INFO_PIXELS'								=> 'Header info logo\'s radius',
-	'HEADER_INFO_PIXELS_EXPLAIN'					=> 'Sets the number of pixels for rounding the header info logo\'s corners.<br /><em>The default for prosilver is 7px.</em>',
+	'HEADER_INFO_PIXELS_EXPLAIN'				=> 'Sets the number of pixels for rounding the header info logo\'s corners.<br /><em>The default for prosilver is 7px.</em>',
 
 	'HEADER_INFO_LEFT'								=> 'Header info banner\'s left corners',
-	'HEADER_INFO_LEFT_EXPLAIN'				=> 'Round the left side corners to match the header banner.',
+	'HEADER_INFO_LEFT_EXPLAIN'					=> 'Round the left side corners to match the header banner.',
 	
-	'HEADER_INFO_RIGHT'							=> 'Header info banner\'s right corners',
+	'HEADER_INFO_RIGHT'								=> 'Header info banner\'s right corners',
 	'HEADER_INFO_RIGHT_EXPLAIN'				=> 'Round the right side corners to match the header banner.',
 	
-	'HEADER_INFO_TITLE_COLOUR'					=> 'Header info title colour inside logo or banner.',
-	'HEADER_INFO_TITLE_COLOUR_EXPLAIN'		=> 'Select a colour for the header info title text.<br />Setting this option will apply, where possible, the same gradient offsets to the inner background colour that are used in “prosilver”.<br /><em>Default = #12A3EB</em>',
+	'HEADER_INFO_TITLE_COLOUR'				=> 'Header info title colour inside logo or banner.',
+	'HEADER_INFO_TITLE_COLOUR_EXPLAIN'	=> 'Select a colour for the header info title text.<br />Setting this option will apply, where possible, the same gradient offsets to the inner background colour that are used in “prosilver”.<br /><em>Default = #12A3EB</em>',
 
-	'HEADER_INFO_DESC_COLOUR'					=> 'Header info description colour inside logo or banner.',
-	'HEADER_INFO_DESC_COLOUR_EXPLAIN'		=> 'Select a colour for the header info description text.<br />Setting this option will apply, where possible, the same gradient offsets to the text colour that are used in “prosilver”.<br /><em>Default = #000000</em>',
+	'HEADER_INFO_DESC_COLOUR'				=> 'Header info description colour inside logo or banner.',
+	'HEADER_INFO_DESC_COLOUR_EXPLAIN'	=> 'Select a colour for the header info description text.<br />Setting this option will apply, where possible, the same gradient offsets to the text colour that are used in “prosilver”.<br /><em>Default = #000000</em>',
 
 	'HEADER_INFO_OPTIONS'							=> 'Header options',
-
+	
+	'FILE_NOT_EXISTS'									=> 'This file dos not exist.',
+	
 	'HEADER_INFO_URL'									=> 'URL',
-	'HEADER_INFO_URL_EXPLAIN'						=> 'Enter the URL of the header info, If you want the internal and external links to be recognized automatically.',
+	'HEADER_INFO_URL_EXPLAIN'					=> 'Enter the URL of the header info, If you want the internal and external links to be recognized automatically.',
 
 	'HEADER_INFO_IMAGE'								=> 'Image',
-	'HEADER_INFO_IMAGE_EXPLAIN'					=> 'URL of image of header info banner. For a correct visual insert images of size <strong>458x50px</strong>. Header banners can be uploaded to the images/banners folder.',
+	'HEADER_INFO_IMAGE_EXPLAIN'				=> 'URL of image of header info banner. For a correct visual insert images of size <strong>458x50px</strong>. Header banners can be uploaded to the images/banners folder.',
 
-	'HEADER_INFO_NAME_B'								=> 'Name or description of the header info',
+	'HEADER_INFO_NAME_B'							=> 'Name or description of the header info',
 	'HEADER_INFO_IMAGE_B'							=> 'Image of the header info',
 	'HEADER_INFO_URL_B'								=> 'URL of the header info',
 
-	'HEADER_INFO_COPYRIGHT'					        => '<strong>Extension Custom Header Info by <a href="http://mxpcms.sf.net/">orynider</a></strong>',
-	'HEADER_INFO_ADDED'							        => 'New header Info has been added!',
-	'HEADER_INFO_UDPATED'						        => 'Header has been updated!',
+	'HEADER_INFO_COPYRIGHT'						=> '<strong>Extension Custom Header Info by <a href="http://mxpcms.sf.net/">orynider</a></strong>',
+	'HEADER_INFO_ADDED'							=> 'New header Info has been added!',
+	'HEADER_INFO_UDPATED'						=> 'Header has been updated!',
 
 	'HEADER_INFO_NAVBAR'							=> 'Header Info BreadCrumbs after (1)',
-	'HEADER_INFO_SEARCHBOX'						=> 'Header Info SearchBox before (2)',
-	'HEADER_INFO_HEADER'								=> 'Header Info HeaderBar after (4)',
+	'HEADER_INFO_SEARCHBOX'					=> 'Header Info SearchBox before (2)',
+	'HEADER_INFO_HEADER'							=> 'Header Info HeaderBar after (4)',
 	'HEADER_INFO_INDEX'								=> 'Header Info PageBody before (3)',
-	'HEADER_INFO_POSITION'							=> 'Header Info Custom Position',
-	'HEADER_INFO_POSITION_EXPLAIN'				=> 'Do you want to show the Custom Header Info in the NavBar or Header?',
-	'HEADER_INFO_ENABLE'								=> 'Header Info Page Header before (0)',
+	'HEADER_INFO_POSITION'						=> 'Header Info Custom Position',
+	'HEADER_INFO_POSITION_EXPLAIN'			=> 'Do you want to show the Custom Header Info in the NavBar or Header?',
+	'HEADER_INFO_ENABLE'							=> 'Header Info Page Header before (0)',
 	'HEADER_INFO_ENABLE_EXPLAIN'				=> 'Enable Custom Header Info in overall board.',
 
-	'THUMB_CACHE'												=> 'Use thumbnail cache',
-	'THUMB_CACHE_EXPLAIN'									=> 'Enable caching of thumbnail. If you use the Thumbnail Cache feature you must clear your thumbnail cache after editing your banners to make them re-generated.',
+	'THUMB_CACHE'										=> 'Use thumbnail cache',
+	'THUMB_CACHE_EXPLAIN'						=> 'Enable caching of thumbnail. If you use the Thumbnail Cache feature you must clear your thumbnail cache after editing your banners to make them re-generated.',
 
-	'HEADER_INFO_PIC_WIDTH'									=> 'Width (pixel)',
-	'HEADER_INFO_PIC_WIDTH_EXPLAIN'					=> 'Choose the width of the banner.',
+	'HEADER_INFO_PIC_WIDTH'						=> 'Width (pixel)',
+	'HEADER_INFO_PIC_WIDTH_EXPLAIN'		=> 'Choose the width of the banner.',
 
-	'HEADER_INFO_PIC_HEIGHT'							=> 'Height (pixel)',
-	'HEADER_INFO_PIC_HEIGHT_EXPLAIN'				=> 'Choose the height of the banner.',
+	'HEADER_INFO_PIC_HEIGHT'						=> 'Height (pixel)',
+	'HEADER_INFO_PIC_HEIGHT_EXPLAIN'		=> 'Choose the height of the banner.',
 
-	'HEADER_INFO_LICENSE'									=> 'License',
-	'HEADER_INFO_LICENSE_EXPLAIN'					=> 'This is the license type and version a user or developer must agree to download and use a banner or a text from the header.',
+	'HEADER_INFO_LICENSE'							=> 'License',
+	'HEADER_INFO_LICENSE_EXPLAIN'			=> 'This is the license type and version a user or developer must agree to download and use a banner or a text from the header.',
 
-	'HEADER_INFO_PINNED'								=> 'Pin Info',
-	'HEADER_INFO_PINNED_EXPLAIN'				=> 'Choose if you want the file pinned or not. Pinned files will always be shown at the top of the file list.',
+	'HEADER_INFO_PINNED'							=> 'Pin Info',
+	'HEADER_INFO_PINNED_EXPLAIN'			=> 'Choose if you want the file pinned or not. Pinned files will always be shown at the top of the file list.',
 
 	'HEADER_INFO_DISABLE'							=> 'Disable item display',
 	'HEADER_INFO_DISABLE_EXPLAIN'			=> 'This setting makes the item disabled, but still visible. A message informs the user this item or the item url link is not available at the moment.',

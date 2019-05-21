@@ -23,24 +23,24 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge($lang, array(
 	'ACP_HEADER_INFO_TITLE'								=> 'Custom Header Info',
-    'ACP_HEADER_INFO_CONFIG'							=> 'Header Info Configuration',
-	'ACP_MANAGE_CONFIG'									=> 'Configuration',
+    'ACP_HEADER_INFO_CONFIG'							=> 'Configurare Header Info',
+	'ACP_MANAGE_CONFIG'									=> 'Configuraţie',
 
-	'ACP_MANAGE_FORUMS'									=> 'Forums',
-	'ACP_MANAGE_PAGES'									=> 'Pages',
+	'ACP_MANAGE_FORUMS'									=> 'Forumuri',
+	'ACP_MANAGE_PAGES'									=> 'Pagini',
 
-	'HEADER_INFO_INTRO'									=> 'This is configuration page for the Custom Header Info Extension by orynider.',
+	'HEADER_INFO_INTRO'									=> 'Aceasta este o pagină de configurare pentru Extensia Custom Header Info de orynider (FlorinCB).',
 
-	'HEADER_INFO_DONATE'				                => '<a href="https://www.paypal.me/orynider"><strong>Donate</strong></a>',
-	'HEADER_INFO_DONATE_EXPLAIN'	                => 'If you like this extension considers a donation',
+	'HEADER_INFO_DONATE'				                => '<a href="https://www.paypal.me/orynider"><strong>Donează</strong></a>',
+	'HEADER_INFO_DONATE_EXPLAIN'	                => 'Dacă îţi place această extensie ia în consideraţie să faci o donaţie',
 
-	'HEADER_INFO_VERSION'								=> 'Version',
- 	'HEADER_INFO_CHECK'									=> 'Check Manually at <a href="http://mxpcms.sf.net/forum/index.php"><strong>Forum Home</strong></a>',
+	'HEADER_INFO_VERSION'								=> 'Versiune',
+ 	'HEADER_INFO_CHECK'									=> 'Verifică Versiune Manual la <a href="http://mxpcms.sf.net/forum/index.php"><strong>Forum Acasă</strong></a>',
 
-	'ROW_HEIGHT'											=> 'Height of each ticker row in PX',
-	'ROW_HEIGHT_EXPLAIN'								=> 'Each banner is loaded in in the info ticker as a row using this JavaScript aplication. Height of each ticker row should be uniform.',
+	'ROW_HEIGHT'											=> 'Înălţime a fiecărui rând ticker în PX',
+	'ROW_HEIGHT_EXPLAIN'								=> 'Fiecare banner este încărcat în info ticker ca un rând folosind acestă applicaţie JavaScript. Înălţimea fiecărui rând ticker trebuie să fie uniformă.',
 
-	'SPEED'														=> 'Speed of transition animation in milliseconds',
+	'SPEED'														=> 'Viteză de tranziţie a animaţiei în milisecunde',
 	'SPEED_EXPLAIN'										=> 'Speed of transition animation between banner scrolling in the info ticker.',
 
 	'INTERVAL'												=> 'Time between change in milliseconds',
@@ -95,7 +95,9 @@ $lang = array_merge($lang, array(
 	'HEADER_INFO_DESC_COLOUR_EXPLAIN'		=> 'Select a colour for the header info description text.<br />Setting this option will apply, where possible, the same gradient offsets to the text colour that are used in “prosilver”.<br /><em>Default = #000000</em>',
 
 	'HEADER_INFO_OPTIONS'							=> 'Header options',
-
+	
+	'FILE_NOT_EXISTS'										=> 'This file dos not exist.',
+	
 	'HEADER_INFO_URL'									=> 'URL',
 	'HEADER_INFO_URL_EXPLAIN'						=> 'Enter the URL of the header info, If you want the internal and external links to be recognized automatically.',
 

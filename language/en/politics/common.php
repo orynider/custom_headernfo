@@ -23,7 +23,13 @@ if (empty($lang) || !is_array($lang))
 {
 	$lang = array();
 }
-
+/*
+* Note that You should also activate every language also uploaded in the main phpBB/language directory. 
+* 
+ To Do: We should think on a dedicated directory for multilangual files such as 'multilang' 
+			for the files we are currently storing in language subdirectories from were we can import 
+			or export using a ACP feature all the keys and values using DB table as FAQ Manager does.
+*/
 $lang = array_merge($lang, array(
 	//Transcript: Donald Trump's Foreign Policy Speech, The New York Times (27 April 2016)
 	'Donald Trump on Israel, Foreign Policy Speech (27 April 2016).'	=> '"Israel, our great friend and the one true democracy in the Middle East has been snubbed and criticized by an administration that lacks moral clarity..."',

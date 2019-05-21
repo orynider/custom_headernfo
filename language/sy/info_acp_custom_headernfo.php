@@ -74,7 +74,9 @@ $lang = array_merge($lang, array(
 	'HEADER_INFO_DESC_COLOUR_EXPLAIN'		=> 'Select a colour for the header info description text.<br />Setting this option will apply, where possible, the same gradient offsets to the text colour that are used in “prosilver”.<br /><em>Default = #000000</em>',
 
 	'HEADER_INFO_OPTIONS'							=> 'Header options',
-
+	
+	'FILE_NOT_EXISTS'										=> 'This file dos not exist.',
+	
 	'HEADER_INFO_URL'									=> 'URL',
 	'HEADER_INFO_URL_EXPLAIN'						=> 'Enter the URL of the header info, If you want the internal and external links to be recognized automatically.',
 

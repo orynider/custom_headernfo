@@ -1,25 +1,25 @@
 {% if S_HEADER_INFO_POSITION4 %}
-	<div id="info-scroll"  class="info-scroll rightside">
-     <ul class="topiclist">
+	<div id="info-scroll" class="info-scroll rightside">
+      <ul class="topiclist">
          <li class="header">
             <dl class="row-item">
-            <dt><i class="fa fa-thumbs-up" aria-hidden="true"></i> {L_HEADER_INFO_SCROLL_INDEX}</dt>
+            <dt><i class="fa fa-thumbs-up" aria-hidden="true"></i> {{ lang('HEADER_INFO_SCROLL_INDEX') }}</dt>
            <dd></dd>
            </dl>
          </li>
       </ul>
 	<div style="position: relative; float:right; padding-right:20px; margin-top: -20px; height:17px;">
-	<a href="#" title="{L_PREVIOUS_SCROLL}" id="tickerb-previous">
-		<img src="{BOARD_URL}ext/orynider/customheadernfo/styles/prosilver/theme/images/rewind.png" width="16" height="16" alt="{L_PREVIOUS_SCROLL}" />
+	<a href="#" title="{{ lang('PREVIOUS_SCROLL') }}" id="tickerb-previous">
+		<img src="{BOARD_URL}ext/orynider/customheadernfo/styles/prosilver/theme/images/rewind.png" width="16" height="16" alt="{{ lang('PREVIOUS_SCROLL') }}" />
 	</a> 
-	<a href="#" title="{L_NEXT_SCROLL}" id="tickerb-next">
-		<img src="{BOARD_URL}ext/orynider/customheadernfo/styles/prosilver/theme/images/fastforward.png" width="16" height="16" alt="{L_NEXT_SCROLL}" />
+	<a href="#" title="{{ lang('NEXT_SCROLL') }}" id="tickerb-next">
+		<img src="{BOARD_URL}ext/orynider/customheadernfo/styles/prosilver/theme/images/fastforward.png" width="16" height="16" alt="{{ lang('NEXT_SCROLL') }}" />
 	</a> 
-	<a href="#" title="{L_STOP_SCROLL}" id="stopb">
-		<img src="{BOARD_URL}ext/orynider/customheadernfo/styles/prosilver/theme/images/control_stop.png" width="16" height="16" alt="{L_STOP_SCROLL}" />
+	<a href="#" title="{{ lang('STOP_SCROLL') }}" id="stopb">
+		<img src="{BOARD_URL}ext/orynider/customheadernfo/styles/prosilver/theme/images/control_stop.png" width="16" height="16" alt="{{ lang('STOP_SCROLL') }}" />
 	</a> 
-	<a href="#" title="{L_START_SCROLL}" id="startb">
-		<img src="{BOARD_URL}ext/orynider/customheadernfo/styles/prosilver/theme/images/control_play.png" width="16" height="16" alt="{L_START_SCROLL}" />
+	<a href="#" title="{{ lang('START_SCROLL') }}" id="startb">
+		<img src="{BOARD_URL}ext/orynider/customheadernfo/styles/prosilver/theme/images/control_play.png" width="16" height="16" alt="{{ lang('START_SCROLL') }}" />
 	</a>
 	</div>
 <!-- IF HEADER_INFO_IS_COLLAPSIBLE -->
@@ -27,7 +27,7 @@
 		data-hidden="{S_HEADER_INFO_HIDDEN}"
 		data-ajax="phpbb_collapse"
 		data-overlay="true"
-		title="{L_COLLAPSIBLE_CATEGORIES_TITLE}">
+		title="{{ lang('COLLAPSIBLE_CATEGORIES_TITLE') }}">
 </a>
 <!-- ENDIF -->
 	<div class="vertical-tickerb">   
@@ -56,7 +56,7 @@
 					 <!-- IF header_info_scroll.S_SIMPLE_DB_TEXT_ENABLED --></div><!-- ENDIF -->
 			    </li>
 		    <!-- BEGINELSE -->
-			<span class="center-inforoll">{L_HEADER_INFO_SCROLL_NOTHING}</span>
+			<span class="center-inforoll">{{ lang('HEADER_INFO_SCROLL_NOTHING') }}</span>
 		    <!-- END header_info_scroll --> 
 		</ul>
 	</div> 

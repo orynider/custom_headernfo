@@ -36,15 +36,37 @@ $lang = array_merge($lang, array(
 
 	'HEADER_INFO_VERSION'								=> 'Version',
  	'HEADER_INFO_CHECK'									=> 'Check Manually at <a href="http://mxpcms.sf.net/forum/index.php"><strong>Forum Home</strong></a>',
-
 	'HEADER_INFO_EDIT'										=> 'Edit header info item to database.',
+
+	'ROW_HEIGHT'											=> 'Height of each ticker row in PX',
+	'ROW_HEIGHT_EXPLAIN'								=> 'Each banner is loaded in in the info ticker as a row using this JavaScript aplication. Height of each ticker row should be uniform.',
+
+	'SPEED'														=> 'Speed of transition animation in milliseconds',
+	'SPEED_EXPLAIN'										=> 'Speed of transition animation between banner scrolling in the info ticker.',
+
+	'INTERVAL'												=> 'Time between change in milliseconds',
+	'INTERVAL_EXPLAIN'									=> 'Time to read the info before scrolling the ticker.',
+
+	'MOUSESTOP'											=> 'Stop on mouseover the ticker',
+	'MOUSESTOP_EXPLAIN'								=> 'If set to true, the ticker will stop on mouseover.',
+
+	'INFO_DIRECTION'										=> 'The scrolling direction',
+	'INFO_DIRECTION_EXPLAIN'						=> 'Direction in witch the list will scroll. That is up or down.',
+
+	'HEADER_INFO_EDIT'										=> 'Edit header info item to database',
 	'HEADER_INFO_ADD'									    => 'Add header info item to database.',
 
-	'HEADER_INFO_NAME'									=> 'Name',
-	'HEADER_INFO_NAME_EXPLAIN'						=> 'Name of new header info item. The name will appear in the header_info tooltip when you navigate with the mouse above.',
+	'HEADER_INFO_NAME'									=> 'Banner Title Name',
+	'HEADER_INFO_NAME_EXPLAIN'						=> 'Title of new header info item. The title will appear in the header_info tooltip when you navigate with the mouse above.',
+
+	'HEADER_INFO_TITLE_PIXELS'							=> 'Banner Title Size',
+	'HEADER_INFO_TITLE_PIXELS_EXPLAIN'			=> 'Sets the number of pixels for banner title.<br /><em>The default for prosilver is 12px.</em>',
 
 	'HEADER_INFO_DESC'										=> 'Short Description',
 	'HEADER_INFO_DESC_EXPLAIN'						=> 'Short description of new header info item. The description will appear in the header info tooltip when you navigate with the mouse above.',
+
+	'HEADER_INFO_DESC_PIXELS'							=> 'Banner Description Size',
+	'HEADER_INFO_DESC_PIXELS_EXPLAIN'			=> 'Sets the number of pixels for banner description.',
 
 	'HEADER_INFO_LONGDESC'								=> 'Long Description',
 	'HEADER_INFO_LONGDESC_EXPLAIN'				=> 'Long description of new header info item. The description will appear in the header info tooltip when you navigate with the mouse above. Note: Maximum 255 characters',
@@ -74,7 +96,9 @@ $lang = array_merge($lang, array(
 	'HEADER_INFO_DESC_COLOUR_EXPLAIN'		=> 'Select a colour for the header info description text.<br />Setting this option will apply, where possible, the same gradient offsets to the text colour that are used in “prosilver”.<br /><em>Default = #000000</em>',
 
 	'HEADER_INFO_OPTIONS'							=> 'Header options',
-
+	
+	'FILE_NOT_EXISTS'										=> 'This file dos not exist.',
+	
 	'HEADER_INFO_URL'									=> 'URL',
 	'HEADER_INFO_URL_EXPLAIN'						=> 'Enter the URL of the header info, If you want the internal and external links to be recognized automatically.',
 
@@ -137,10 +161,18 @@ $lang = array_merge($lang, array(
 	'SIMPLE_DB_TEXT'						        => 'Simple Database Text',
 	'SIMPLE_BG_LOGO'						        => 'Simple Background Logo',
 
+	'SP_WATERMARK' 							=> 'WaterMark Settings',
+	'SP_WATERMARK_EXPLAIN' 			=> 'Configure a WaterMark i.e. the categoty language directory to be placed on the thumbnail banner.',
+
+	'WATERMARK' 						        => 'Use WaterMark',
+
+	'WATERMARK_PLACENT' 				        => 'WaterMark position on the banner',
+	'WATERMARK_PLACENT_EXPLAIN'	         => 'Select the position were the WaterMark to be placed on the banner.',
+
 	'BACKGROUNDS_DIR'								=> 'Header\'s Info backgrounds directory.',
 	'BACKGROUNDS_PATH'							=> 'Header\'s Info backgrounds image storage path',
 	'BACKGROUNDS_DIR_EXPLAIN' 				=> 'Path under your phpBB root directory, e.g. <samp>images/backgrounds</samp>.',
-	
+
 	'HEADER_INFO_DIR'							        => 'Header\'s Info language directory.',
 	'HEADER_INFO_PATH'							        => 'Header\'s Info text language storage path.',
 	'HEADER_INFO_DIR_EXPLAIN'				        => 'Path under your phpBB root directory, e.g. <samp>language/politics</samp>.',

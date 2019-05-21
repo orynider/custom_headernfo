@@ -38,15 +38,17 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge($lang, array(
 	'HEADER_INFO_TITLE'									=> 'Header Info Personalizat',
-	'CUSTOM_TEXT' 										=> 'Text forum header personalizat',
+	'CUSTOM_TEXT' 											=> 'Text forum header personalizat',
 	'NO_CUSTOM_TEXT' 									=> 'Nu există text personalizat',
+	'COULDNT_GET'											=> 'Nu se poate obţine',
+	'CONFIG'														=> 'Configurare',
 	'BACKGROUNDS_PATH_EXPLAIN' 				=> 'Path under your phpBB root path, e.g. <samp>ext/orynider/customheadernfo/styles/all/images/backgrounds/</samp>.',
 	'CUSTOM_HEADER_BACKGROUND' 				=> 'Imagine fundal header persolaizată',
 	'NO_HEADER_BACKGROUND' 						=> 'Nu există imagine de fundal header personalizată',
 	'HEADER_INFO_SCROLL_INDEX'					=> 'Random Header Banner Scroll',
 	'HEADER_INFO_SCROLL_NOTHING'				=> 'Nu există nici o informaţie în header info personalizat',
-	'CLICK_TO_SELECT'									=> 'Dă click in boxă să selectezi o coloană',
-	'PIXELS'												=> 'pilxeli',
+	'CLICK_TO_SELECT'										=> 'Dă click in boxă să selectezi o coloană',
+	'PIXELS'														=> 'pilxeli',
 	//Language Categories
 	'bibledates' 											=> 'Date Biblice',
 	'biblequotes' 										=> 'Citate Biblice',

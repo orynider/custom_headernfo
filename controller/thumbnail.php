@@ -76,13 +76,13 @@ class thumbnail
 	*
 	 * @param \phpbb\config\config							        $config
 	 * @param \phpbb\language\language							$language
-	* @param \phpbb\template\template		 						$template
+	* @param \phpbb\template\template		 					$template
 	* @param \phpbb\user													$user
 	* @param \phpbb\log													$log
 	* @param \phpbb\cache\service									$cache
-	* @param \orynider\pafiledb\core\functions_cache			$functions_cache
+	* @param \orynider\pafiledb\core\functions_cache		$functions_cache
 	* @param \phpbb\db\driver\driver_interface					$db
-	* @param \phpbb\request\request		 							$request
+	* @param \phpbb\request\request		 						$request
 	* @param \phpbb\pagination										$pagination
 	* @param \phpbb\extension\manager							$ext_manager
 	* @param \phpbb\path_helper										$path_helper
@@ -110,20 +110,20 @@ class thumbnail
 		$custom_header_info_config_table,
 		\phpbb\files\factory $files_factory = null)
 	{
-		$this->config							 				= $config;
+		$this->config							 			= $config;
 		$this->language									= $language;
 		$this->template 									= $template;
 		$this->user 											= $user;
 		$this->log 											= $log;
 		$this->cache 										= $cache;
-		$this->db 												= $db;
-		$this->request 										= $request;
-		$this->pagination 									= $pagination;
+		$this->db 											= $db;
+		$this->request 									= $request;
+		$this->pagination 								= $pagination;
 		$this->ext_manager	 							= $ext_manager;
-		$this->path_helper	 								= $path_helper;
-		$this->php_ext 										= $php_ext;
+		$this->path_helper	 							= $path_helper;
+		$this->php_ext 									= $php_ext;
 		$this->root_path 									= $root_path;
-		$this->custom_header_info_table 			= $custom_header_info_table;
+		$this->custom_header_info_table 		= $custom_header_info_table;
 		$this->custom_header_info_config_table	= $custom_header_info_config_table;
 		$this->files_factory 								= $files_factory;
 
@@ -139,21 +139,15 @@ class thumbnail
 		global $debug;
 
 		// Read out config values
-		//$custom_header_info_config = $this->config_values();
-		//$this->backend = $this->confirm_backend();
-		//$language->set_default_language($this->user->data['user_lang']);
-		//$language->add_lang(array('common', 'acp/common', 'cli'));
-		//$user->setup();
 		$this->language_from = (isset($this->config['default_lang'])) ? $this->config['default_lang'] : $this->user->lang['USER_LANG'];
 		$this->language_into = (isset($this->user->data['user_lang'])) ? $this->user->data['user_lang'] : $this->language_from;
 		
-		//print_r($custom_header_info_config);
 	}
 	
 	/**
 	 * Enter description here...
-	 *
-	 * @param unknown_type $action
+	*
+	* @param string $action Custom form action
 	 */
 	function handle_thumbnail( $action  = false )
 	{
@@ -165,8 +159,8 @@ class thumbnail
 		// Read out config values
 		$custom_header_info_config = $this->config_values();
 		
-		// get languages installed
-		//$this->countries = $this->get_countries();
+		// get countries if is required and installed languages		
+		$this->countries = $this->get_countries();
 		// get packs installed and init some variables
 		$this->packs = $this->load_lang_dirs($this->module_root_path);
 		// =======================================================
@@ -181,7 +175,7 @@ class thumbnail
 		$header_info_desc = $row['header_info_desc'];
 		$header_info_longdesc = $row['header_info_longdesc'];
 		$header_info_type = $row['header_info_type'];
-		$header_info_dir = $row['header_info_dir']; //ext/orynider/customheadernfo/language/movies/
+		$header_info_dir = $row['header_info_dir']; //i.e. ext/orynider/customheadernfo/language/movies/
 		$header_info_font = $row['header_info_font'];
 		
 		$db_width = $row['header_info_pic_width'];
@@ -386,7 +380,6 @@ class thumbnail
 		$pic_desc2_1 = $this->convert_encoding(mb_substr($pic_desc2, 0, $middle_desc2));
 		$pic_desc2_2 = $this->convert_encoding(mb_substr($pic_desc2, $middle_desc2));
 
-		//die(print_r($pic_offset_desc1, true));
 		$resize_height = (($header_info_font_size * mb_strlen($pic_desc, 'utf-8')) >= $resize_width) ? $resize_height + (2 * $header_info_font_size) : ((!empty($pic_desc2_2)) ? $resize_height + $header_info_font_size  : $resize_height);
 		//$resize_height = (!empty($pic_desc2_2)) ? $resize_height + $header_info_font_size : $resize_height;
 
@@ -403,7 +396,6 @@ class thumbnail
 		$pic_offset_desc1 = !empty($pic_desc1_2) ? mb_strlen($pic_desc1_2, 'utf-8') - $resize_height + $header_info_title_font_size + 14 : 0;
 		$pic_offset_desc2 =!empty($pic_desc2_2) ? mb_strlen($pic_desc2_2, 'utf-8') - $resize_height + $header_info_title_font_size + 9 : 0;
 
-		//die(print_r($pic_offset_desc1 * mb_strlen($pic_desc1, 'utf-8'), true));
 		if ((($pic_offset_desc1 * mb_strlen($pic_desc1, 'utf-8')) >= $resize_width) && (($pic_offset_desc2 * mb_strlen($pic_desc2, 'utf-8')) >= $resize_width))
 		{
 			//Description Split Level 3
@@ -650,14 +642,12 @@ class thumbnail
 		//										transition is the transparency level to be applied on the watermark)
 		//   Returns : true on success and false on fail
 		//****************************************************************************
-		//die(print_r($custom_header_info_config['disp_watermark_at'], true));
 		if ($custom_header_info_config['use_watermark'] == 1)
 		{
 			ImageTtfText($im, $header_info_font_size, 0,  $dest_x, $dest_y, $desc_colour, $font, $wm);
 		}
 		ImagePNG($im);
 		ImageDestroy($im);
-		exit;
 	}
 
 	/**
@@ -675,16 +665,16 @@ class thumbnail
 		{
 			$sql = "SELECT *
 				FROM " . $this->custom_header_info_config_table;
-			if ( !( $result = $this->db->sql_query($sql) ) )
-			{
-				$this->message_die( GENERAL_ERROR, 'Couldnt query portal configuration', '', __LINE__, __FILE__, $sql );
-			}
+			$result = $this->db->sql_query($sql);
 			while ( $row = $this->db->sql_fetchrow($result) )
 			{
 				$config[$row['config_name']] = trim($row['config_value']);
 			}
 			$this->db->sql_freeresult($result);
-			
+			if ( empty($config) )
+			{		
+				msg_handler(E_USER_ERROR, $this->user->lang['COULDNT_GET'] . ' ' . $this->ext_name . ' ' . $this->user->lang['CONFIG'], __FILE__, __LINE__);
+			}			
 			$this->cache->put('custom_header_info_config', $config);
 			
 			return($config);
@@ -1247,32 +1237,6 @@ class thumbnail
 		$entries = array();
 
 		// process by countries first
-		/* MG Lang DB - BEGIN */
-		/*
-		@reset($countries);
-		while (list($country_dir, $country_name) = @each($countries))
-		{
-			// phpBB lang keys
-			$pack_file = 'lang';
-			$this->read_one_pack($country_dir, $pack_file, $entries);
-		}
-
-		// process other packs except custom one
-		@reset($countries);
-		while (list($country_dir, $country_name) = @each($countries))
-		{
-			@reset($packs);
-			while (list($pack_file, $pack_name) = @each($packs))
-			{
-				if (($pack_file != 'lang') && ($pack_file != 'custom'))
-				{
-					$this->read_one_pack($country_dir, $pack_file, $entries);
-				}
-			}
-		}
-		*/
-		/* MG Lang DB - END */
-
 		/* MG Lang DB - BEGIN */
 		@reset($countries);
 		while (list($country_dir, $country_name) = @each($countries))
@@ -2563,7 +2527,31 @@ class thumbnail
 		return preg_match('/' . $pattern . '/i', $string, $matches);
 	}
 	
-
+	/* replacement for stripslashes(); */
+	function removeslashes($string, $all = true) 
+	{  	
+		//remove also slashes inside the string
+		//or remove only leading and trailing slashes		
+		return ($all !== false)  ? str_replace('/', '', $string)  : trim($string, '/');
+	}
+	
+	/* replacement for print_r(array(), true); */
+	function array_to_string($val, $all = true) 
+	{  	
+			if(is_array($val))
+			{
+				foreach($val as $k => $v)
+				{
+					$val[$k] = $this->removeslashes($v);
+				}
+				return $k . ', ' . $v;
+			}
+			else
+			{
+				$val = $this->removeslashes($val);
+				return $val;
+			}
+	}
 	
 	function clean_string($string)
 	{
@@ -2579,7 +2567,7 @@ class thumbnail
 			"\n",
 		);
 
-		$string = str_replace($array_find, $array_replace, stripslashes(print_r($string, true)));
+		$string = str_replace($array_find, $array_replace, $this->array_to_string($string, true));
 		return $string;
 	}
 // THE END

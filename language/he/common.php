@@ -38,8 +38,10 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge($lang, array(
 	'HEADER_INFO_TITLE'							=> 'מידעות כותרת מותאמ אישית',
-	'CUSTOM_TEXT' 								=> 'טקסט כותרת פורום המותאם אישית',
+	'CUSTOM_TEXT' 									=> 'טקסט כותרת פורום המותאם אישית',
 	'NO_CUSTOM_TEXT' 							=> 'אין טקסט מותאם אישית',
+	'COULDNT_GET'									=> 'Couldnt get',
+	'CONFIG'												=> 'הגדרות בסיס נתונים',
 	'BACKGROUNDS_PATH_EXPLAIN' 		=> 'נתיב תחת תיקיית המערכת של phpBB3 לגלריית הסמלים האישיים, למשל <samp>ext/orynider/customheadernfo/styles/all/images/backgrounds/</samp>.<br />Double dots like <samp>../</samp> will be stripped from the path for security reasons.',
 	'CUSTOM_HEADER_BACKGROUND' 		=> 'תמונת כותרת מותאמת אישית',
 	'NO_HEADER_BACKGROUND' 				=> 'אין תמונה',

@@ -17,7 +17,7 @@
 	<!-- IF HEADER_INFOVERSION -->
         <dl>
 				<dt><label for="header_info_version">{{ lang('HEADER_INFO_VERSION') }}</label><br /><span>{{ lang('HEADER_INFO_CHECK') }}</span></dt>
-				<dd><input type="text" size="40" id="header_info_version" name="header_info_version" value="{HEADER_INFOVERSION}"  {READONLY} /></dd>
+				<dd><input type="text" size="40" id="header_info_version" name="header_info_version" value="{HEADER_INFOVERSION}"  readonly="readonly" /></dd>
 		</dl>
 	<!-- ENDIF -->
 		<dl>
@@ -343,7 +343,7 @@
 	<tbody>
 	<!-- BEGIN header_info_scroll -->
 		<!-- IF header_info_scroll.HEADER_INFO_DB_FONT eq '' -->
-		Thumbnail Font Dadabase Error! for item id: {header_info_scroll.HEADER_INFO_ID} <br />
+		{{ lang('THUMBNAIL_FONT_DADABASE_ERROR_FOR_ID') }}{{ lang('COLON') }} {header_info_scroll.HEADER_INFO_ID} <br />
 		<!-- INCLUDECSS @orynider_customheadernfo/tituscbz.css -->
 		<!-- ELSE -->
 		<!-- INCLUDECSS @orynider_customheadernfo/{header_info_scroll.HEADER_INFO_DB_FONT}.css -->

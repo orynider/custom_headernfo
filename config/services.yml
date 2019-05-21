@@ -34,6 +34,7 @@ services:
             - '@pagination'
             - '@ext.manager'
             - '@path_helper'
+            - '@language'
             - '%core.php_ext%'
             - '%core.root_path%'
             - '%orynider.customheadernfo.table.custom_header_info%'

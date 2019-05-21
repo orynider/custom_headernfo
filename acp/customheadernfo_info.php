@@ -21,8 +21,6 @@ class customheadernfo_info
 			'title'			=> 'ACP_HEADER_INFO_TITLE',
 			'modes'			=> array(
 				'config'		=> array('title' => 'ACP_HEADER_INFO_CONFIG', 'auth' => 'ext_orynider/customheadernfo && acl_a_headernfo', 'cat' => array('ACP_HEADER_INFO_TITLE')),
-				//'forums'		=> array('title' => 'ACP_MANAGE_FORUMS', 'auth' => 'ext_orynider/customheadernfo && acl_a_headernfo', 'cat' => array('ACP_HEADER_INFO_TITLE')),
-				//'pages'		=> array('title' => 'ACP_MANAGE_PAGES', 'auth' => 'ext_orynider/customheadernfo && acl_a_headernfo', 'cat' => array('ACP_HEADER_INFO_TITLE')),
 			),
 		);
 	}

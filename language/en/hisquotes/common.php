@@ -23,7 +23,13 @@ if (empty($lang) || !is_array($lang))
 {
 	$lang = array();
 }
-  
+ /*
+* Note that You should also activate every language also uploaded in the main phpBB/language directory. 
+* 
+ To Do: We should think on a dedicated directory for multilangual files such as 'multilang' 
+			for the files we are currently storing in language subdirectories from were we can import 
+			or export using a ACP feature all the keys and values using DB table as FAQ Manager does.
+*/ 
 $lang = array_merge($lang, array(
 	'Iūoḥēnān 6:35, Khabouris_C'	=> 'Says to them Yêshūoa: I! I Bread of Lifes from (those that) cometh towards-Me shall not hunger and from of believing in Me will not thirst to eternity .',
 	'Iūoḥēnān 6:51, Khabouris_C'	=> 'I! I bread that will descend from heavens .',
