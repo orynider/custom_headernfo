@@ -4,7 +4,7 @@
 <br>
 <span style="color:purple"><span style="font-size:120%;line-height:116%"><strong class="text-strong">Extension Description:</strong></span></span> This extension allows you to insert custom text in the header bar, after overall_footer, after overall_header breadcrumbs, before overall_header content, append in overall_header head, after overall_header header bar, before page body, and before searchbox. <br>
 	<br>
-<span style="color:purple"><span style="font-size:120%;line-height:116%"><strong class="text-strong">Extension Version:</strong></span></span> 0.8.9<br>
+<span style="color:purple"><span style="font-size:120%;line-height:116%"><strong class="text-strong">Extension Version:</strong></span></span> 1.0.0<br>
 <br>
 <span style="color:purple"><span style="font-size:120%;line-height:116%"><strong class="text-strong">Requirements:</strong></span></span>  
 		"php": ">=5.4.0",<br>
