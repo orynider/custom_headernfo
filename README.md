@@ -6,8 +6,14 @@
 	<br>
 <span style="color:purple"><span style="font-size:120%;line-height:116%"><strong class="text-strong">Extension Version:</strong></span></span> 0.8.9<br>
 <br>
-<span style="color:purple"><span style="font-size:120%;line-height:116%"><strong class="text-strong">Requirements:</strong></span></span>  "php": "&gt;=5.3.3",<br>
-"phpbb/phpbb": "&gt;=3.1.0,&lt;3.3.0@dev"<br>
+<span style="color:purple"><span style="font-size:120%;line-height:116%"><strong class="text-strong">Requirements:</strong></span></span>  
+		"php": ">=5.4.0",<br>
+		"ext-mbstring": "*",<br>
+		"ext-gd2": "*",<br>
+		"composer/installers": "~1.0",<br>
+<br>
+"phpbb/phpbb": "&gt;=3.1.0,&lt;3.3.0@dev"
+<br>
 <br>
 <span style="color:purple"><span style="font-size:120%;line-height:116%"><strong class="text-strong">Features:</strong></span></span>
 <ul><li><strong class="text-strong">ACP</strong>: You can seclect a place were to display.</li>
