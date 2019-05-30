@@ -70,7 +70,19 @@ class thumbnail
 
 	/** @var \phpbb\files\factory */
 	protected $files_factory;
-
+	
+	/** @array language_list */	
+	protected $language_list = array();
+	
+	/** @var dir_select_from */	
+	protected $dir_select_from;
+	
+	/** @var dir_select_into */	
+	protected $dir_select_into;
+	
+	/** @var backend */		
+	protected $backend;
+	
 	/**
 	* Constructor
 	*
@@ -91,6 +103,9 @@ class thumbnail
 	* @param string 															$custom_header_info
 	* @param string 															$custom_header_info_config
 	* @param \phpbb\files\factory										$files_factory
+	* @array $language_list
+	* @var $dir_select_from,
+	* @var $dir_select_into	
 	*
 	*/
 	public function __construct(
@@ -108,7 +123,10 @@ class thumbnail
 		$php_ext, $root_path,
 		$custom_header_info_table,
 		$custom_header_info_config_table,
-		\phpbb\files\factory $files_factory = null)
+		\phpbb\files\factory $files_factory = null,
+		$language_list = array(),
+		$dir_select_from = null,
+		$dir_select_into = null)
 	{
 		$this->config							 			= $config;
 		$this->language									= $language;
@@ -126,7 +144,7 @@ class thumbnail
 		$this->custom_header_info_table 		= $custom_header_info_table;
 		$this->custom_header_info_config_table	= $custom_header_info_config_table;
 		$this->files_factory 								= $files_factory;
-
+		$this->language_list								= $language_list;
 		$this->ext_name 		= $this->request->variable('ext_name', 'orynider/customheadernfo');
 		$this->module_root_path	= $this->ext_path = $this->ext_manager->get_extension_path($this->ext_name, true);
 		$this->ext_path_web		= $this->path_helper->update_web_root_path($this->module_root_path);
@@ -139,7 +157,7 @@ class thumbnail
 		global $debug;
 
 		// Read out config values
-		$this->language_from = (isset($this->config['default_lang'])) ? $this->config['default_lang'] : $this->user->lang['USER_LANG'];
+		$this->dir_select_from = $this->language_from = (isset($this->config['default_lang'])) ? $this->config['default_lang'] : $this->user->lang['USER_LANG'];
 		$this->language_into = (isset($this->user->data['user_lang'])) ? $this->user->data['user_lang'] : $this->language_from;
 		
 	}
@@ -177,7 +195,7 @@ class thumbnail
 		$header_info_type = $row['header_info_type'];
 		$header_info_dir = $row['header_info_dir']; //i.e. ext/orynider/customheadernfo/language/movies/
 		$header_info_font = $row['header_info_font'];
-		
+		$thumbnail_width = $thumbnail_height = 0;
 		$db_width = $row['header_info_pic_width'];
 		$db_height = $row['header_info_pic_height'];
 		
@@ -195,12 +213,11 @@ class thumbnail
 		$this->language_into = is_file($this->module_root_path . 'language/' . $this->language_into . '/' . $header_info_dir . '/common.' . $this->php_ext) ? $this->language_into : 'en';
 		$this->entries = $this->load_lang_file($this->module_root_path . 'language/' . $this->language_into . '/' . $header_info_dir . '/common.' . $this->php_ext);
 		
-		//die(print_r($this->language_into, true));
 		//$row['header_info_desc_colour'] 	= isset($this->user->lang["{$header_info_dir}_colour"]) ? $this->user->lang["{$header_info_dir}_colour"] : $row['header_info_desc_colour'];
 		
 		$header_info_title_colour		= isset($row['header_info_title_colour']) ? $row['header_info_title_colour'] : '';
-		$header_info_title_colour_1		= isset($row['header_info_title_colour']) ? $this->get_gradient_colour($row['header_info_title_colour'], 1) : '';
-		$header_info_title_colour_2		= isset($row['header_info_title_colour']) ? $this->get_gradient_colour($row['header_info_title_colour'], 2) : '';
+		$header_info_title_colour_1	= isset($row['header_info_title_colour']) ? $this->get_gradient_colour($row['header_info_title_colour'], 1) : '';
+		$header_info_title_colour_2	= isset($row['header_info_title_colour']) ? $this->get_gradient_colour($row['header_info_title_colour'], 2) : '';
 		$header_info_desc_colour		= isset($row['header_info_desc_colour']) ? $row['header_info_desc_colour'] : '';
 		$header_info_desc_colour_1	= isset($row['header_info_desc_colour']) ? $this->get_gradient_colour($row['header_info_desc_colour'], 1) : '';
 		$header_info_desc_colour_2	= isset($row['header_info_desc_colour']) ? $this->get_gradient_colour($row['header_info_desc_colour'], 2) : '';
@@ -395,7 +412,7 @@ class thumbnail
 
 		$pic_offset_desc1 = !empty($pic_desc1_2) ? mb_strlen($pic_desc1_2, 'utf-8') - $resize_height + $header_info_title_font_size + 14 : 0;
 		$pic_offset_desc2 =!empty($pic_desc2_2) ? mb_strlen($pic_desc2_2, 'utf-8') - $resize_height + $header_info_title_font_size + 9 : 0;
-
+		$dimension_desc_y = 1;
 		if ((($pic_offset_desc1 * mb_strlen($pic_desc1, 'utf-8')) >= $resize_width) && (($pic_offset_desc2 * mb_strlen($pic_desc2, 'utf-8')) >= $resize_width))
 		{
 			//Description Split Level 3
@@ -1093,7 +1110,7 @@ class thumbnail
 		$php_ext = $this->php_ext;
 		if (!file_exists($root_path . 'mx_meta.inc') && !file_exists($root_path . 'modcp'.$php_ext))
 		{
-			$language = $this->encode_lang($language);
+			$language = $this->encode_lang($this->language_from);
 			if ($this->language_from == '')
 			{
 				$this->language_from = 'en';

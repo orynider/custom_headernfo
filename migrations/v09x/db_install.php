@@ -25,7 +25,6 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 	 */
 	static public function depends_on()
 	{
-		//return array('\phpbb\db\migration\data\v31x\v314');
 		return array('\phpbb\db\migration\data\v320\v320');
 	}
 
@@ -53,6 +52,7 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 						'header_info_dir'				=> array('VCHAR:255', ''), //langSubDir ie: 'movies'
 						'header_info_font'				=> array('VCHAR:190', 'tituscbz'), 
 						'header_info_type'				=> array('VCHAR:190', ''),
+						'header_info_link'				=> array('TINT:2', 1),
 						'header_info_url'				=> array('MTEXT_UNI', ''),
 						'header_info_image'	    	=> array('MTEXT_UNI', ''),
 						'header_info_image_link'		=> array('TINT:1', 0),
@@ -102,8 +102,8 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 		return array(
 			
 			// Add configs
-			array('config.add', array('header_info_enable', 0)),
-			array('config.add', array('header_info_version', '0.8.9')),
+			array('config.add', array('header_info_enable', '0')),
+			array('config.add', array('header_info_version', '1.0.0')),
 			
 			// Add permissions
 			array('permission.add', array('a_headernfo_use', true)),
@@ -224,16 +224,15 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 		foreach (self::$configs as $key => $new_value)
 		{
 			// Read out old config db values
-			$old_value = !isset($customheadernfo_config[$key]) ? $customheadernfo_config[$key] : false;
-			// We keep out old config db values
-			//$new_value = !isset($customheadernfo_config[$key]) ? $customheadernfo_config[$key] : $new_value;		
-			
-			if ($old_value !== false)
+			$value = isset($customheadernfo_config[$key]) ? $customheadernfo_config[$key] : $new_value;
+		
+			$sql = "";
+			if ($value !== false)
 			{
-				$sql .= " AND config_value = '" . $this->db->sql_escape($old_value) . "'";
+				$sql .= " AND config_value = '" . $this->db->sql_escape($value) . "'";
 			}
 		
-			if (isset(self::$is_dynamic[$config_name]))
+			if (isset(self::$is_dynamic[$key]))
 			{
 				$use_cache  = true;
 			}
@@ -245,18 +244,18 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 			if (isset($customheadernfo_config[$key]))
 			{
 				$sql = 'UPDATE ' . $this->custom_header_info_config_table . "
-					SET config_value = '" . $this->db->sql_escape($new_value) . "'
+					SET config_value = '" . $this->db->sql_escape($value) . "'
 					WHERE config_name = '" . $this->db->sql_escape($key) . "'";
 			}
 			else
 			{
 				$sql = 'INSERT INTO ' . $this->custom_header_info_config_table . ' ' . $this->db->sql_build_array('INSERT', array(
 					'config_name'	=> $key,
-					'config_value'	=> $new_value,
+					'config_value'	=> $value,
 					'is_dynamic'	=> ($use_cache) ? 0 : 1));
 			}
 			$this->db->sql_query($sql);
-			$this->customheadernfo_config[$key] = $customheadernfo_config[$key] = $new_value;
+			$this->customheadernfo_config[$key] = $customheadernfo_config[$key] = $value;
 		}
 		return true;
 	}

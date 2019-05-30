@@ -66,7 +66,9 @@ class admin_controller
 
 	/** @var \phpbb\files\factory */
 	protected $files_factory;
-
+	
+	protected $config;
+	
 	/**
 	* Constructor
 	*
@@ -85,6 +87,8 @@ class admin_controller
 	* @param string 													$custom_header_info
 	* @param string 													$custom_header_info_config
 	* @param \phpbb\files\factory								$files_factory
+	* @param \phpbb\config\config 							$config
+	* @var $custom_header_info_config
 	*
 	*/
 	public function __construct(
@@ -101,7 +105,9 @@ class admin_controller
 		$php_ext, $root_path,
 		$custom_header_info_table,
 		$custom_header_info_config_table,
-		\phpbb\files\factory $files_factory = null)
+		\phpbb\files\factory $files_factory = null,
+		$custom_header_info_config,
+		$config)
 	{
 		$this->template 				= $template;
 		$this->user 						= $user;
@@ -115,7 +121,9 @@ class admin_controller
 		$this->language				= $language;
 		$this->php_ext 				= $php_ext;
 		$this->root_path 				= $root_path;
-		
+		$this->config					= $config;
+		$this->custom_header_info_config = $custom_header_info_config;
+			
 		$this->custom_header_info_table = $custom_header_info_table;
 		$this->custom_header_info_config_table 	= $custom_header_info_config_table;
 		
@@ -243,8 +251,8 @@ class admin_controller
 				'HEADER_INFO_TYPE_SELECT'			=> $header_info_type_select,
 				'HEADER_INFO_DIR'							=> $this->user->lang[$row['header_info_dir']],
 				'HEADER_INFO_TYPE'						=> $row['header_info_type'],
-				'HEADER_INFO_DIR_SELECT' 			=> $this->gen_lang_dirs_select_list('html', 'header_info_dir', $row['header_info_dir']), //ext/orynider/customheadernfo/language/movies/
-				'HEADER_INFO_FONT_SELECT' 			=> $this->gen_fonts_select_list('html', 'header_info_font', $row['header_info_font']), //ext/orynider/customheadernfo/assets/fonts/
+				'HEADER_INFO_DIR_SELECT' 			=> $this->gen_lang_dirs_select_list('html', 'header_info_dir', $row['header_info_dir']), 
+				'HEADER_INFO_FONT_SELECT' 			=> $this->gen_fonts_select_list('html', 'header_info_font', $row['header_info_font']), 
 				'HEADER_INFO_DB_FONT' 				=> substr($header_info_font, 0, strrpos($header_info_font, '.')),
 				'HEADER_INFO_IMAGE'						=> $row['header_info_image'],
 				'THUMBNAIL_URL'   							=> generate_board_url() . '/app.php/thumbnail',

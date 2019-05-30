@@ -70,14 +70,13 @@ class listener implements EventSubscriberInterface
 		$this->language_into	= (isset($this->user->lang['USER_LANG'])) ? $this->user->lang['USER_LANG'] : $this->language_from;
 		
 		$this->template->assign_vars(array(
-			//'S_HEADER_INFO_POSITION'	=> (!empty($this->header_info_config['banner_position'])) ? true : false,
 			'S_HEADER_INFO_ENABLED' 	=> (!empty($this->header_info_config['header_info_enable'])) ? true : false,
 			'S_HEADER_INFO_POSITION1'	=> (!empty($this->header_info_config['banner_position1'])) ? true : false,
 			'S_HEADER_INFO_POSITION2'	=> (!empty($this->header_info_config['banner_position2'])) ? true : false,
 			'S_HEADER_INFO_POSITION3'	=> (!empty($this->header_info_config['banner_position3'])) ? true : false,
 			'S_HEADER_INFO_POSITION4'	=> (!empty($this->header_info_config['banner_position'])) ? true : false,
 			'S_THUMBNAIL'   					=> (@function_exists('gd_info') && (@count(@gd_info()) !== 0)), 
-			'MODULE_NAME'					=> $this->header_info_config['module_name'], // settings_dbname
+			'MODULE_NAME'					=> $this->header_info_config['module_name'], 
 			'WYSIWYG_PATH'					=> $this->header_info_config['wysiwyg_path'],
 			'BACKGROUNDS_DIR'			=> $this->header_info_config['backgrounds_dir'],
 			'BANNERS_DIR'		   				=> $this->header_info_config['banners_dir'],
@@ -88,8 +87,8 @@ class listener implements EventSubscriberInterface
 			'MAX_ITEMS'						=> $this->header_info_config['show_amount'],	/* Integer for how many items to query and display at once. Resizes height accordingly (OPTIONAL) */
 			'MOUSESTOP'						=> $this->header_info_config['mousestop'],	/* If set to true, the ticker will stop on mouseover */
 			'DIRECTION'							=> $this->header_info_config['direction'],	/* Direction that list will scroll */
-			'SITE_HOME_URL'   				=> $this->header_info_config['site_home_url'], //PORTAL_URL
-			'PHPBB_URL'   						=> generate_board_url() . '/', //FORUM_URL
+			'SITE_HOME_URL'   				=> $this->config['board_url'], /* CMS or SITE URL */
+			'PHPBB_URL'   						=> generate_board_url() . '/', /* Forum URL */
 		));
 	}
 
@@ -260,9 +259,9 @@ class listener implements EventSubscriberInterface
 			// Populate corners
 			if ($row['header_info_image'])
 			{
-				$header_corners 	= ($row['header_info_left']) ? $row['header_info_pixels'] . 'px 0px 0px ' . $row['header_info_pixels'] . 'px' : $logo_corners;
-	 			$header_corners 	= ($row['header_info_right']) ? '0px ' . $row['header_info_pixels'] . 'px ' . $row['header_info_pixels'] . 'px 0px' : $logo_corners;
-				$header_corners 	= ($row['header_info_left'] && $row['header_info_right']) ? $row['header_info_pixels'] . 'px ' . $row['header_info_pixels'] . 'px ' . $row['header_info_pixels'] . 'px ' . $row['header_info_pixels'] . 'px' : $logo_corners;
+				$header_corners 	= ($row['header_info_left']) ? $row['header_info_pixels'] . 'px 0px 0px ' . $row['header_info_pixels'] . 'px' : $header_corners;
+	 			$header_corners 	= ($row['header_info_right']) ? '0px ' . $row['header_info_pixels'] . 'px ' . $row['header_info_pixels'] . 'px 0px' : $header_corners;
+				$header_corners 	= ($row['header_info_left'] && $row['header_info_right']) ? $row['header_info_pixels'] . 'px ' . $row['header_info_pixels'] . 'px ' . $row['header_info_pixels'] . 'px ' . $row['header_info_pixels'] . 'px' : $header_corners;
 			}
 			
 			//Populate info to display ends
