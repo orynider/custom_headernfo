@@ -58,6 +58,21 @@ class thumbnail
 
 	/** @var string phpBB root path */
 	protected $root_path;
+	
+	/**
+	* Name (including vendor) of the extension
+	* @var string
+	*/
+	protected $ext_name;
+	
+	/**
+	* Path to the module directory including root (sometime same with $ext_path)
+	* @var string
+	*/
+	protected $module_root_path;
+	
+	/** @var path helper web url to root */	
+	protected $ext_path_web;
 
 	/**
 	* The database tables
@@ -80,14 +95,20 @@ class thumbnail
 	/** @var dir_select_into */	
 	protected $dir_select_into;
 	
-	/** @var backend */		
-	protected $backend;
+	/** @array entries */		
+	protected $entries;
+	
+	/* @var get countries if is required and installed languages */		
+	var $countries;
+		
+	/* @var get packs installed */
+	var $packs;
 	
 	/**
 	* Constructor
 	*
-	 * @param \phpbb\config\config							        $config
-	 * @param \phpbb\language\language							$language
+	* @param \phpbb\config\config							        $config
+	* @param \phpbb\language\language							$language
 	* @param \phpbb\template\template		 					$template
 	* @param \phpbb\user													$user
 	* @param \phpbb\log													$log
@@ -146,28 +167,25 @@ class thumbnail
 		$this->files_factory 								= $files_factory;
 		$this->language_list								= $language_list;
 		$this->ext_name 		= $this->request->variable('ext_name', 'orynider/customheadernfo');
-		$this->module_root_path	= $this->ext_path = $this->ext_manager->get_extension_path($this->ext_name, true);
+		$this->module_root_path	= $this->ext_manager->get_extension_path($this->ext_name, true);
 		$this->ext_path_web		= $this->path_helper->update_web_root_path($this->module_root_path);
 
-		if (!class_exists('parse_message'))
-		{
-			include($this->root_path . 'includes/message_parser.' . $this->php_ext);
-		}
-
-		global $debug;
-
-		// Read out config values
-		$this->dir_select_from = $this->language_from = (isset($this->config['default_lang'])) ? $this->config['default_lang'] : $this->user->lang['USER_LANG'];
-		$this->language_into = (isset($this->user->data['user_lang'])) ? $this->user->data['user_lang'] : $this->language_from;
+		/* Check watever languages for thumbnail text are set and are uploaded or translated */
+		$this->language_from = (isset($this->config['default_lang']) && (is_dir($this->module_root_path . 'language/' . $this->config['default_lang']) . '/')) ? $this->config['default_lang'] : 'en';
+		$this->language_into	= (isset($user->lang['USER_LANG']) && (is_dir($this->module_root_path . 'language/' . $user->lang['USER_LANG']) . '/')) ? $user->lang['USER_LANG'] : $this->language_from;
 		
+		if (!is_dir($this->module_root_path . 'language/' . $this->language_from . '/'))
+		{
+			//Default language from uk english in case Resource id is #0 
+			$this->language_from = (is_dir($this->module_root_path . 'language/en/')) ?  'en' : $this->language_into;
+		}
 	}
 	
 	/**
-	 * Enter description here...
+	* Handle image thumbnail
 	*
-	* @param string $action Custom form action
-	 */
-	function handle_thumbnail( $action  = false )
+	*/
+	function handle_thumbnail()
 	{
 		// =======================================================
 		// Request vars
@@ -179,6 +197,7 @@ class thumbnail
 		
 		// get countries if is required and installed languages		
 		$this->countries = $this->get_countries();
+		
 		// get packs installed and init some variables
 		$this->packs = $this->load_lang_dirs($this->module_root_path);
 		// =======================================================
@@ -193,7 +212,7 @@ class thumbnail
 		$header_info_desc = $row['header_info_desc'];
 		$header_info_longdesc = $row['header_info_longdesc'];
 		$header_info_type = $row['header_info_type'];
-		$header_info_dir = $row['header_info_dir']; //i.e. ext/orynider/customheadernfo/language/movies/
+		$header_info_dir = $row['header_info_dir']; /* i.e. ext/orynider/customheadernfo/language/movies/ */
 		$header_info_font = $row['header_info_font'];
 		$thumbnail_width = $thumbnail_height = 0;
 		$db_width = $row['header_info_pic_width'];
@@ -212,8 +231,6 @@ class thumbnail
 		$this->language_into = is_file($this->module_root_path . 'language/' . $this->language_into . '/' . $header_info_dir . '/common.' . $this->php_ext) ? $this->language_into : $this->language_from;
 		$this->language_into = is_file($this->module_root_path . 'language/' . $this->language_into . '/' . $header_info_dir . '/common.' . $this->php_ext) ? $this->language_into : 'en';
 		$this->entries = $this->load_lang_file($this->module_root_path . 'language/' . $this->language_into . '/' . $header_info_dir . '/common.' . $this->php_ext);
-		
-		//$row['header_info_desc_colour'] 	= isset($this->user->lang["{$header_info_dir}_colour"]) ? $this->user->lang["{$header_info_dir}_colour"] : $row['header_info_desc_colour'];
 		
 		$header_info_title_colour		= isset($row['header_info_title_colour']) ? $row['header_info_title_colour'] : '';
 		$header_info_title_colour_1	= isset($row['header_info_title_colour']) ? $this->get_gradient_colour($row['header_info_title_colour'], 1) : '';
@@ -240,29 +257,21 @@ class thumbnail
 		}
 		else
 		{
-			$i = count($this->entries);
+			$i = count($this->entries) -1;
+			//Overwrite ramdom in ext.php, for ex. ?rand=29 for $j = 29.
 			$j = $this->request->variable('rand', rand(0, $i));
-			//$j = 29;
 			$l_keys = array_keys($this->entries);
 			$l_values = array_values($this->entries);
 			$pic_title = $l_keys[$j];
 			$pic_desc = $l_values[$j];
 		}
-		//die(print_r($pic_desc, true));
-		//$pic_desc = "ויענך וירעבך ויאכלך את המן אשר לא ידעת ולא ידעון אבתיך  למען הודיעך כי לא על הלחם לבדו יחיה האדם—כי על כל מוצא פי יהוה יחיה האדם";
-		//$pic_title = 'Test... Benjamin Netanyahu on ISIS and Nuclear Weapons, before the UN General Assembly, 03.03.2015.';
-		//$pic_desc = '"Test... They just disagree among themselves who will be the ruler of that empire. In this deadly game of thrones, there is no place for America or for Israel, no peace for Christians, Jews, or Muslims who don\'t share the Islamist medieval creed. No rights for women. No freedom for anyone. So when it comes to Iran and ISIS, the enemy of your enemy is your enemy."';
+		/* Testing Hebre Text. Uncomment to test.
+		$pic_desc = "ויענך וירעבך ויאכלך את המן אשר לא ידעת ולא ידעון אבתיך  למען הודיעך כי לא על הלחם לבדו יחיה האדם—כי על כל מוצא פי יהוה יחיה האדם";
+		$pic_title = 'Test... Benjamin Netanyahu on ISIS and Nuclear Weapons, before the UN General Assembly, 03.03.2015.';
+		$pic_desc = '"Test... They just disagree among themselves who will be the ruler of that empire. In this deadly game of thrones, there is no place for America or for Israel, no peace for Christians, Jews, or Muslims who don\'t share the Islamist medieval creed. No rights for women. No freedom for anyone. So when it comes to Iran and ISIS, the enemy of your enemy is your enemy."';
+		*/
 		
 		$header_info_image	= $row['header_info_image'];
-		/* * /
-		$s_header_info_link_checked	= $row['header_info_link'];
-		$header_info_url = $row['header_info_url'];
-		$header_info_license	= $row['header_info_license'];
-		$header_info_time = $row['header_info_time'];
-		$header_info_last = $row['header_info_last'];
-		$s_header_info_pin_checked = $row['header_info_pin'];
-		$s_header_info_disable	= $row['header_info_disable']; // settings_disable,
-		/* */
 
 		$this->db->sql_freeresult($result);
 
@@ -276,7 +285,9 @@ class thumbnail
 		$font_name = $this->request->variable('font', $header_info_font);
 		$font = $this->module_root_path . "assets/fonts/" . $font_name . '.ttf';
 		
-		//fonts overwrite for other languages 
+		/* fonts overwrite for other languages
+		We only need this if there is no font for our language
+		uncomment this if you add incompatible language * /
 		switch($this->language_into)
 		{
 			case 'sy':
@@ -286,6 +297,7 @@ class thumbnail
 			default:
 			break;
 		}
+		/* fonts overwrite for other languages */
 		
 		if (!is_file($font))
 		{
@@ -309,20 +321,29 @@ class thumbnail
 			}
 		}
 		
-		//die(print_r(basename($header_info_image), true));
 		$src_path = str_replace($phpbb_url, $this->root_path, $header_info_image);
 		$pic_filename = basename($src_path);
-		$pic_filetype = strtolower(substr($pic_filename, strlen($pic_filename) - 4, 4)); // .png
+		$pic_filetype = strtolower(substr($pic_filename, strlen($pic_filename) - 4, 4)); 
 		$pic_ext = str_replace('jpg', 'jpeg', substr(strrchr($pic_filename, '.'), 1));
 		$file_header = 'Content-type: image/' . $pic_ext;
 		$pic_title_reg = preg_replace("/[^A-Za-z0-9]/", "_", $pic_title);
 		$read_function = 'imagecreatefrom'.$pic_ext;
 
-		$im = $read_function($src_path); //ImageID
-
-		$pic_size = @GetImageSize($src_path);
-		$pic_width = $pic_size[0];
-		$pic_height = $pic_size[1];
+		/* image id */
+		$im = $read_function($src_path); 
+		
+		/* use php_GD2 GetImageSize() */
+		if (function_exists('GetImageSize'))
+		{
+			$pic_size = GetImageSize($src_path);
+			$pic_width = isset($pic_size[0]) ? $pic_size[0] : $db_width;
+			$pic_height = isset($pic_size[1]) ? $pic_size[1] : $db_height;
+		}
+		else
+		{
+			$pic_width = $db_width;
+			$pic_height = $db_height;
+		}
 
 		$resize_width = $this->request->variable('resize_width', $pic_width); 
 		$resize_height = $this->request->variable('resize_height', $pic_height);
@@ -330,14 +351,14 @@ class thumbnail
 		// Create some colors
 		$white = ImageColorAllocate($im, 255, 255, 255); //#ffffff
 		$grey = ImageColorAllocate($im, 128, 128, 128); //#808080
+		
 		// integer representation of the color black (rgb: 0,0,0)
 		$black = $background = ImageColorAllocate($im, 0, 0, 0); //#000000
+		
 		//blue: #0000ff or #0c6a99 or #066c9f
 		$blue = ImageColorAllocate($im, 6, 108, 159); //#066c9f
 		$blure = ImageColorAllocate($im, 29, 36, 52); //#1d2434
 		$rand = ImageColorAllocate($im, rand(180, 255), rand(180, 255), rand(180, 255));
-
-		//die(print_r($this->get_hex_colour($white), true));
 
 		/* int ImageColorAllocate(resource $image, int $red, int $green, int $blue) */
 		$title_colour = ImageColorAllocate($im, $this->get_hexdec_colour($header_info_title_colour, 'r'), $this->get_hexdec_colour($header_info_title_colour, 'g'), $this->get_hexdec_colour($header_info_title_colour, 'b'));
@@ -353,10 +374,11 @@ class thumbnail
 		$dimension_font = 1;
 		$dimension_string = intval($pic_width) . 'x' . intval($pic_height) . '(' . intval($dimension_filesize / 1024) . 'KB)';
 
-		// removing the black from the placeholder
+		/* removing the black from the placeholder */
 		ImageColorTransparent($im, $background);
-		// turning on alpha channel information saving (to ensure the full range
-		// of transparency is preserved)
+		
+		/* turning on alpha channel information saving 
+		to ensure the full range of transparency is preserved */
 		ImageSaveAlpha($im, true);
 
 		$dimension_height = ImageFontHeight($dimension_font);
@@ -364,10 +386,9 @@ class thumbnail
 		$dimension_x = (($thumbnail_width - $dimension_width) / 2) - mb_strlen($pic_desc, 'utf-8');
 		$dimension_y = $thumbnail_height + ((16 - $dimension_height) / 2);
 
-		//ideea: https://stackoverflow.com/a/8187653/9369810
-		//credit: https://stackoverflow.com/users/1046402/jeff-wilbert
+		/* ideea: https://stackoverflow.com/a/8187653/9369810
+		credit: https://stackoverflow.com/users/1046402/jeff-wilbert */
 		$middle_title = mb_strrpos(mb_substr($pic_title, 0, floor(mb_strlen($pic_title) / 2 )), ' ') + 1;
-		//$middle = strrpos(substr($pic_desc, 0, floor(strlen($pic_desc) / 2)), ' ') + 4;
 		$middle_desc = mb_strrpos(mb_substr($pic_desc, 0, floor(mb_strlen($pic_desc) / 2 )), ' ') + 1;
 
 		$pic_title = $this->convert_encoding($pic_title);
@@ -398,7 +419,6 @@ class thumbnail
 		$pic_desc2_2 = $this->convert_encoding(mb_substr($pic_desc2, $middle_desc2));
 
 		$resize_height = (($header_info_font_size * mb_strlen($pic_desc, 'utf-8')) >= $resize_width) ? $resize_height + (2 * $header_info_font_size) : ((!empty($pic_desc2_2)) ? $resize_height + $header_info_font_size  : $resize_height);
-		//$resize_height = (!empty($pic_desc2_2)) ? $resize_height + $header_info_font_size : $resize_height;
 
 		if (((6 * mb_strlen($pic_title, 'utf-8')) >= $resize_width) || (mb_strlen($pic_title2, 'utf-8') >= $resize_width))
 		{
@@ -409,7 +429,17 @@ class thumbnail
 		{
 			$dimension_title_y = 8;
 		}
-
+		
+		if (((5 * mb_strlen($pic_title, 'utf-8')) >= $resize_width) || (mb_strlen($pic_title2, 'utf-8') >= $resize_width))
+		{
+			$resize_height = $resize_height + $header_info_font_size;
+			$dimension_title_y = 0;
+		}
+		else
+		{
+			$dimension_title_y = 6;
+		}
+		
 		$pic_offset_desc1 = !empty($pic_desc1_2) ? mb_strlen($pic_desc1_2, 'utf-8') - $resize_height + $header_info_title_font_size + 14 : 0;
 		$pic_offset_desc2 =!empty($pic_desc2_2) ? mb_strlen($pic_desc2_2, 'utf-8') - $resize_height + $header_info_title_font_size + 9 : 0;
 		$dimension_desc_y = 1;
@@ -428,8 +458,7 @@ class thumbnail
 				$dimension_desc_y = 6;
 			}
 		}
-
-		/**/
+		
 		if ((($resize_width !== 0) && ($resize_width !== $pic_width)) || ($dimension_desc_y == 6) || (!empty($pic_desc2_2) && ($resize_width !== $pic_width)))
 		{
 			$resize = ($this->gdVersion() == 1) ? ImageCreate($resize_width, $resize_height) : ImageCreateTrueColor($resize_width, $resize_height);
@@ -444,13 +473,17 @@ class thumbnail
 			
 			ImageFilledRectAngle($im, 0, 0, $resize_width, $pic_height, $white);
 			ImageColorTransparent($im, $white);
+			
+			/* We keep this code here commented
+			Uncomment to use Antialias etc. * /
 			if (function_exists('imageantialias'))
 			{
-				//ImageAntialias($im, true);
+				ImageAntialias($im, true);
 			}
-			//ImageAlphaBlending($im, false);
-			// removing the black from the placeholder
-			//
+			ImageAlphaBlending($im, false);
+			/* We keep this code here commented */
+			
+			/* removing the black from the placeholder */
 			if (function_exists('imagesavealpha'))
 			{
 				ImageSaveAlpha($im, true);
@@ -462,20 +495,19 @@ class thumbnail
 			{
 				ImageAntialias($im, true);
 			}
+			
 			ImageAlphaBlending($im, false);
-			// removing the black from the placeholder
-			//ImageColorTransparent($im, $white);
+			
+			/* removing the black from the placeholder * /
+			ImageColorTransparent($im, $white);
+			/* removing the black from the placeholder */
+			
 			if (function_exists('imagesavealpha'))
 			{
 				ImageSaveAlpha($im, true);
 			}
 		}
-		/**/
 
-		//$font = $this->module_root_path . "assets/fonts/tituscbz.ttf";
-		//imageloadfont($font);
-		//die(print_r($blue, true));
-		//ImageTtfText($im, 2, 20, $dimension_x, $dimension_y, $blue, 'DejaVuSerif.ttf', $pic_title_reg);
 		Header($file_header);
 
 		Header("Expires: Mon, 1, 1999 05:00:00 GMT");
@@ -490,10 +522,13 @@ class thumbnail
 			$header_info_title_font_size = $header_info_title_font_size - 2;
 		}
 	
-		//ImageString($im, 2, 20, 17, $pic_desc, $blue);
-		//$bbox = ImageTtfBBox(20, 0, $font , $pic_title);
-		//$textWidth = $bbox[2] - $bbox[0];
-		if (((6 * mb_strlen($pic_title, 'utf-8')) >= $resize_width) || (mb_strlen($pic_title2, 'utf-8') >= $resize_width))
+		if (((5 * mb_strlen($pic_title, 'utf-8')) >= $resize_width) || (mb_strlen($pic_title2, 'utf-8') >= $resize_width))
+		{
+			ImageTtfText($im, $header_info_title_font_size, 0, 12, $dimension_y + $dimension_title_y + 30, $title_colour, $font, $pic_title1);
+			$dimension_y = $dimension_y + $header_info_font_size;
+			ImageTtfText($im, $header_info_title_font_size, 0, 12, $dimension_y + $dimension_title_y + 30, $title_colour, $font, $pic_title2);
+		}
+		elseif (((6 * mb_strlen($pic_title, 'utf-8')) >= $resize_width) || (mb_strlen($pic_title2, 'utf-8') >= $resize_width))
 		{
 			ImageTtfText($im, $header_info_title_font_size, 0, 12, $dimension_y + $dimension_title_y + 30, $title_colour, $font, $pic_title1);
 			$dimension_y = $dimension_y + $header_info_font_size;
@@ -507,10 +542,8 @@ class thumbnail
 			// Add the text
 			ImageTtfText($im, $header_info_title_font_size, 0, 10, $dimension_y + 29, $title_colour, $font, $pic_title);
 		}
-
+		
 		//4 x 138 >= 458
-		//ImageString (resource 1 $image , int 2 $font , 3 int $x , 4 int $y , string 5 $string , int 6 $color)
-		//ImageTtfText (resource 1 $image , float 2 $size ie 18, float 3 $angle ie 0, int 4 $x , int 5 $y , int 6 $color , string 7 $fontfile , string 8 $text)
 		if (((6 * mb_strlen($pic_desc, 'utf-8')) >= $resize_width) || (mb_strlen($pic_desc2, 'utf-8') >= $resize_width))
 		{
 			if ((($pic_offset_desc1 * mb_strlen($pic_desc1, 'utf-8')) >= $resize_width) && (($pic_offset_desc2 * mb_strlen($pic_desc2, 'utf-8')) >= $resize_width))
@@ -522,7 +555,7 @@ class thumbnail
 				//Description Split Level 3
 				$pic_desc1_1_1 = $this->convert_encoding(mb_substr($pic_desc1_1, 0, $middle_desc1_1));
 				$pic_desc1_1_2 = $this->convert_encoding(mb_substr($pic_desc1_1, $middle_desc1_1));
-				$pic_desc1_2_1 = $this->convert_encoding(mb_substr($pic_des1_2, 0, $middle_desc1_2));
+				$pic_desc1_2_1 = $this->convert_encoding(mb_substr($pic_desc1_2, 0, $middle_desc1_2));
 				$pic_desc1_2_2 = $this->convert_encoding(mb_substr($pic_desc1_2, $middle_desc1_2));
 				
 				ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + $dimension_desc_y, $desc_colour, $font, $pic_desc1_1);
@@ -539,11 +572,9 @@ class thumbnail
 				$pic_desc2_1_2 = $this->convert_encoding(mb_substr($pic_desc2_1, $middle_desc2_1));
 				$pic_desc2_2_1 = $this->convert_encoding(mb_substr($pic_desc2_2, 0, $middle_desc2_2));
 				$pic_desc2_2_2 = $this->convert_encoding(mb_substr($pic_desc2_2, $middle_desc2_2));
-				//die(print_r($pic_desc2_2_1, true));
 				
 				if (($pic_offset_desc1 * mb_strlen($pic_desc2_1, 'utf-8')) >= $resize_width)
 				{
-					//ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 43, $desc_colour, $font, $pic_desc2_1_1 . $pic_desc2_1_2);
 					ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 43, $desc_colour, $font, $pic_desc2_1_1);
 					$dimension_y = $dimension_y + $header_info_font_size;
 					ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 43, $desc_colour, $font, $pic_desc2_1_2);
@@ -557,7 +588,6 @@ class thumbnail
 
 				if (($pic_offset_desc1 * mb_strlen($pic_desc2_2, 'utf-8')) >= $resize_width)
 				{
-					//ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 43, $desc_colour, $font, $pic_desc2_2_1 . $pic_desc2_2_2);
 					ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 43, $desc_colour, $font, $pic_desc2_2_1);
 					$dimension_y = $dimension_y + $header_info_font_size;
 					ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 43, $desc_colour, $font, $pic_desc2_2_2);
@@ -590,11 +620,11 @@ class thumbnail
 		}
 		else
 		{
-			//ImageString($im, 2, 10, $dimension_y, $pic_desc, $blue);
 			ImageTtfText($im, $header_info_font_size, 0, 10, $dimension_y + 10, $desc_colour, $font, $pic_desc);
 		}
 
-		$wm = isset($this->user->lang[$row['header_info_dir']]) ? $this->user->lang[$row['header_info_dir']] : $dimension_filesize;
+		$wm = !empty($this->language->lang($row['header_info_dir'])) ? $this->language->lang($row['header_info_dir']) : $dimension_filesize;
+		
 		/* Position watermark and place on image */
 		switch($custom_header_info_config['disp_watermark_at'])
 		{
@@ -646,7 +676,6 @@ class thumbnail
 			default:
 			break;
 		}
-		/* */
 
 		//****************************************************************************
 		// How add watermark at position
@@ -668,9 +697,10 @@ class thumbnail
 	}
 
 	/**
-	 * Enter description here...
+	 * Get custom_header_info configuration
 	 *
-	 * @return unknown
+	 * @param type array
+	 * @return variable $config
 	 */
 	function config_values($use_cache = true)
 	{
@@ -688,9 +718,10 @@ class thumbnail
 				$config[$row['config_name']] = trim($row['config_value']);
 			}
 			$this->db->sql_freeresult($result);
-			if ( empty($config) )
+			
+			if (empty($config))
 			{		
-				msg_handler(E_USER_ERROR, $this->user->lang['COULDNT_GET'] . ' ' . $this->ext_name . ' ' . $this->user->lang['CONFIG'], __FILE__, __LINE__);
+				msg_handler(E_USER_ERROR, $this->language->lang('COULDNT_GET') . ' ' . $this->ext_name . ' ' . $this->language->lang('CONFIG'), __FILE__, __LINE__);
 			}			
 			$this->cache->put('custom_header_info_config', $config);
 			
@@ -882,24 +913,13 @@ class thumbnail
 	 */
 	function convert_encoding($text)
 	{
-		/* */
-		//die(print_r($this->language_into, true));
-		// Convert UTF-8 string to HTML entities
-		//$text = mb_convert_encoding($text, 'HTML-ENTITIES',"UTF-8");
-		//$opts = array('http' => array('header' => 'Accept-Charset: windows-1255,utf-8;q=0.7,*;q=0.7'));
-		//$context = stream_context_create($opts);
-		//$content = file_get_contents('my_url', false, $context);
-		//$text = iconv("UTF-8", "cp1255", $text);
-		// Convert HTML entities into ISO-8859-1
-		//$text = html_entity_decode($text, ENT_NOQUOTES, "ISO-8859-1");
-		/* */
-		
 		//Reverse string for RTL languages 
 		switch($this->language_into)
 		{
 			case 'he':
 			case 'ar':
 			case 'sy':
+			case 'ur':
 				preg_match_all('/./us' , $text, $rtl);
 				$text = join('' , array_reverse($rtl[0])); 
 			break;
@@ -911,167 +931,91 @@ class thumbnail
 		return $text;
 	}
 	
-	/**
-	 * utf8 strlen
-	 *
-	* @return $return
-	 */
-	function utf8_strlen($text) 
-	{
-		if (function_exists('mb_strlen'))
-		{
-			return mb_strlen($text, 'utf-8');
-		}
-		else
-		{
-			return preg_match_all('/[\x00-\x7F\xC0-\xFD]/', $text, $return);
-		}
-	}
-	
-	/**
-	 * Confirm Forum Backend Name
-	 *
-	* @return $backend
-	 */
-	function confirm_backend($backend_name = true)
-	{
-		if (isset($this->config['version'])) 
-		{
-			if ($this->config['version']  >= '4.0.0')
-			{
-				$this->backend = 'phpbb4';
-			}
-			if (($this->config['version']  >= '3.3.0') && ($this->config['version'] < '4.0.0'))
-			{
-				$this->backend = 'proteus';
-			}
-			if (($this->config['version']  >= '3.2.0') && ($this->config['version'] < '3.3.0'))
-			{
-				$this->backend = 'rhea';
-			}
-			if (($this->config['version']  >= '3.1.0') && ($this->config['version'] < '3.2.0'))
-			{
-				$this->backend = 'ascraeus';
-			}
-			if (($this->config['version']  >= '3.0.0') && ($this->config['version'] < '3.1.0'))
-			{
-				$this->backend = 'olympus';
-			}
-			if (($this->config['version']  >= '2.0.0') && ($this->config['version'] < '3.0.0'))
-			{
-				$this->this->backend = 'phpbb2';
-			}
-			if (($this->config['version']  >= '1.0.0') && ($this->config['version'] < '2.0.0'))
-			{
-				$this->backend = 'phpbb';
-			}
-		}
-		else if (isset($this->config['portal_backend']))
-		{
-			$this->backend = $this->config['portal_backend'];
-		}
-		else
-		{
-			$this->backend = 'internal';
-		}
-		
-		$this->is_phpbb20	= phpbb_version_compare($this->config['version'], '2.0.0@dev', '>=') && phpbb_version_compare($this->config['version'], '3.0.0@dev', '<');		
-		$this->is_phpbb30	= phpbb_version_compare($this->config['version'], '3.0.0@dev', '>=') && phpbb_version_compare($this->config['version'], '3.1.0@dev', '<');		
-		$this->is_phpbb31	= phpbb_version_compare($this->config['version'], '3.1.0@dev', '>=') && phpbb_version_compare($this->config['version'], '3.2.0@dev', '<');
-		$this->is_phpbb32	= phpbb_version_compare($this->config['version'], '3.2.0@dev', '>=') && phpbb_version_compare($this->config['version'], '3.3.0@dev', '<');		
-		$this->is_phpbb33	= phpbb_version_compare($this->config['version'], '3.3.0@dev', '>=') && phpbb_version_compare($this->config['version'], '3.4.0@dev', '<');		
-		
-		$this->is_block = isset($this->config['portal_backend']) ? true : false;
-		
-		if ($this->config['version'] < '3.1.0')
-		{
-			define('EXT_TABLE',	$table_prefix . 'ext');
-		}
-		
-		if ($backend_name == true)
-		{
-			return $this->backend;
-		}
-	}
-	
-
-	
-	function get_lang($key)
-	{
-		return ((!empty($key) && isset($this->user->lang[$key])) ? $this->user->lang[$key] : $key);
-	}
-	
 	/*
-	* Function to find version (1 or 2) of the GD extension.
-	*   Usage : gdVersion()
-	*   Returns : version number as integer
-	* Ported by orynider from mx_smartor and MG's Full Albun Pack
+	*  Function to find version (1 or 2) of the GD extension.
+	*  Description: Retrieve information about the currently installed GD library
+	*  Usage: gdVersion()
+	*  Returns: version number as integer
+	*  Ported by orynider from mx_smartor and MG's Full Albun Pack
 	*/
 	function gdVersion($user_ver = 0)
 	{
-		if (! extension_loaded('gd'))
+		if (!extension_loaded('gd'))
 		{
 			return;
 		}
+		
 		static $gd_ver = 0;
+		
 		if ($user_ver == 1)
 		{
-			$gd_ver = 1; return 1;
+			$gd_ver = 1; 
 		}
-		if ($user_ver !=2 && $gd_ver > 0 )
+		
+		if ($user_ver != 2 && $gd_ver > 0)
 		{
-			return $gd_ver;
+			$user_ver = 1;
 		}
+		
 		if (function_exists('gd_info'))
 		{
+			//This shows the configuration of your gd extension. 
 			$ver_info = gd_info();
 			preg_match('/\d/', $ver_info['GD Version'], $match);
 			$gd_ver = $match[0];
-			return $match[0];
 		}
-		if (preg_match('/phpinfo/', ini_get('disable_functions')))
+		
+		if (($gd_ver == 0) && preg_match('/phpinfo/', ini_get('disable_functions')))
 		{
 			if ($user_ver == 2)
 			{
 				$gd_ver = 2;
-				return 2;
 			}
 			else
 			{
 				$gd_ver = 1;
-				return 1;
 			}
-		}
-		ob_start();
-		phpinfo(8);
-		$info = ob_get_contents();
-		ob_end_clean();
-		$info = stristr($info, 'gd version');
-		preg_match('/\d/', $info, $match);
-		$gd_ver = $match[0];
-		return $match[0];
+		}		
+		elseif ($gd_ver == 0) 
+		{
+			ob_start();
+			phpinfo(8);
+			$info = ob_get_contents();
+			ob_end_clean();
+			$info = stristr($info, 'gd version');
+			preg_match('/\d/', $info, $match);
+			$gd_ver = $match[0];
+		}	
+		return $gd_ver;
 	}
 	
-
+	/**
+	*
+	* List all countries for witch languages files are installed 
+	* and multilangual files uploaded
+	* $this->countries = $this->get_countries()
+	*/
 	function get_countries()
 	{
 		if (count($this->language_list))
 		{
 			return $this->language_list;
 		}
-		// get all countries installed
+		/* get all countries installed */
 		$countries = array();
 		$dir = @opendir($this->module_root_path . 'language');
 		while ($file = @readdir($dir))
 		{
-			$f = trim(str_replace('lang_', '', $file));
+			/* downscrolls are not allowed */
+			$f = trim(str_replace('_', '', $file));
 			
 			if (($f == '.' || $f == '..') || !is_dir($this->module_root_path . 'language/' . $f) || is_link($this->module_root_path . 'language/' . $file))
 			{
 				continue;
 			}
-			
-			$this->module_language_list[$f] = $countries[$file] = $this->ucstrreplace("lang_", '', $f);
+			/* Decode language country iso codes returning country names with first uppercase
+			We do need to overwrite the pattern using 'lang_' or "_" that are not allowed in iso dir names. */
+			$this->module_language_list[$f] = $countries[$file] = $this->ucstrreplace("_", '', $f);
 		}
 		@closedir($dir);
 		@asort($countries);
@@ -1079,8 +1023,10 @@ class thumbnail
 		return $countries;
 	}
 	
-
-	
+	/**
+	*
+	* Load available module language file names list for a language dir
+	*/	
 	function load_lang_dirs($path, $lang_from = '', $add_path = '', $lang_into = '')
 	{
 		global $countries;
@@ -1108,9 +1054,9 @@ class thumbnail
 		$root_path = $this->module_root_path;
 		
 		$php_ext = $this->php_ext;
-		if (!file_exists($root_path . 'mx_meta.inc') && !file_exists($root_path . 'modcp'.$php_ext))
+		if (!file_exists($root_path . 'app.'.$php_ext) && !file_exists($root_path . 'mcp'.$php_ext))
 		{
-			$language = $this->encode_lang($this->language_from);
+			$language = $this->language_from;
 			if ($this->language_from == '')
 			{
 				$this->language_from = 'en';
@@ -1130,7 +1076,7 @@ class thumbnail
 
 		if (!is_dir($folder_path . '/'))
 		{
-			$dir = 'Resource id #53'.'Resource id #54'.'Resource id #55'.'Resource id #56'.'Resource id #57'.'Resource id #58';
+			$dir = array('Resource id #53','Resource id #54','Resource id #55','Resource id #56','Resource id #57','Resource id #58');
 			return false;
 		}
 		else
@@ -1178,7 +1124,12 @@ class thumbnail
 
 		return $lang_dirs;
 	}
-
+	
+	/**
+	* Read entries (all lang keys) from all multilangual files of a package
+	* $this->module_root_path . 'language/' . $country_dir . '/' . 'common' . $this->php_ext
+	*
+	*/	
 	function read_one_pack($country_dir, $pack_dir, &$entries, $pack_file_name = 'common')
 	{
 		$countries = $this->countries; 
@@ -1241,713 +1192,38 @@ class thumbnail
 			}
 		}
 	}
-	
 
-	
-	function get_entries($modified = true)
+	/**
+	* Populate Language entries (all lang keys) from single multilangual file to a variable
+	*
+	* $this->entries = $this->load_lang_file($this->ext_path . 'language/' . $this->language_into . '/' . $header_info_dir . '/common.' . $this->php_ext);
+	*
+	* @param mixed $multi_lang_set specifies the mutilangual file to include
+	 * @param array_type $lang
+	 * @return $lang
+	*/	
+	function load_lang_file($multi_lang_set)
 	{
-		$config = $this->config;
-		$countries = $this->countries;
-		$packs = $this->packs;
-
-		// init
-		$entries = array();
-
-		// process by countries first
-		/* MG Lang DB - BEGIN */
-		@reset($countries);
-		while (list($country_dir, $country_name) = @each($countries))
-		{
-			@reset($packs);
-			while (list($pack_file, $pack_name) = @each($packs))
-			{
-				$this->read_one_pack($country_dir, $pack_file, $entries);
-			}
-		}
-		/* MG Lang DB - END */
-
-		// process the added/modified keys
-		if ($modified)
-		{
-			/* MG Lang DB - BEGIN */
-			@reset($countries);
-			while (list($country_dir, $country_name) = @each($countries))
-			{
-				$pack_file = 'common';
-				$this->read_one_pack($country_dir, $pack_file, $entries);
-			}
-			/* MG Lang DB - END */
-
-			// add the missing keys in a language
-			$default_lang = $config['default_lang'];
-			$english_lang = 'en';
-			@reset($entries['pack']);
-			while (list($key_main, $data) = @each($entries['pack']))
-			{
-				@reset($data);
-				while (list($key_sub, $pack_file) = @each($data))
-				{
-					// add the key to the default lang if missing by using the english one
-					if (!isset($entries['value'][$key_main][$key_sub][$default_lang]))
-					{
-						// add the key to english lang if missing
-						if (!isset($entries['value'][$key_main][$key_sub][$english_lang]))
-						{
-							// find the first not empty value
-							$found = false;
-							$new_value = '';
-							@reset($entries['value'][$key_main][$key_sub]);
-							while (list($country_dir, $value) = @each($entries['value'][$key_main][$key_sub]))
-							{
-								$found = !empty($value);
-								if ($found)
-								{
-									$new_value = $value;
-								}
-							}
-							// add it (even if empty)
-							$entries['value'][$key_main][$key_sub][$english_lang] = $new_value;
-							$entries['status'][$key_main][$key_sub][$english_lang] = 2; // 2=added
-						}
-
-						// fill the default lang
-						if ($default_lang!= $english_lang)
-						{
-							$entries['value'][$key_main][$key_sub][$default_lang] = $entries['value'][$key_main][$key_sub][$english_lang];
-							$entries['status'][$key_main][$key_sub][$default_lang] = 2; // 2=added
-						}
-					}
-
-					// process all langs for this key
-					@reset($countries);
-					while (list($country_dir, $country_name) = @each($countries))
-					{
-						if (!isset($entries['value'][$key_main][$key_sub][$country_dir]))
-						{
-							$entries['value'][$key_main][$key_sub][$country_dir] = $entries['value'][$key_main][$key_sub][$default_lang];
-							$entries['status'][$key_main][$key_sub][$country_dir] = 2; // 2=added
-						}
-					}
-				}
-			}
-		}
-
-		// all is done : return the result
-		return $entries;
-	}
-
-	function load_lang_file($filename)
-	{
-		if (!is_file($filename))
+		if (!is_file($multi_lang_set))
 		{
 			return array();
 		}
-		include($filename);
+		include($multi_lang_set);
 		return $lang;
 	}
-
-	/**
-	 * encode_lang
-	 *
-	 * $default_lang = $mxp_translator->encode_lang($config['default_lang']);
-	 *
-	 * @param unknown_type $lang
-	 * @return unknown
-	 */
-	function encode_lang($lang)
-	{
-			if ($this->backend == 'phpbb2')
-			{
-				return $lang;
-			}
-			else
-			{
-				$lang = str_replace('lang_', '', $lang);
-			}			
-			switch($lang)
-			{
-				case 'afar':
-					$lang_name = 'aa';
-				break;
-				case 'abkhazian':
-					$lang_name = 'ab';
-				break;
-				case 'avestan':
-					$lang_name = 'ae';
-				break;
-				case 'afrikaans':
-					$lang_name = 'af';
-				break;
-				case 'akan':
-					$lang_name = 'ak';
-				break;
-				case 'amharic':
-					$lang_name = 'am';
-				break;
-				case 'aragonese':
-					$lang_name = 'an';
-				break;
-				case 'arabic':
-					$lang_name = 'ar';
-				break;
-				case 'assamese':
-					$lang_name = 'as';
-				break;
-				case 'avaric':
-					$lang_name = 'av';
-				break;
-				case 'aymara':
-					$lang_name = 'ay';
-				break;
-				case 'azerbaijani':
-					$lang_name = 'az';
-				break;
-				case 'bashkir':
-					$lang_name = 'ba';
-				break;
-				case 'belarusian':
-					$lang_name = 'be';
-				break;
-				case 'bulgarian':
-					$lang_name = 'bg';
-				break;
-				case 'bihari':
-					$lang_name = 'bh';
-				break;
-				case 'bislama':
-					$lang_name = 'bi';
-				break;
-				case 'bambara':
-					$lang_name = 'bm';
-				break;
-				case 'bengali':
-					$lang_name = 'bn';
-				break;
-				case 'tibetan':
-					$lang_name = 'bo';
-				break;
-				case 'breton':
-					$lang_name = 'br';
-				break;
-				case 'bosnian':
-					$lang_name = 'bs';
-				break;
-				case 'catalan':
-					$lang_name = 'ca';
-				break;
-				case 'chechen':
-					$lang_name = 'ce';
-				break;
-				case 'chamorro':
-					$lang_name = 'ch';
-				break;
-				case 'corsican':
-					$lang_name = 'co';
-				break;
-				case 'cree':
-					$lang_name = 'cr';
-				break;
-				case 'czech':
-					$lang_name = 'cs';
-				break;
-				case 'slavonic':
-					$lang_name = 'cu';
-				break;
-				case 'chuvash':
-					$lang_name = 'cv';
-				break;
-				case 'welsh_cymraeg':
-					$lang_name = 'cy';
-				break;
-				case 'danish':
-					$lang_name = 'da';
-				break;
-				case 'german':
-					$lang_name = 'de';
-				break;
-				case 'divehi':
-					$lang_name = 'dv';
-				break;
-				case 'dzongkha':
-					$lang_name = 'dz';
-				break;
-				case 'ewe':
-					$lang_name = 'ee';
-				break;
-				case 'greek':
-					$lang_name = 'el';
-				break;
-				case 'hebrew':
-					$lang_name = 'he';
-				break;
-				case 'english':
-					$lang_name = 'en';
-				break;
-				case 'english_us':
-					$lang_name = 'en_us';
-				break;
-				case 'esperanto':
-					$lang_name = 'eo';
-				break;
-				case 'spanish':
-					$lang_name = 'es';
-				break;
-				case 'estonian':
-					$lang_name = 'et';
-				break;
-				case 'basque':
-					$lang_name = 'eu';
-				break;
-				case 'persian':
-					$lang_name = 'fa';
-				break;
-				case 'fulah':
-					$lang_name = 'ff';
-				break;
-				case 'finnish':
-					$lang_name = 'fi';
-				break;
-				case 'fijian':
-					$lang_name = 'fj';
-				break;
-				case 'faroese':
-					$lang_name = 'fo';
-				break;
-				case 'french':
-					$lang_name = 'fr';
-				break;
-				case 'frisian':
-					$lang_name = 'fy';
-				break;
-				case 'irish':
-					$lang_name = 'ga';
-				break;
-				case 'scottish':
-					$lang_name = 'gd';
-				break;
-				case 'galician':
-					$lang_name = 'gl';
-				break;
-				case 'guaraní':
-					$lang_name = 'gn';
-				break;
-				case 'gujarati':
-					$lang_name = 'gu';
-				break;
-				case 'manx':
-					$lang_name = 'gv';
-				break;
-				case 'hausa':
-					$lang_name = 'ha';
-				break;
-				case 'hebrew':
-					$lang_name = 'he';
-				break;
-				case 'hindi':
-					$lang_name = 'hi';
-				break;
-				case 'hiri_motu':
-					$lang_name = 'ho';
-				break;
-				case 'croatian':
-					$lang_name = 'hr';
-				break;
-				case 'haitian':
-					$lang_name = 'ht';
-				break;
-				case 'hungarian':
-					$lang_name = 'hu';
-				break;
-				case 'armenian':
-					$lang_name = 'hy';
-				break;
-				case 'herero':
-					$lang_name = 'hz';
-				break;
-				case 'interlingua':
-					$lang_name = 'ia';
-				break;
-				case 'indonesian':
-					$lang_name = 'id';
-				break;
-				case 'interlingue':
-					$lang_name = 'ie';
-				break;
-				case 'igbo':
-					$lang_name = 'ig';
-				break;
-				case 'sichuan_yi':
-					$lang_name = 'ii';
-				break;
-				case 'inupiaq':
-					$lang_name = 'ik';
-				break;
-				case 'ido':
-					$lang_name = 'io';
-				break;
-				case 'icelandic':
-					$lang_name = 'is';
-				break;
-				case 'italian':
-					$lang_name = 'it';
-				break;
-				case 'inuktitut':
-					$lang_name = 'iu';
-				break;
-				case 'japanese':
-					$lang_name = 'ja';
-				break;
-				case 'javanese':
-					$lang_name = 'jv';
-				break;
-				case 'georgian':
-					$lang_name = 'ka';
-				break;
-				case 'kongo':
-					$lang_name = 'kg';
-				break;
-				case 'kikuyu':
-					$lang_name = 'ki';
-				break;
-				case 'kwanyama':
-					$lang_name = 'kj';
-				break;
-				case 'kazakh':
-					$lang_name = 'kk';
-				break;
-				case 'kalaallisut':
-					$lang_name = 'kl';
-				break;
-				case 'khmer':
-					$lang_name = 'km';
-				break;
-				case 'kannada':
-					$lang_name = 'kn';
-				break;
-				case 'korean':
-					$lang_name = 'ko';
-				break;
-				case 'kanuri':
-					$lang_name = 'kr';
-				break;
-				case 'kashmiri':
-					$lang_name = 'ks';
-				break;
-				case 'kurdish':
-					$lang_name = 'ku';
-				break;
-				case 'kv':
-					$lang_name = 'komi';
-				break;
-				case 'cornish_kernewek':
-					$lang_name = 'kw';
-				break;
-				case 'kirghiz':
-					$lang_name = 'ky';
-				break;
-				case 'latin':
-					$lang_name = 'la';
-				break;
-				case 'luxembourgish':
-					$lang_name = 'lb';
-				break;
-				case 'ganda':
-					$lang_name = 'lg';
-				break;
-				case 'limburgish':
-					$lang_name = 'li';
-				break;
-				case 'lingala':
-					$lang_name = 'ln';
-				break;
-				case 'lao':
-					$lang_name = 'lo';
-				break;
-				case 'lithuanian':
-					$lang_name = 'lt';
-				break;
-				case 'luba-katanga':
-					$lang_name = 'lu';
-				break;
-				case 'latvian':
-					$lang_name = 'lv';
-				break;
-				case 'malagasy':
-					$lang_name = 'mg';
-				break;
-				case 'marshallese':
-					$lang_name = 'mh';
-				break;
-				case 'maori':
-					$lang_name = 'mi';
-				break;
-				case 'macedonian':
-					$lang_name = 'mk';
-				break;
-				case 'malayalam':
-					$lang_name = 'ml';
-				break;
-				case 'mongolian':
-					$lang_name = 'mn';
-				break;
-				case 'moldavian':
-					$lang_name = 'mo';
-				break;
-				case 'marathi':
-					$lang_name = 'mr';
-				break;
-				case 'malay':
-					$lang_name = 'ms';
-				break;
-				case 'maltese':
-					$lang_name = 'mt';
-				break;
-				case 'burmese':
-					$lang_name = 'my';
-				break;
-				case 'nauruan':
-					$lang_name = 'na';
-				break;
-				case 'norwegian':
-					$lang_name = 'nb';
-				break;
-				case 'ndebele':
-					$lang_name = 'nd';
-				break;
-				case 'nepali':
-					$lang_name = 'ne';
-				break;
-				case 'ndonga':
-					$lang_name = 'ng';
-				break;
-				case 'dutch':
-					$lang_name = 'nl';
-				break;
-				case 'norwegian_nynorsk':
-					$lang_name = 'nn';
-				break;
-				case 'norwegian':
-					$lang_name = 'no';
-				break;
-				case 'southern_ndebele':
-					$lang_name = 'nr';
-				break;
-				case 'navajo':
-					$lang_name = 'nv';
-				break;
-				case 'chichewa':
-					$lang_name = 'ny';
-				break;
-				case 'occitan':
-					$lang_name = 'oc';
-				break;
-				case 'ojibwa':
-					$lang_name = 'oj';
-				break;
-				case 'oromo':
-					$lang_name = 'om';
-				break;
-				case 'oriya':
-					$lang_name = 'or';
-				break;
-				case 'ossetian':
-					$lang_name = 'os';
-				break;
-				case 'punjabi':
-				case 'panjabi':
-				case 'gurmiki':
-					$lang_name = 'pa';
-				break;
-				case 'pali':
-					$lang_name = 'pi';
-				break;
-				case 'polish':
-					$lang_name = 'pl';
-				break;
-				case 'pashto':
-					$lang_name = 'ps';
-				break;
-				case 'portuguese':
-					$lang_name = 'pt';
-				break;
-				case 'portuguese_brasil':
-					$lang_name = 'pt_br';
-				break;
-				case 'quechua':
-					$lang_name = 'qu';
-				break;
-				case 'romansh':
-					$lang_name = 'rm';
-				break;
-				case 'kirundi':
-					$lang_name = 'rn';
-				break;
-				case 'romanian':
-					$lang_name = 'ro';
-				break;
-				case 'russian':
-					$lang_name = 'ru';
-				break;
-				case 'kinyarwanda':
-					$lang_name = 'rw';
-				break;
-				case 'sanskrit':
-					$lang_name = 'sa';
-				break;
-				case 'sardinian':
-					$lang_name = 'sc';
-				break;
-				case 'sindhi':
-					$lang_name = 'sd';
-				break;
-				case 'northern_sami':
-					$lang_name = 'se';
-				break;
-				case 'sango':
-					$lang_name = 'sg';
-				break;
-				case 'serbo-croatian':
-					$lang_name = 'sh';
-				break;
-				case 'sinhala':
-					$lang_name = 'si';
-				break;
-				case 'slovak':
-					$lang_name = 'sk';
-				break;
-				case 'slovenian':
-					$lang_name = 'sl';
-				break;
-				case 'samoan':
-					$lang_name = 'sm';
-				break;
-				case 'shona':
-					$lang_name = 'sn';
-				break;
-				case 'somali':
-					$lang_name = 'so';
-				break;
-				case 'albanian':
-					$lang_name = 'sq';
-				break;
-				case 'serbian':
-					$lang_name = 'sr';
-				break;
-				case 'swati':
-					$lang_name = 'ss';
-				break;
-				case 'sotho':
-					$lang_name = 'st';
-				break;
-				case 'sundanese':
-					$lang_name = 'su';
-				break;
-				case 'swedish':
-					$lang_name = 'sv';
-				break;
-				case 'swahili':
-					$lang_name = 'sw';
-				break;
-				case 'tamil':
-					$lang_name = 'ta';
-				break;
-				case 'telugu':
-					$lang_name = 'te';
-				break;
-				case 'tajik':
-					$lang_name = 'tg';
-				break;
-				case 'thai':
-					$lang_name = 'th';
-				break;
-				case 'tigrinya':
-					$lang_name = 'ti';
-				break;
-				case 'turkmen':
-					$lang_name = 'tk';
-				break;
-				case 'tagalog':
-					$lang_name = 'tl';
-				break;
-				case 'tswana':
-					$lang_name = 'tn';
-				break;
-				case 'tonga':
-					$lang_name = 'to';
-				break;
-				case 'turkish':
-					$lang_name = 'tr';
-				break;
-				case 'tsonga':
-					$lang_name = 'ts';
-				break;
-				case 'tatar':
-					$lang_name = 'tt';
-				break;
-				case 'twi':
-					$lang_name = 'tw';
-				break;
-				case 'tahitian':
-					$lang_name = 'ty';
-				break;
-				case 'uighur':
-					$lang_name = 'ug';
-				break;
-				case 'ukrainian':
-					$lang_name = 'uk';
-				break;
-				case 'urdu':
-					$lang_name = 'ur';
-				break;
-				case 'uzbek':
-					$lang_name = 'uz';
-				break;
-				case 'venda':
-					$lang_name = 've';
-				break;
-				case 'vietnamese':
-					$lang_name = 'vi';
-				break;
-				case 'volapuk':
-					$lang_name = 'vo';
-				break;
-				case 'walloon':
-					$lang_name = 'wa';
-				break;
-				case 'wolof':
-					$lang_name = 'wo';
-				break;
-				case 'xhosa':
-					$lang_name = 'xh';
-				break;
-				case 'yiddish':
-					$lang_name = 'yi';
-				break;
-				case 'yoruba':
-					$lang_name = 'yo';
-				break;
-				case 'zhuang':
-					$lang_name = 'za';
-				break;
-				case 'chinese':
-					$lang_name = 'zh';
-				break;
-				case 'chinese_simplified':
-					$lang_name = 'zh_cmn_hans';
-				break;
-				case 'chinese_traditional':
-					$lang_name = 'zh_cmn_hant';
-				break;
-				case 'zulu':
-					$lang_name = 'zu';
-				break;
-				default:
-					$lang_name = (strlen($lang) > 2) ? substr($lang, 0, 2) : $lang;
-				break;
-			}
-		return $lang_name;
-	}
 	
+	/**
+	* Decode language country codes returning countries with first uppercase
+	*
+	 * ucstrreplace replacement for decode_lang()
+	 * the reverse of encode_lang()
+	 *
+	 *  from MXP version 3.0.0-beta1
+	 * $country_name = $this->ucstrreplace($lang_iso);
+	 *
+	 * @param array_type $lang
+	 * @return unknown
+	 */		
 	function ucstrreplace($pattern = '%{$regex}%i', $matches = '', $string) 
 	{
 		/* return with no uppercase if patern not in string */
@@ -2543,50 +1819,5 @@ class thumbnail
 	{      
 		return preg_match('/' . $pattern . '/i', $string, $matches);
 	}
-	
-	/* replacement for stripslashes(); */
-	function removeslashes($string, $all = true) 
-	{  	
-		//remove also slashes inside the string
-		//or remove only leading and trailing slashes		
-		return ($all !== false)  ? str_replace('/', '', $string)  : trim($string, '/');
-	}
-	
-	/* replacement for print_r(array(), true); */
-	function array_to_string($val, $all = true) 
-	{  	
-			if(is_array($val))
-			{
-				foreach($val as $k => $v)
-				{
-					$val[$k] = $this->removeslashes($v);
-				}
-				return $k . ', ' . $v;
-			}
-			else
-			{
-				$val = $this->removeslashes($val);
-				return $val;
-			}
-	}
-	
-	function clean_string($string)
-	{
-		$array_find = array(
-			"''",
-			"'",
-			"\r\n",
-		);
-
-		$array_replace = array(
-			"'",
-			"\'",
-			"\n",
-		);
-
-		$string = str_replace($array_find, $array_replace, $this->array_to_string($string, true));
-		return $string;
-	}
-// THE END
 }
 ?>

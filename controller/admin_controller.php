@@ -48,13 +48,31 @@ class admin_controller
 
 	/** @var \phpbb\path_helper */
 	protected $path_helper;
+	
+	/** @var \phpbb\language\language */
+	protected $language;
 
 	/** @var string */
 	protected $php_ext;
 
 	/** @var string phpBB root path */
 	protected $root_path;
-
+	
+	/**
+	* Name (including vendor) of the extension
+	* @var string
+	*/
+	protected $ext_name;
+	
+	/**
+	* Path to the module directory including root (sometime same with $ext_path)
+	* @var string
+	*/
+	protected $module_root_path;
+	
+	/** @var path helper web url to root */	
+	protected $ext_path_web;
+	
 	/**
 	* The database tables
 	*
@@ -67,7 +85,23 @@ class admin_controller
 	/** @var \phpbb\files\factory */
 	protected $files_factory;
 	
+	/** @var \phpbb\config\config */	
 	protected $config;
+	
+	/** @array language_list */	
+	protected $language_list = array();
+	
+	/** @var dir_select_from */	
+	protected $dir_select_from;
+	
+	/** @var dir_select_into */	
+	protected $dir_select_into;
+	
+	/** @var string */
+	public $tpl_name;
+
+	/** @var string */
+	public $page_title;
 	
 	/**
 	* Constructor
@@ -106,7 +140,6 @@ class admin_controller
 		$custom_header_info_table,
 		$custom_header_info_config_table,
 		\phpbb\files\factory $files_factory = null,
-		$custom_header_info_config,
 		$config)
 	{
 		$this->template 				= $template;
@@ -122,24 +155,20 @@ class admin_controller
 		$this->php_ext 				= $php_ext;
 		$this->root_path 				= $root_path;
 		$this->config					= $config;
-		$this->custom_header_info_config = $custom_header_info_config;
-			
+		
+		// Read out config values
+		/* Not loaded with class ? $custom_header_info_config = $this->config_values(); */
 		$this->custom_header_info_table = $custom_header_info_table;
 		$this->custom_header_info_config_table 	= $custom_header_info_config_table;
 		
 		$this->files_factory 		= $files_factory;
 		
 		$this->ext_name = $this->request->variable('ext_name', 'orynider/customheadernfo');
-		$this->module_root_path	= $this->ext_path = $this->ext_manager->get_extension_path($this->ext_name, true);
-		$this->ext_path_web		= $this->path_helper->update_web_root_path($this->module_root_path);
+		$this->module_root_path	= $this->ext_manager->get_extension_path($this->ext_name, true);
+		$this->ext_path_web = $this->path_helper->update_web_root_path($this->module_root_path);
+		
 		$this->user->add_lang_ext($this->ext_name, 'common');
-		$this->user->add_lang_ext($this->ext_name, 'info_acp_custom_headernfo');
-		
-		global $debug;
-		
-		// Read out config values
-		$this->backend = $this->confirm_backend();
-		
+			
 		/* get packs installed and init some variables
 		* This code is added here for future implementations commented for now
 		* We could load a local language detected in setup() for anonymouse users 
@@ -147,8 +176,14 @@ class admin_controller
 		$this->packs = $this->load_lang_dirs($this->module_root_path);
 		*/
 		
-		$this->language_from = (isset($this->config['default_lang'])) ? $this->config['default_lang'] : 'en';
-		$this->language_into	= (isset($user->lang['USER_LANG'])) ? $user->lang['USER_LANG'] : $this->language_from;
+		/* Check watever languages for thumbnail text are set and are uploaded or translated */
+		$this->language_from = (isset($this->config['default_lang']) && (is_dir($this->module_root_path . 'language/' . $this->config['default_lang']) . '/')) ? $this->config['default_lang'] : 'en';
+		$this->language_into	= (isset($user->lang['USER_LANG']) && (is_dir($this->module_root_path . 'language/' . $user->lang['USER_LANG']) . '/')) ? $user->lang['USER_LANG'] : $this->language_from;
+		if (!is_dir($this->module_root_path . 'language/' . $this->language_from . '/'))
+		{
+			//Default language from uk english in case Resource id is #0 
+			$this->language_from = (is_dir($this->module_root_path . 'language/en/')) ?  'en' : $this->language_into;
+		}
 	}
 
 	public function manage_header_info_config()
@@ -158,7 +193,7 @@ class admin_controller
 		$this->table = $this->custom_header_info_table;
 
 		$this->tpl_name = 'acp_custom_header_info';
-		$this->page_title = $this->language->lang('HEADER_INFO_TITLE');
+		$this->page_title = $this->user->lang('HEADER_INFO_TITLE');
 
 		$form_key = 'acp_header_info';
 		add_form_key($form_key);
@@ -174,10 +209,10 @@ class admin_controller
 		while( $row = $this->db->sql_fetchrow($result) )
 		{
 			$header_info_type_select = $this->get_list_static('header_info_type', 
-											array('language' => $this->language->lang('MULTI_LANGUAGE_BANNER'),
-														'lang_html_text' => $this->language->lang('HTML_MULTI_LANGUAGE_TEXT'), 
-														'simple_db_text' => $this->language->lang('SIMPLE_DB_TEXT'), 
-														'simple_bg_logo' => $this->language->lang('SIMPLE_BG_LOGO')
+											array('language' => $this->user->lang('MULTI_LANGUAGE_BANNER'),
+														'lang_html_text' => $this->user->lang('HTML_MULTI_LANGUAGE_TEXT'), 
+														'simple_db_text' => $this->user->lang('SIMPLE_DB_TEXT'), 
+														'simple_bg_logo' => $this->user->lang('SIMPLE_BG_LOGO')
 														), 
 														$row['header_info_type']);
 
@@ -251,8 +286,8 @@ class admin_controller
 				'HEADER_INFO_TYPE_SELECT'			=> $header_info_type_select,
 				'HEADER_INFO_DIR'							=> $this->user->lang[$row['header_info_dir']],
 				'HEADER_INFO_TYPE'						=> $row['header_info_type'],
-				'HEADER_INFO_DIR_SELECT' 			=> $this->gen_lang_dirs_select_list('html', 'header_info_dir', $row['header_info_dir']), 
-				'HEADER_INFO_FONT_SELECT' 			=> $this->gen_fonts_select_list('html', 'header_info_font', $row['header_info_font']), 
+				'HEADER_INFO_DIR_SELECT' 			=> $this->gen_lang_dirs_select_list('html', 'header_info_dir', $row['header_info_dir']), //ext/orynider/customheadernfo/language/movies/
+				'HEADER_INFO_FONT_SELECT' 			=> $this->gen_fonts_select_list('html', 'header_info_font', $row['header_info_font']), //ext/orynider/customheadernfo/assets/fonts/
 				'HEADER_INFO_DB_FONT' 				=> substr($header_info_font, 0, strrpos($header_info_font, '.')),
 				'HEADER_INFO_IMAGE'						=> $row['header_info_image'],
 				'THUMBNAIL_URL'   							=> generate_board_url() . '/app.php/thumbnail',
@@ -260,7 +295,7 @@ class admin_controller
 				'HEADER_INFO_TITLE_COLOUR'		=> isset($row['header_info_title_colour']) ? $row['header_info_title_colour'] : '',
 				'HEADER_INFO_DESC_COLOUR'		=> isset($row['header_info_desc_colour']) ? $row['header_info_desc_colour'] : '',
 				//New 0.9.0 ends
-				'S_HEADER_INFO_LINK_CHECKED'	=> $row['header_info_link'],
+				'S_HEADER_INFO_LINK_CHECKED'	=> $row['header_info_image_link'],
 				'HEADER_INFO_URL'						=> $row['header_info_url'],
 				'HEADER_INFO_LICENSE'				=> $row['header_info_license'],
 				'HEADER_INFO_TIME'					=> $row['header_info_time'],
@@ -282,8 +317,8 @@ class admin_controller
 		$custom_header_info_config = $this->config_values();
 
 		$header_info_direction_select	= $this->get_list_static('direction', 
-											array('up' => $this->language->lang('UP'),
-														'down' => $this->language->lang('DOWN')
+											array('up' => $this->user->lang('UP'),
+														'down' => $this->user->lang('DOWN')
 														), 
 														$custom_header_info_config['direction']);
 
@@ -339,8 +374,8 @@ class admin_controller
 			'BACKGROUNDS_DIR'					=> $custom_header_info_config['backgrounds_dir'],
 			'BANNERS_DIR'		   						=> $custom_header_info_config['banners_dir'],
 			'HEADER_INFOVERSION'				=> $custom_header_info_config['header_info_version'],
-			'SITE_HOME_URL'   						=> $custom_header_info_config['site_home_url'], //PORTAL_URL
-			'PHPBB_URL'   								=> generate_board_url() . '/', //FORUM_URL
+			'SITE_HOME_URL'   						=> $this->config['board_url'], /* CMS or SITE URL */
+			'PHPBB_URL'   								=> generate_board_url() . '/', /* Forum URL */
 		));
 
 		$submit = ($this->request->is_set_post('submit')) ? true : false;
@@ -374,7 +409,7 @@ class admin_controller
 			$type = $this->request->variable('header_info_type', '', true);
 			$font = $this->request->variable('header_info_font', '', true);
 			$image = $this->request->variable('header_info_image', generate_board_url() . $custom_header_info_config['banners_dir'] . 'custom_header_bg.png');
-			$link = $this->request->variable('header_info_link', 0);
+			$link = $this->request->variable('header_info_image_link', 0);
 			$radius = $this->request->variable('header_info_banner_radius', 0);
 			$pixels = $this->request->variable('header_info_pixels', 12);
 			$title_pixels = $this->request->variable('header_title_info_pixels', 18);
@@ -402,10 +437,10 @@ class admin_controller
 					'header_info_use_extdesc'		=> $use_extdesc,
 					'header_info_title_colour'		=> $title_colour,
 					'header_info_desc_colour'		=> $desc_colour,
-					'header_info_dir'					=> $dir, //i.e. ext/orynider/customheadernfo/language/movies/
+					'header_info_dir'					=> $dir, //ext/orynider/customheadernfo/language/movies/
 					'header_info_type'					=> $type,
 					'header_info_font'					=> $font,
-					'header_info_image'				=> $image, //We can replace 'prosilver' with 'all': str_replace('prosilver' 'all', $data_files['header_info_image'])
+					'header_info_image'				=> $image, //str_replace('prosilver' 'all', $data_files['header_info_image'])
 					'header_info_image_link'		=> $link,
 					'header_info_banner_radius' 	=> $radius,
 					'header_info_pixels'				=> $pixels,
@@ -432,7 +467,7 @@ class admin_controller
 				$this->db->sql_query($sql);
 				trigger_error($this->user->lang['HEADER_INFO_ADDED'] . adm_back_link($this->u_action));
 			}
-			else if($name != '' && $url != '' && $image != '' && $font != '' && isset($edit) && !empty($edit_id))
+			else if($name != '' && $url != '' && $image != '' && $font != '' && isset($edit) && ($edit_id !== 0))
 			{
 				$sql_array = array(
 					'header_info_name'				=> $name,
@@ -441,10 +476,10 @@ class admin_controller
 					'header_info_use_extdesc'		=> $use_extdesc,
 					'header_info_title_colour'		=> $title_colour,
 					'header_info_desc_colour'		=> $desc_colour,
-					'header_info_dir'					=> $dir, 
+					'header_info_dir'					=> $dir, //ext/orynider/customheadernfo/language/movies/
 					'header_info_type'					=> $type,
 					'header_info_font'					=> $font,
-					'header_info_image'				=> $image, 
+					'header_info_image'				=> $image, //str_replace('prosilver' 'all', $data_files['header_info_image'])
 					'header_info_image_link'		=> $link,
 					'header_info_banner_radius' => $radius,
 					'header_info_pixels'				=> $pixels,
@@ -465,7 +500,7 @@ class admin_controller
 				);
 
 				$sql = 'UPDATE ' . $this->custom_header_info_table . ' SET ' . $this->db->sql_build_array('UPDATE', $sql_array) . ' WHERE header_info_id = ' . $edit_id;
-				
+				//print_r($sql);
 				$this->db->sql_query($sql);
 				trigger_error($this->user->lang['HEADER_INFO_UDPATED'] . adm_back_link($this->u_action));
 			}
@@ -478,12 +513,15 @@ class admin_controller
 		if ($enable_submit)
 		{
 			// Update config values this::set_config($key, $new_value)
-			//Get Configuration i.e. $this->set_config('header_info_enable', $enabled);
+			//$this->set_config('header_info_enable', $enabled);
 			$sql = "SELECT *
 				FROM " . $this->custom_header_info_config_table;
-			$result = $this->db->sql_query($sql);
+			if ( !( $result = $this->db->sql_query($sql) ) )
+			{
+				$this->message_die( GENERAL_ERROR, 'Couldnt query portal configuration', '', __LINE__, __FILE__, $sql );
+			}
 			
-			while ($row = $this->db->sql_fetchrow($result))
+			while ( $row = $this->db->sql_fetchrow( $result ) )
 			{
 				// Values for config
 				$config_name = $row['config_name'];
@@ -491,6 +529,32 @@ class admin_controller
 				
 				$new[$config_name] = ($this->request->is_set($config_name)) ? $this->request->variable($config_name, $config_value) : $config_value;
 			
+				//$new[$config_name] = trim($config_value);
+			
+				/* Here we make some checks for the module configuration * /
+					if ( ( empty( $size ) ) && ( !$submit ) && ( $config_name == 'max_file_size' ) )
+					{
+						$size = ( intval( $custom_header_info_config[$config_name] ) >= 1048576 ) ? 'mb' : ( ( intval( $custom_header_info_config[$config_name] ) >= 1024 ) ? 'kb' : 'b' );
+					}
+					if ( ( !$submit ) && ( $config_name == 'max_file_size' ) )
+					{
+						if ( $new[$config_name] >= 1048576 )
+						{
+							$new[$config_name] = round( $new[$config_name] / 1048576 * 100 ) / 100;
+						}
+						else if ( $new[$config_name] >= 1024 )
+						{
+							$new[$config_name] = round( $new[$config_name] / 1024 * 100 ) / 100;
+						}
+					}
+					/* Here we make some checks for the module configuration */
+					
+
+					/* Here we make some checks for the module configuration * /
+					if ( $config_name == 'max_file_size' )
+					{
+						$new[$config_name] = ( $size == 'kb' ) ? round( $new[$config_name] * 1024 ) : ( ( $size == 'mb' ) ? round( $new[$config_name] * 1048576 ) : $new[$config_name] );
+					}
 				/* Here we make some checks for the module configuration */
 				
 				if ($this->request->is_set($config_name) && ($new[$config_name] != $config_value))
@@ -501,12 +565,14 @@ class admin_controller
 					// Clear cache
 					$this->cache->destroy('custom_header_info_config');
 				}
-			}			
+			
+				// Log message
+				//$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_CONFIG_UPDATED');
+				//trigger_error($this->user->lang['HEADER_INFO_CONF_UDPATED'] . adm_back_link($this->u_action));
+			}
+			
 			$this->db->sql_freeresult($result);
-			if (!($new))
-			{
-				$this->message_die(E_USER_ERROR, $this->user->lang['COULDNT_GET'] . ' ' . $this->ext_name . ' ' . $this->user->lang['CONFIG'], __FILE__, __LINE__, $sql);
-			}				
+			
 			$this->cache->put('custom_header_info_config', $new);
 			
 			// Log message
@@ -517,14 +583,13 @@ class admin_controller
 		//
 		// General Settings
 		//
+		$new = $custom_header_info_config;
+		
 		$module_name = $new['module_name'];
 
-		$enable_module_yes = ( $new['enable_module'] ) ? "checked=\"checked\"" : "";
-		$enable_module_no = ( !$new['enable_module'] ) ? "checked=\"checked\"" : "";
-
 		$wysiwyg_path = $new['wysiwyg_path'];
-		$upload_dir = $new['upload_dir'];
-		$screenshots_dir = $new['screenshots_dir'];
+		$upload_dir = $new['banners_dir'];
+		$screenshots_dir = $new['backgrounds_dir'];
 
 		$action = $this->request->variable('action', '');
 		$id_header_info = $this->request->variable('id', -1);
@@ -542,16 +607,16 @@ class admin_controller
 					$row = $this->db->sql_fetchrow($result);
 
 					$header_info_type_select = $this->get_list_static('header_info_type', 
-											array('language' => $this->language->lang('MULTI_LANGUAGE_BANNER'),
-														'lang_html_text' => $this->language->lang('HTML_MULTI_LANGUAGE_TEXT'), 
-														'simple_db_text' => $this->language->lang('SIMPLE_DB_TEXT'), 
-														'simple_bg_logo' => $this->language->lang('SIMPLE_BG_LOGO')
+											array('language' => $this->user->lang('MULTI_LANGUAGE_BANNER'),
+														'lang_html_text' => $this->user->lang('HTML_MULTI_LANGUAGE_TEXT'), 
+														'simple_db_text' => $this->user->lang('SIMPLE_DB_TEXT'), 
+														'simple_bg_logo' => $this->user->lang('SIMPLE_BG_LOGO')
 														), 
 														$row['header_info_type']);
 
 					$header_info_direction_select	= $this->get_list_static('direction', 
-											array('up' => $this->language->lang('UP'),
-														'down' => $this->language->lang('DOWN')
+											array('up' => $this->user->lang('UP'),
+														'down' => $this->user->lang('DOWN')
 														), 
 														'up');
 
@@ -598,7 +663,7 @@ class admin_controller
 							$info_title = $l_keys[$j];
 							$info_desc = $l_values[$j];
 						}
-						
+						//die(print_r($info_desc, true));
 					}
 					else
 					{
@@ -651,7 +716,7 @@ class admin_controller
 						'HEADER_INFO_RIGHT'					=> isset($row['header_info_right']) ? $row['header_info_right'] : '',
 
 						//New 0.9.0 ends
-						'S_HEADER_INFO_LINK_CHECKED'	=> $row['header_info_link'],
+						'S_HEADER_INFO_LINK_CHECKED'	=> $row['header_info_image_link'],
 						'HEADER_INFO_URL'						=> $row['header_info_url'],
 						'HEADER_INFO_LICENSE'				=> $row['header_info_license'],
 						'HEADER_INFO_TIME'					=> $row['header_info_time'],
@@ -665,7 +730,6 @@ class admin_controller
 						'HEADER_INFO_PIC_HEIGHT'			=> $row['header_info_pic_height'],
 						'S_HEADER_INFO_DISABLE'			=> $row['header_info_disable'], // settings_disable,
 					));
-					
 					$this->db->sql_freeresult($result);
 				break;
 					
@@ -732,7 +796,8 @@ class admin_controller
 
 		$page_id = $this->request->is_set('page') ? $this->request->variable('page') : $page;
 
-		//Assign template variables. We could add here aditional languages since $this->user->add_lang('common'); is automaticly added.	
+		//$this->user->add_lang('common');
+		
 		$this->template->assign_vars(array(
 			'BASE'	=> $this->u_action,
 		));	
@@ -759,7 +824,10 @@ class admin_controller
 			$sql = 'INSERT INTO ' . $this->custom_header_info_config_table . ' ' . $this->db->sql_build_array('INSERT', array(
 				'config_name'	=> $config_name,
 				'config_value'	=> $config_value));
-			$this->db->sql_query($sql);
+			if (!@$this->db->sql_query($sql))
+			{
+				$this->message_die( GENERAL_ERROR, "Failed to update pafiledb configuration for $config_name", "", __LINE__, __FILE__, $sql );
+			}
 		}
 		
 		$config[$config_name] = $config_value;
@@ -767,10 +835,9 @@ class admin_controller
 	}
 
 	/**
-	 * Get custom_header_info configuration
+	 * Enter description here...
 	 *
-	 * @param type array
-	 * @return variable $config
+	 * @return unknown
 	 */
 	function config_values($use_cache = true)
 	{
@@ -782,17 +849,16 @@ class admin_controller
 		{
 			$sql = "SELECT *
 				FROM " . $this->custom_header_info_config_table;
-			$result = $this->db->sql_query($sql);
-						
-			while ($row = $this->db->sql_fetchrow($result) )
+			if ( !( $result = $this->db->sql_query($sql) ) )
+			{
+				$this->message_die( GENERAL_ERROR, 'Couldnt query portal configuration', '', __LINE__, __FILE__, $sql );
+			}
+			while ( $row = $this->db->sql_fetchrow( $result ) )
 			{
 				$config[$row['config_name']] = trim($row['config_value']);
 			}
 			$this->db->sql_freeresult($result);
-			if ( !($config) )
-			{
-				$this->message_die(E_USER_ERROR, $this->user->lang['COULDNT_GET'] . ' ' . $this->ext_name . ' ' . $this->user->lang['CONFIG'], __FILE__, __LINE__, $sql);
-			}			
+			
 			$this->cache->put('custom_header_info_config', $config);
 			
 			return($config);
@@ -800,27 +866,17 @@ class admin_controller
 	}
 
 	/**
-		; User error handling and logging in PHP;
-		; E_USER_ERROR      		- user-generated error message
-		; E_USER_WARNING    	- user-generated warning message
-		; E_USER_NOTICE     		- user-generated notice message
-		; E_USER_DEPRECATED - user-generated deprecation warnings 
+	 * Dummy function
 	 */
 	function message_die($msg_code, $msg_text = '', $msg_title = '', $err_line = '', $err_file = '', $sql = '')
 	{		
-		
-		// Do not display notices if we suppress them via @
-		if (error_reporting() == 0 && $errno != E_USER_ERROR && $errno != E_USER_WARNING && $errno != E_USER_NOTICE && $errno != E_USER_DEPRECATED)
-		{
-			return;
-		}	
-		
 		//
 		// Get SQL error if we are debugging. Do this as soon as possible to prevent
 		// subsequent queries from overwriting the status of sql_error()
 		//
-		if (DEBUG && ($msg_code == E_USER_NOTICE || $msg_code == E_USER_ERROR))
-		{	
+		if (DEBUG && ($msg_code == GENERAL_ERROR || $msg_code == CRITICAL_ERROR))
+		{
+				
 			if ( isset($sql) )
 			{
 				$sql_error = $this->db->sql_error($sql);
@@ -830,37 +886,17 @@ class admin_controller
 			else
 			{
 				$sql_error = $this->db->sql_error_returned;
-				$sql_error['message'] = $this->db->sql_error_returned['message']; 
-				$sql_error['code'] = $this->db->sql_error_returned['code'];
+				$sql_error['message'] = $sql_error['message'] ? $sql_error['message'] : '<br /><br />SQL : ' . $sql; 
+				$sql_error['code'] = $sql_error['code'] ? $sql_error['code'] : 0;
 			}
 			
 			$debug_text = '';
-			
-			//Some code with harcoded language from function db::sql_error() and other from msg_handler() with some fixes here
-			// If error occurs in initiating the session we need to use a pre-defined language string
-			// This could happen if the connection could not be established for example (then we are not able to grab the default language)
+
 			if ( isset($sql_error['message']) )
-			{	
-				$message = 'SQL  ' . $this->language->lang('ERROR') . ' [ ' . $this->db->sql_layer . ' ]<br /><br />' . $sql_error['message'] . ' [' . $sql_error['code'] . ']';
-				
-				if (!isset($this->user->lang['SQL_ERROR_OCCURRED']))
-				{
-					$message .= '<br /><br />An sql error occurred while fetching this page. Please contact an administrator if this problem persists.';
-				}
-				else
-				{
-					if (!empty($this->config['board_contact']))
-					{
-						$message .= '<br /><br />' . sprintf($this->user->lang['SQL_ERROR_OCCURRED'], '<a href="mailto:' . $this->config['board_contact'] . '">', '</a>');
-					}
-					else
-					{
-						$message .= '<br /><br />' . sprintf($this->user->lang['SQL_ERROR_OCCURRED'], '', '');
-					}
-				}
-				$debug_text .= '<br /><br />SQL '  . $this->user->language->lang('ERROR') . ' ' . $this->language->lang('COLON') . ' ' . $sql_error['code'] . ' ' . $sql_error['message'];
+			{
+				$debug_text .= '<br /><br />SQL Error : ' . $sql_error['code'] . ' ' . $sql_error['message'];
 			}
-			
+
 			if ( isset($sql_store) )
 			{
 				$debug_text .= "<br /><br />$sql_store";
@@ -874,41 +910,42 @@ class admin_controller
 		
 		switch($msg_code)
 		{
-			case E_USER_ERROR:
+			case GENERAL_MESSAGE:
 				if ( $msg_title == '' )
 				{
-					$msg_title = $this->language->lang('GENERAL_ERROR'); //GENERAL_ERROR or LOG_GENERAL_ERROR
+					$msg_title = $this->user->lang('Information');
 				}
 			break;
 
-			case E_USER_WARNING:
+			case CRITICAL_MESSAGE:
+				if ( $msg_title == '' )
+				{
+					$msg_title = $this->user->lang('Critical_Information');
+				}
+			break;
+
+			case GENERAL_ERROR:
 				if ( $msg_text == '' )
 				{
-					$msg_text = $this->language->lang('GENERAL_ERROR');
+					$msg_text = $this->user->lang('An_error_occured');
 				}
 
 				if ( $msg_title == '' )
 				{
-					$msg_title = $this->language->lang('ERROR');
+					$msg_title = $this->user->lang('General_Error');
 				}
 			break;
-			
-			case E_USER_NOTICE:
-				if ( $msg_title == '' )
-				{
-					$msg_title = $this->language->lang('INFORMATION');
-				}
-			break;
-			
-			case E_USER_DEPRECATED:
+
+			case CRITICAL_ERROR:
+
 				if ($msg_text == '')
 				{
-					$msg_text = $this->language->lang('GENERAL_ERROR');
+					$msg_text = $this->user->lang('A_critical_error');
 				}
 
 				if ($msg_title == '')
 				{
-					$msg_title = 'phpBB' . $this->language->lang('COLON') . '<b>' . $this->language->lang('ERROR') . '</b>';
+					$msg_title = 'phpBB : <b>' . $this->user->lang('Critical_Error') . '</b>';
 				}
 			break;
 		}
@@ -918,7 +955,7 @@ class admin_controller
 		// prevents debug info being output for general messages should DEBUG be
 		// set TRUE by accident (preventing confusion for the end user!)
 		//
-		if ( DEBUG && ( $msg_code == E_USER_NOTICE || $msg_code == E_USER_ERROR ) )
+		if ( DEBUG && ( $msg_code == GENERAL_ERROR || $msg_code == CRITICAL_ERROR ) )
 		{
 			if ( $debug_text != '' )
 			{
@@ -926,76 +963,7 @@ class admin_controller
 			}
 		}
 		
-		$msg_text = (!empty($user->lang[$msg_text])) ? $user->lang[$msg_text] : $msg_text;
-		$msg_title = (!empty($user->lang[$msg_title])) ? $user->lang[$msg_title] : $msg_title;
-		
-		trigger_error(sprintf($msg_title, $err_file, $err_line), $msg_code);
-	}
-	
-	/**
-	 * Confirm Forum Backend Name
-	 *
-	* @return $backend
-	 */
-	function confirm_backend($backend_name = true)
-	{
-		if (isset($this->config['version'])) 
-		{
-			if ($this->config['version']  >= '4.0.0')
-			{
-				$this->backend = 'phpbb4';
-			}
-			if (($this->config['version']  >= '3.3.0') && ($this->config['version'] < '4.0.0'))
-			{
-				$this->backend = 'proteus';
-			}
-			if (($this->config['version']  >= '3.2.0') && ($this->config['version'] < '3.3.0'))
-			{
-				$this->backend = 'rhea';
-			}
-			if (($this->config['version']  >= '3.1.0') && ($this->config['version'] < '3.2.0'))
-			{
-				$this->backend = 'ascraeus';
-			}
-			if (($this->config['version']  >= '3.0.0') && ($this->config['version'] < '3.1.0'))
-			{
-				$this->backend = 'olympus';
-			}
-			if (($this->config['version']  >= '2.0.0') && ($this->config['version'] < '3.0.0'))
-			{
-				$this->this->backend = 'phpbb2';
-			}
-			if (($this->config['version']  >= '1.0.0') && ($this->config['version'] < '2.0.0'))
-			{
-				$this->backend = 'phpbb';
-			}
-		}
-		else if (isset($this->config['portal_backend']))
-		{
-			$this->backend = $this->config['portal_backend'];
-		}
-		else
-		{
-			$this->backend = 'internal';
-		}
-		
-		$this->is_phpbb20	= phpbb_version_compare($this->config['version'], '2.0.0@dev', '>=') && phpbb_version_compare($this->config['version'], '3.0.0@dev', '<');		
-		$this->is_phpbb30	= phpbb_version_compare($this->config['version'], '3.0.0@dev', '>=') && phpbb_version_compare($this->config['version'], '3.1.0@dev', '<');		
-		$this->is_phpbb31	= phpbb_version_compare($this->config['version'], '3.1.0@dev', '>=') && phpbb_version_compare($this->config['version'], '3.2.0@dev', '<');
-		$this->is_phpbb32	= phpbb_version_compare($this->config['version'], '3.2.0@dev', '>=') && phpbb_version_compare($this->config['version'], '3.3.0@dev', '<');		
-		$this->is_phpbb33	= phpbb_version_compare($this->config['version'], '3.3.0@dev', '>=') && phpbb_version_compare($this->config['version'], '3.4.0@dev', '<');		
-		
-		$this->is_block = isset($this->config['portal_backend']) ? true : false;
-		
-		if ($this->config['version'] < '3.1.0')
-		{
-			define('EXT_TABLE',	$table_prefix . 'ext');
-		}
-		
-		if ($backend_name == true)
-		{
-			return $this->backend;
-		}
+		trigger_error($msg_title . ': ' . $msg_text);
 	}
 	
 	/**
@@ -1028,14 +996,7 @@ class admin_controller
 	 */
 	function encode_lang($lang)
 	{
-			if ($this->backend == 'phpbb2')
-			{
-				return $lang;
-			}
-			else
-			{
-				$lang = str_replace('lang_', '', $lang);
-			}
+			$lang = str_replace('lang_', '', $lang);
 			switch($lang)
 			{
 				case 'afar':
@@ -1653,19 +1614,21 @@ class admin_controller
 	*/
 	function load_lang_dirs($path, $lang_from = '', $add_path = '', $lang_into = '')
 	{
+		/* root path at witch we add ie. extension path */  
+		$root_path = $this->module_root_path;
+		
+		$php_ext = $this->php_ext;
+		
 		if (($this->dir_select_from == $this->dir_select_into) && ($this->language_from !== $this->language_into))
 		{
 			$this->dir_select_from = str_replace($this->language_into, $this->language_from, $this->dir_select_from);
 			$this->dir_select_from = ($this->trisstr('\.' . $php_ext . '$', $this->dir_select_from) == false) ? $this->dir_select_from : dirname($this->dir_select_from);
 			$this->dir_select_into = ($this->trisstr('\.' . $php_ext . '$', $this->dir_select_into) == false) ? $this->dir_select_into : dirname($this->dir_select_into);
 		}
-		/* root path at witch we add ie. extension path */  
-		$root_path = $this->module_root_path;
-		
-		$php_ext = $this->php_ext;
-		if (!file_exists($root_path . 'mx_meta.inc') && !file_exists($root_path . 'modcp'.$php_ext))
+
+		if (!file_exists($root_path . 'mx_meta.inc') && !file_exists($root_path . 'mcp'.$php_ext))
 		{
-			$language = $this->encode_lang($language);
+			$language = $this->language_from;
 			if ($this->language_from == '')
 			{
 				$this->language_from = 'en';
@@ -1738,16 +1701,18 @@ class admin_controller
 	*/
 	function load_lang_files($path, $language, $add_path = '', $dir_select = '')
 	{
+		/* root path at witch we add ie. extension path */  
+		$root_path = $this->module_root_path;
+		
+		$php_ext = $this->php_ext;
+		
 		if (($this->dir_select_from == $this->dir_select_into) && ($this->language_from !== $this->language_into))
 		{
 			$this->dir_select_from = str_replace($this->language_into, $this->language_from, $this->dir_select_from);
 			$this->dir_select_from = ($this->trisstr('\.' . $php_ext . '$', $this->dir_select_from) == false) ? $this->dir_select_from : dirname($this->dir_select_from);
 			$this->dir_select_into = ($this->trisstr('\.' . $php_ext . '$', $this->dir_select_into) == false) ? $this->dir_select_into : dirname($this->dir_select_into);
 		}
-		/* root path at witch we add ie. extension path */  
-		$root_path = $this->module_root_path;
-		
-		$php_ext = $this->php_ext;
+
 		if (!file_exists($root_path . 'mx_meta.inc') && !file_exists($root_path . 'modcp'.$php_ext))
 		{
 			$language = $this->encode_lang($language);
@@ -1892,7 +1857,7 @@ class admin_controller
 	 * @param $disabled mixed list of disabed key items
 	 * @param $from_select boolean is the list initial?
 	 */
-	function gen_fonts_select_list($html, $name_select = 'header_info_font', $selected = '', $disabled = '')
+	function gen_fonts_select_list($html, $name_select = 'header_info_font', $selected = '', $disabled = '', $full_list = true)
 	{
 		$list_ary = $this->get_fonts();
 
@@ -1962,7 +1927,7 @@ class admin_controller
 	 * @param $disabled mixed list of disabed key items
 	 * @param $from_select boolean is the list initial?
 	 */
-	function gen_lang_dirs_select_list($html, $name_select, $selected = '', $disabled = '')
+	function gen_lang_dirs_select_list($html, $name_select, $selected = '', $disabled = '', $full_list = true)
 	{
 		$list_ary = $this->load_lang_dirs($this->module_root_path, $this->language_from, '', $this->language_into);
 
@@ -2689,7 +2654,10 @@ class admin_controller
 				
 				$pattern = 'lang_u';
 				if (preg_match('/' . $pattern . '/i', $file))
-				//i.e if(preg_match("/^info_acp_custom_headernfo*?\." . $this->php_ext . "$/", $file))
+				//if(preg_match("/^lang_user_created.*?\." . $this->php_ext . "$/", $file))
+				//if((preg_match("/^lang_user_created.*?\." . $this->php_ext . "$/", $file)) || (preg_match("/^lang_main.*?\." . $this->php_ext . "$/", $file)))
+				//if((preg_match("/^lang_user_created.*?\." . $this->php_ext . "$/", $file)) || (preg_match("/^lang_admin.*?\." . $this->php_ext . "$/", $file)))
+				//if(preg_match("/^lang_user_created.*?\." . $this->php_ext . "$/", $file))
 				{
 					/* MG Lang DB - BEGIN */
 					if (!in_array($file, $skip_files))
@@ -2709,7 +2677,12 @@ class admin_controller
 			}
 			@closedir($dir);
 		}
-
+		/* MG Lang DB - BEGIN */
+		/*
+		$packs['lang'] = '_phpBB';
+		$packs['custom'] = '_custom';
+		*/
+		/* MG Lang DB - END */
 		@asort($packs);
 
 		return $packs;
@@ -2723,7 +2696,8 @@ class admin_controller
 		$file = $this->root_path . 'language/' . $country_dir . '/' . $pack_file;
 		if (($pack_file != 'lang') && ($pack_file != 'custom') && !file_exists($file))
 		{
-			$this->message_die(E_USER_NOTICE, 'FILE_NOT_EXISTS' . $file, '', __LINE__, __FILE__, $packs);
+			//die('This file doesn\'t exist: ' . $file);
+			$this->message_die(GENERAL_ERROR, 'This file doesn\'t exist: ' . $file, '', __LINE__, __FILE__, $packs);
 		}
 
 		// process first admin then standard keys
@@ -2787,6 +2761,31 @@ class admin_controller
 		$entries = array();
 
 		// process by countries first
+		/* MG Lang DB - BEGIN */
+		/*
+		@reset($countries);
+		while (list($country_dir, $country_name) = @each($countries))
+		{
+			// phpBB lang keys
+			$pack_file = 'lang';
+			$this->read_one_pack($country_dir, $pack_file, $entries);
+		}
+
+		// process other packs except custom one
+		@reset($countries);
+		while (list($country_dir, $country_name) = @each($countries))
+		{
+			@reset($packs);
+			while (list($pack_file, $pack_name) = @each($packs))
+			{
+				if (($pack_file != 'lang') && ($pack_file != 'custom'))
+				{
+					$this->read_one_pack($country_dir, $pack_file, $entries);
+				}
+			}
+		}
+		*/
+		/* MG Lang DB - END */
 
 		/* MG Lang DB - BEGIN */
 		@reset($countries);

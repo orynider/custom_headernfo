@@ -1,0 +1,5 @@
+composer.phar
+ext.php
+/assets/css/*
+/vendor/*
+.dist

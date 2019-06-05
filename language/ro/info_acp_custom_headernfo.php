@@ -28,7 +28,9 @@ $lang = array_merge($lang, array(
 
 	'ACP_MANAGE_FORUMS'									=> 'Forumuri',
 	'ACP_MANAGE_PAGES'									=> 'Pagini',
-
+	
+	'ACP_NO_BANNER'									=> 'No Banner',
+	
 	'HEADER_INFO_INTRO'									=> 'Aceasta este o pagină de configurare pentru Extensia Custom Header Info de orynider (FlorinCB).',
 
 	'HEADER_INFO_DONATE'				                => '<a href="https://www.paypal.me/orynider"><strong>Donează</strong></a>',
@@ -36,11 +38,15 @@ $lang = array_merge($lang, array(
 
 	'HEADER_INFO_VERSION'								=> 'Versiune',
  	'HEADER_INFO_CHECK'									=> 'Verifică Versiune Manual la <a href="http://mxpcms.sf.net/forum/index.php"><strong>Forum Acasă</strong></a>',
+	'HEADER_INFO_EDIT'								=> 'Edit header info item to database.',
 
 	'ROW_HEIGHT'											=> 'Înălţime a fiecărui rând ticker în PX',
 	'ROW_HEIGHT_EXPLAIN'								=> 'Fiecare banner este încărcat în info ticker ca un rând folosind acestă applicaţie JavaScript. Înălţimea fiecărui rând ticker trebuie să fie uniformă.',
 
-	'SPEED'														=> 'Viteză de tranziţie a animaţiei în milisecunde',
+	'THUMBNAIL_FONT_DADABASE_ERROR_FOR_ID'	=> 'Thumbnail font dadabase error for id. <br />Edit the banner in ACP and reselect a font uploaded with the font css files.',
+	
+	'SPEED'														=> 'Speed of transition animation in milliseconds',
+
 	'SPEED_EXPLAIN'										=> 'Speed of transition animation between banner scrolling in the info ticker.',
 
 	'INTERVAL'												=> 'Time between change in milliseconds',

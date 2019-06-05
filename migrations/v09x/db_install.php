@@ -52,7 +52,6 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 						'header_info_dir'				=> array('VCHAR:255', ''), //langSubDir ie: 'movies'
 						'header_info_font'				=> array('VCHAR:190', 'tituscbz'), 
 						'header_info_type'				=> array('VCHAR:190', ''),
-						'header_info_link'				=> array('TINT:2', 1),
 						'header_info_url'				=> array('MTEXT_UNI', ''),
 						'header_info_image'	    	=> array('MTEXT_UNI', ''),
 						'header_info_image_link'		=> array('TINT:1', 0),
@@ -183,34 +182,6 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 		$this->db->sql_freeresult($result);
 
 		return $role_id;
-	}
-	
-	/**
-	* Set config value. Creates missing config entry.
-	* Only use this if your config value might exceed 255 characters, otherwise please use set_config
-	*
-	* @param string $config_name Name of config entry to add or update
-	* @param mixed $config_value Value of config entry to add or update
-	*/
-	private function set_customheadernfo_config($config_name, $config_value, $use_cache = true)
-	{
-		// Read out config values
-		$customheadernfo_config = $this->config_values();
-
-		$sql = 'UPDATE ' . $this->table_prefix . "custom_header_info_config
-			SET config_value = '" . $this->db->sql_escape($config_value) . "'
-			WHERE config_name = '" . $this->db->sql_escape($config_name) . "'";
-		$this->db->sql_query($sql);
-
-		if (!$this->db->sql_affectedrows() && !isset($customheadernfo_config[$config_name]))
-		{
-			$sql = 'INSERT INTO ' . $this->table_prefix . 'custom_header_info_config ' . $this->db->sql_build_array('INSERT', array(
-				'config_name'	=> $config_name,
-				'config_value'	=> $config_value));
-			$this->db->sql_query($sql);
-		}
-
-		$this->customheadernfo_config[$config_name] = $config_value;
 	}
 
 	/**

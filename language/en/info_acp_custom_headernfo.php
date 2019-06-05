@@ -25,10 +25,13 @@ $lang = array_merge($lang, array(
 	'ACP_HEADER_INFO_TITLE'						=> 'Custom Header Info',
     'ACP_HEADER_INFO_CONFIG'					=> 'Header Info Configuration',
 	'ACP_MANAGE_CONFIG'							=> 'Configuration',
+	'ACP_MANAGE_FORUMS'									=> 'Forumuri',
+	'ACP_MANAGE_PAGES'									=> 'Pagini',
 	
 	'ACP_MANAGE_FORUMS'							=> 'Forums',
 	'ACP_MANAGE_PAGES'								=> 'Pages',
-
+	'ACP_NO_BANNER'									=> 'No Banner',
+	
 	'HEADER_INFO_INTRO'								=> 'This is configuration page for the Custom Header Info Extension by orynider.',
 
 	'HEADER_INFO_DONATE'				           => '<a href="https://www.paypal.me/orynider"><strong>Donate</strong></a>',
@@ -41,7 +44,7 @@ $lang = array_merge($lang, array(
 	'ROW_HEIGHT'											=> 'Height of each ticker row in PX',
 	'ROW_HEIGHT_EXPLAIN'							=> 'Each banner is loaded in in the info ticker as a row using this JavaScript aplication. Height of each ticker row should be uniform.',
 	
-	'THUMBNAIL_FONT_DADABASE_ERROR_FOR_ID'	=> 'Thumbnail font dadabase error for id',
+	'THUMBNAIL_FONT_DADABASE_ERROR_FOR_ID'	=> 'Thumbnail font dadabase error for id. <br />Edit the banner in ACP and reselect a font uploaded with the font css files.',
 	
 	'SPEED'														=> 'Speed of transition animation in milliseconds',
 	'SPEED_EXPLAIN'										=> 'Speed of transition animation between banner scrolling in the info ticker.',

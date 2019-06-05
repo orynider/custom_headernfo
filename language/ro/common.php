@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package phpBB Extension - Custom Header Logo
+* @package phpBB Extension - Custom Header Info
 * @copyright (c) 2018, orynider, https://mxpcms.sourceforge.net.org
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
