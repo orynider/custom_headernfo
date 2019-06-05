@@ -382,45 +382,45 @@ class thumbnail
 		ImageSaveAlpha($im, true);
 
 		$dimension_height = ImageFontHeight($dimension_font);
-		$dimension_width = ImageFontWidth($dimension_font) * utf8_strlen($pic_desc, 'utf-8');
-		$dimension_x = (($thumbnail_width - $dimension_width) / 2) - utf8_strlen($pic_desc, 'utf-8');
+		$dimension_width = ImageFontWidth($dimension_font) * mb_strlen($pic_desc, 'utf-8');
+		$dimension_x = (($thumbnail_width - $dimension_width) / 2) - mb_strlen($pic_desc, 'utf-8');
 		$dimension_y = $thumbnail_height + ((16 - $dimension_height) / 2);
 
 		/* ideea: https://stackoverflow.com/a/8187653/9369810
 		credit: https://stackoverflow.com/users/1046402/jeff-wilbert */
-		$middle_title = utf8_strrpos(utf8_substr($pic_title, 0, floor(utf8_strlen($pic_title) / 2 )), ' ') + 1;
-		$middle_desc = utf8_strrpos(utf8_substr($pic_desc, 0, floor(utf8_strlen($pic_desc) / 2 )), ' ') + 1;
+		$middle_title = mb_strrpos(mb_substr($pic_title, 0, floor(mb_strlen($pic_title) / 2 )), ' ') + 1;
+		$middle_desc = mb_strrpos(mb_substr($pic_desc, 0, floor(mb_strlen($pic_desc) / 2 )), ' ') + 1;
 
 		$pic_title = $this->convert_encoding($pic_title);
 		$pic_desc = $this->convert_encoding($pic_desc); 
 
-		$pic_title1 = $this->convert_encoding(utf8_substr($pic_title, 0, $middle_title)); 
-		$pic_title2 = $this->convert_encoding(utf8_substr($pic_title, $middle_title));
+		$pic_title1 = $this->convert_encoding(mb_substr($pic_title, 0, $middle_title)); 
+		$pic_title2 = $this->convert_encoding(mb_substr($pic_title, $middle_title));
 
-		$middle_title1 = utf8_strrpos(utf8_substr($pic_title1, 0, floor(utf8_strlen($pic_title1) / 2 )), ' ') + 1;
-		$middle_title2 = utf8_strrpos(utf8_substr($pic_title2, 0, floor(utf8_strlen($pic_title2) / 2 )), ' ') + 1;
+		$middle_title1 = mb_strrpos(mb_substr($pic_title1, 0, floor(mb_strlen($pic_title1) / 2 )), ' ') + 1;
+		$middle_title2 = mb_strrpos(mb_substr($pic_title2, 0, floor(mb_strlen($pic_title2) / 2 )), ' ') + 1;
 
 		//Title Split Level 2
-		$pic_title1_1 = $this->convert_encoding(utf8_substr($pic_title1, 0, $middle_title1));
-		$pic_title1_2 = $this->convert_encoding(utf8_substr($pic_title1, $middle_title1));
-		$pic_title2_1 = $this->convert_encoding(utf8_substr($pic_title2, 0, $middle_title2));
-		$pic_title2_2 = $this->convert_encoding(utf8_substr($pic_title2, $middle_title2));
+		$pic_title1_1 = $this->convert_encoding(mb_substr($pic_title1, 0, $middle_title1));
+		$pic_title1_2 = $this->convert_encoding(mb_substr($pic_title1, $middle_title1));
+		$pic_title2_1 = $this->convert_encoding(mb_substr($pic_title2, 0, $middle_title2));
+		$pic_title2_2 = $this->convert_encoding(mb_substr($pic_title2, $middle_title2));
 
-		$pic_desc1 = $this->convert_encoding(utf8_substr($pic_desc, 0, $middle_desc)); 
-		$pic_desc2 = $this->convert_encoding(utf8_substr($pic_desc, $middle_desc)); 
+		$pic_desc1 = $this->convert_encoding(mb_substr($pic_desc, 0, $middle_desc)); 
+		$pic_desc2 = $this->convert_encoding(mb_substr($pic_desc, $middle_desc)); 
 
-		$middle_desc1 = utf8_strrpos(utf8_substr($pic_desc1, 0, floor(utf8_strlen($pic_desc1) / 2 )), ' ') + 1;
-		$middle_desc2 = utf8_strrpos(utf8_substr($pic_desc2, 0, floor(utf8_strlen($pic_desc2) / 2 )), ' ') + 1;
+		$middle_desc1 = mb_strrpos(mb_substr($pic_desc1, 0, floor(mb_strlen($pic_desc1) / 2 )), ' ') + 1;
+		$middle_desc2 = mb_strrpos(mb_substr($pic_desc2, 0, floor(mb_strlen($pic_desc2) / 2 )), ' ') + 1;
 
 		//Description Split Level 2
-		$pic_desc1_1 = $this->convert_encoding(utf8_substr($pic_desc1, 0, $middle_desc1));
-		$pic_desc1_2 = $this->convert_encoding(utf8_substr($pic_desc1, $middle_desc1));
-		$pic_desc2_1 = $this->convert_encoding(utf8_substr($pic_desc2, 0, $middle_desc2));
-		$pic_desc2_2 = $this->convert_encoding(utf8_substr($pic_desc2, $middle_desc2));
+		$pic_desc1_1 = $this->convert_encoding(mb_substr($pic_desc1, 0, $middle_desc1));
+		$pic_desc1_2 = $this->convert_encoding(mb_substr($pic_desc1, $middle_desc1));
+		$pic_desc2_1 = $this->convert_encoding(mb_substr($pic_desc2, 0, $middle_desc2));
+		$pic_desc2_2 = $this->convert_encoding(mb_substr($pic_desc2, $middle_desc2));
 
-		$resize_height = (($header_info_font_size * utf8_strlen($pic_desc, 'utf-8')) >= $resize_width) ? $resize_height + (2 * $header_info_font_size) : ((!empty($pic_desc2_2)) ? $resize_height + $header_info_font_size  : $resize_height);
+		$resize_height = (($header_info_font_size * mb_strlen($pic_desc, 'utf-8')) >= $resize_width) ? $resize_height + (2 * $header_info_font_size) : ((!empty($pic_desc2_2)) ? $resize_height + $header_info_font_size  : $resize_height);
 
-		if (((6 * utf8_strlen($pic_title, 'utf-8')) >= $resize_width) || (utf8_strlen($pic_title2, 'utf-8') >= $resize_width))
+		if (((6 * mb_strlen($pic_title, 'utf-8')) >= $resize_width) || (mb_strlen($pic_title2, 'utf-8') >= $resize_width))
 		{
 			$resize_height = $resize_height + $header_info_font_size;
 			$dimension_title_y = 0;
@@ -430,7 +430,7 @@ class thumbnail
 			$dimension_title_y = 8;
 		}
 		
-		if (((5 * utf8_strlen($pic_title, 'utf-8')) >= $resize_width) || (utf8_strlen($pic_title2, 'utf-8') >= $resize_width))
+		if (((5 * mb_strlen($pic_title, 'utf-8')) >= $resize_width) || (mb_strlen($pic_title2, 'utf-8') >= $resize_width))
 		{
 			$resize_height = $resize_height + $header_info_font_size;
 			$dimension_title_y = 0;
@@ -439,14 +439,14 @@ class thumbnail
 		{
 			$dimension_title_y = 6;
 		}
-
-		$pic_offset_desc1 = !empty($pic_desc1_2) ? utf8_strlen($pic_desc1_2, 'utf-8') - $resize_height + $header_info_title_font_size + 14 : 0;
-		$pic_offset_desc2 =!empty($pic_desc2_2) ? utf8_strlen($pic_desc2_2, 'utf-8') - $resize_height + $header_info_title_font_size + 9 : 0;
+		
+		$pic_offset_desc1 = !empty($pic_desc1_2) ? mb_strlen($pic_desc1_2, 'utf-8') - $resize_height + $header_info_title_font_size + 14 : 0;
+		$pic_offset_desc2 =!empty($pic_desc2_2) ? mb_strlen($pic_desc2_2, 'utf-8') - $resize_height + $header_info_title_font_size + 9 : 0;
 		$dimension_desc_y = 1;
-		if ((($pic_offset_desc1 * utf8_strlen($pic_desc1, 'utf-8')) >= $resize_width) && (($pic_offset_desc2 * utf8_strlen($pic_desc2, 'utf-8')) >= $resize_width))
+		if ((($pic_offset_desc1 * mb_strlen($pic_desc1, 'utf-8')) >= $resize_width) && (($pic_offset_desc2 * mb_strlen($pic_desc2, 'utf-8')) >= $resize_width))
 		{
 			//Description Split Level 3
-			if (($pic_offset_desc1 * utf8_strlen($pic_desc2_1, 'utf-8')) >= $resize_width)
+			if (($pic_offset_desc1 * mb_strlen($pic_desc2_1, 'utf-8')) >= $resize_width)
 			{
 				$resize_height = $resize_height + (2 * $header_info_font_size);
 				$dimension_desc_y = 6;
@@ -521,14 +521,14 @@ class thumbnail
 		{
 			$header_info_title_font_size = $header_info_title_font_size - 2;
 		}
-
-		if (((5 * utf8_strlen($pic_title, 'utf-8')) >= $resize_width) || (utf8_strlen($pic_title2, 'utf-8') >= $resize_width))
+	
+		if (((5 * mb_strlen($pic_title, 'utf-8')) >= $resize_width) || (mb_strlen($pic_title2, 'utf-8') >= $resize_width))
 		{
 			ImageTtfText($im, $header_info_title_font_size, 0, 12, $dimension_y + $dimension_title_y + 30, $title_colour, $font, $pic_title1);
 			$dimension_y = $dimension_y + $header_info_font_size;
 			ImageTtfText($im, $header_info_title_font_size, 0, 12, $dimension_y + $dimension_title_y + 30, $title_colour, $font, $pic_title2);
-		}	
-		if (((6 * utf8_strlen($pic_title, 'utf-8')) >= $resize_width) || (utf8_strlen($pic_title2, 'utf-8') >= $resize_width))
+		}
+		elseif (((6 * mb_strlen($pic_title, 'utf-8')) >= $resize_width) || (mb_strlen($pic_title2, 'utf-8') >= $resize_width))
 		{
 			ImageTtfText($im, $header_info_title_font_size, 0, 12, $dimension_y + $dimension_title_y + 30, $title_colour, $font, $pic_title1);
 			$dimension_y = $dimension_y + $header_info_font_size;
@@ -544,19 +544,19 @@ class thumbnail
 		}
 		
 		//4 x 138 >= 458
-		if (((6 * utf8_strlen($pic_desc, 'utf-8')) >= $resize_width) || (utf8_strlen($pic_desc2, 'utf-8') >= $resize_width))
+		if (((6 * mb_strlen($pic_desc, 'utf-8')) >= $resize_width) || (mb_strlen($pic_desc2, 'utf-8') >= $resize_width))
 		{
-			if ((($pic_offset_desc1 * utf8_strlen($pic_desc1, 'utf-8')) >= $resize_width) && (($pic_offset_desc2 * utf8_strlen($pic_desc2, 'utf-8')) >= $resize_width))
+			if ((($pic_offset_desc1 * mb_strlen($pic_desc1, 'utf-8')) >= $resize_width) && (($pic_offset_desc2 * mb_strlen($pic_desc2, 'utf-8')) >= $resize_width))
 			{
 				//Description Split Level 3
-				$middle_desc1_1 = utf8_strrpos(utf8_substr($pic_desc1_1, 0, floor(utf8_strlen($pic_desc1_1) / 2 )), ' ') + 1;
-				$middle_desc1_2 = utf8_strrpos(utf8_substr($pic_desc1_2, 0, floor(utf8_strlen($pic_desc1_2) / 2 )), ' ') + 1;
+				$middle_desc1_1 = mb_strrpos(mb_substr($pic_desc1_1, 0, floor(mb_strlen($pic_desc1_1) / 2 )), ' ') + 1;
+				$middle_desc1_2 = mb_strrpos(mb_substr($pic_desc1_2, 0, floor(mb_strlen($pic_desc1_2) / 2 )), ' ') + 1;
 
 				//Description Split Level 3
-				$pic_desc1_1_1 = $this->convert_encoding(utf8_substr($pic_desc1_1, 0, $middle_desc1_1));
-				$pic_desc1_1_2 = $this->convert_encoding(utf8_substr($pic_desc1_1, $middle_desc1_1));
-				$pic_desc1_2_1 = $this->convert_encoding(utf8_substr($pic_desc1_2, 0, $middle_desc1_2));
-				$pic_desc1_2_2 = $this->convert_encoding(utf8_substr($pic_desc1_2, $middle_desc1_2));
+				$pic_desc1_1_1 = $this->convert_encoding(mb_substr($pic_desc1_1, 0, $middle_desc1_1));
+				$pic_desc1_1_2 = $this->convert_encoding(mb_substr($pic_desc1_1, $middle_desc1_1));
+				$pic_desc1_2_1 = $this->convert_encoding(mb_substr($pic_desc1_2, 0, $middle_desc1_2));
+				$pic_desc1_2_2 = $this->convert_encoding(mb_substr($pic_desc1_2, $middle_desc1_2));
 				
 				ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + $dimension_desc_y, $desc_colour, $font, $pic_desc1_1);
 				//ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 8 + $header_info_font_size, $desc_colour, $font, $pic_desc1_1_2);
@@ -564,16 +564,16 @@ class thumbnail
 				//ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 8 + (2 * $header_info_font_size), $desc_colour, $font, $pic_desc1_2_2);
 				
 				//Description Split Level 3
-				$middle_desc2_1 = utf8_strrpos(utf8_substr($pic_desc2_1, 0, floor(utf8_strlen($pic_desc2_1) / 2 )), ' ') + 1;
-				$middle_desc2_2 = utf8_strrpos(utf8_substr($pic_desc2_2, 0, floor(utf8_strlen($pic_desc2_2) / 2 )), ' ') + 1;
+				$middle_desc2_1 = mb_strrpos(mb_substr($pic_desc2_1, 0, floor(mb_strlen($pic_desc2_1) / 2 )), ' ') + 1;
+				$middle_desc2_2 = mb_strrpos(mb_substr($pic_desc2_2, 0, floor(mb_strlen($pic_desc2_2) / 2 )), ' ') + 1;
 
 				//Description Split Level 3
-				$pic_desc2_1_1 = $this->convert_encoding(utf8_substr($pic_desc2_1, 0, $middle_desc2_1));
-				$pic_desc2_1_2 = $this->convert_encoding(utf8_substr($pic_desc2_1, $middle_desc2_1));
-				$pic_desc2_2_1 = $this->convert_encoding(utf8_substr($pic_desc2_2, 0, $middle_desc2_2));
-				$pic_desc2_2_2 = $this->convert_encoding(utf8_substr($pic_desc2_2, $middle_desc2_2));
+				$pic_desc2_1_1 = $this->convert_encoding(mb_substr($pic_desc2_1, 0, $middle_desc2_1));
+				$pic_desc2_1_2 = $this->convert_encoding(mb_substr($pic_desc2_1, $middle_desc2_1));
+				$pic_desc2_2_1 = $this->convert_encoding(mb_substr($pic_desc2_2, 0, $middle_desc2_2));
+				$pic_desc2_2_2 = $this->convert_encoding(mb_substr($pic_desc2_2, $middle_desc2_2));
 				
-				if (($pic_offset_desc1 * utf8_strlen($pic_desc2_1, 'utf-8')) >= $resize_width)
+				if (($pic_offset_desc1 * mb_strlen($pic_desc2_1, 'utf-8')) >= $resize_width)
 				{
 					ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 43, $desc_colour, $font, $pic_desc2_1_1);
 					$dimension_y = $dimension_y + $header_info_font_size;
@@ -586,7 +586,7 @@ class thumbnail
 					$dimension_y = $dimension_y + $header_info_font_size;
 				}
 
-				if (($pic_offset_desc1 * utf8_strlen($pic_desc2_2, 'utf-8')) >= $resize_width)
+				if (($pic_offset_desc1 * mb_strlen($pic_desc2_2, 'utf-8')) >= $resize_width)
 				{
 					ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 43, $desc_colour, $font, $pic_desc2_2_1);
 					$dimension_y = $dimension_y + $header_info_font_size;
@@ -598,14 +598,14 @@ class thumbnail
 					ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 43, $desc_colour, $font, $pic_desc2_2);
 				}
 			}
-			elseif (($pic_offset_desc1 * utf8_strlen($pic_desc1, 'utf-8')) >= $resize_width)
+			elseif (($pic_offset_desc1 * mb_strlen($pic_desc1, 'utf-8')) >= $resize_width)
 			{
 				ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 8, $desc_colour, $font, $pic_desc1_1);
 				ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 8 + $header_info_font_size, $desc_colour, $font, $pic_desc1_2);
 			
 				ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 43, $desc_colour, $font, $pic_desc2);
 			}
-			elseif (($pic_offset_desc2 * utf8_strlen($pic_desc2, 'utf-8')) >= $resize_width)
+			elseif (($pic_offset_desc2 * mb_strlen($pic_desc2, 'utf-8')) >= $resize_width)
 			{
 				ImageTtfText($im, $header_info_font_size, 0, 12, $dimension_y + 8, $desc_colour, $font, $pic_desc1);
 			
@@ -634,12 +634,12 @@ class thumbnail
 			break;
 
 			case 1: // 2 top middle
-				$dest_x = (($resize_width - utf8_strlen($wm, 'utf-8')) / 2);
+				$dest_x = (($resize_width - mb_strlen($wm, 'utf-8')) / 2);
 				$dest_y = 0;
 			break;
 
 			case 2: // 3 top right
-				$dest_x = $resize_width - utf8_strlen($wm, 'utf-8');
+				$dest_x = $resize_width - mb_strlen($wm, 'utf-8');
 				$dest_y = 0;
 			break;
 
@@ -649,12 +649,12 @@ class thumbnail
 			break;
 
 			case 4: // 5 middle
-				$dest_x = ($resize_width / 2 ) - (utf8_strlen($wm, 'utf-8') / 2);
+				$dest_x = ($resize_width / 2 ) - (mb_strlen($wm, 'utf-8') / 2);
 				$dest_y = ($resize_height / 2 ) - $header_info_font_size;
 			break;
 
 			case 5: // 6 middle right
-				$dest_x = $resize_width - utf8_strlen($wm, 'utf-8') - 100;
+				$dest_x = $resize_width - mb_strlen($wm, 'utf-8') - 100;
 				$dest_y = ($resize_height / 2) - ($dimension_y + $header_info_font_size / 2);
 			break;
 
@@ -664,12 +664,12 @@ class thumbnail
 			break;
 
 			case 7: // 8 bottom middle
-				$dest_x = (($resize_width - utf8_strlen($wm, 'utf-8')) / 2);
+				$dest_x = (($resize_width - mb_strlen($wm, 'utf-8')) / 2);
 				$dest_y = $resize_height - $header_info_font_size;
 			break;
 
 			case 8: // 9 bottom right
-				$dest_x = $resize_width - 60 - utf8_strlen($wm, 'utf-8');
+				$dest_x = $resize_width - 60 - mb_strlen($wm, 'utf-8');
 				$dest_y =  $resize_height - $header_info_font_size;
 			break;
 
@@ -1819,7 +1819,5 @@ class thumbnail
 	{      
 		return preg_match('/' . $pattern . '/i', $string, $matches);
 	}
-	
-// THE END
 }
 ?>

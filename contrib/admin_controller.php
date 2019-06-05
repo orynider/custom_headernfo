@@ -190,8 +190,10 @@ class admin_controller
 	{
 		$form_action = $this->u_action . '&amp;action=add';
 
+		$this->table = $this->custom_header_info_table;
+
 		$this->tpl_name = 'acp_custom_header_info';
-		$this->page_title = $this->language->lang('HEADER_INFO_TITLE');
+		$this->page_title = $this->user->lang('HEADER_INFO_TITLE');
 
 		$form_key = 'acp_header_info';
 		add_form_key($form_key);
@@ -207,10 +209,10 @@ class admin_controller
 		while( $row = $this->db->sql_fetchrow($result) )
 		{
 			$header_info_type_select = $this->get_list_static('header_info_type', 
-											array('language' => $this->language->lang('MULTI_LANGUAGE_BANNER'),
-														'lang_html_text' => $this->language->lang('HTML_MULTI_LANGUAGE_TEXT'), 
-														'simple_db_text' => $this->language->lang('SIMPLE_DB_TEXT'), 
-														'simple_bg_logo' => $this->language->lang('SIMPLE_BG_LOGO')
+											array('language' => $this->user->lang('MULTI_LANGUAGE_BANNER'),
+														'lang_html_text' => $this->user->lang('HTML_MULTI_LANGUAGE_TEXT'), 
+														'simple_db_text' => $this->user->lang('SIMPLE_DB_TEXT'), 
+														'simple_bg_logo' => $this->user->lang('SIMPLE_BG_LOGO')
 														), 
 														$row['header_info_type']);
 
@@ -250,6 +252,7 @@ class admin_controller
 				{
 					$i = count($this->entries);
 					$j = rand(0, $i);
+					//$j = 4;
 					$l_keys = array_keys($this->entries);
 					$l_values = array_values($this->entries);
 					$info_title = $l_keys[$j];
@@ -270,10 +273,9 @@ class admin_controller
 			
 			$header_info_font = isset($row['header_info_font']) ? $row['header_info_font'] : 'tituscbz.ttf';
 			
-			//Populate info to display ends  strating with name or description of the header info in ACP Preview
+			//Populate info to display ends
 			$this->template->assign_block_vars('header_info_scroll', array(
 				'HEADER_INFO_ID'							=> $row['header_info_id'],
-				'HEADER_INFO_EDIT'						=> $row['header_info_id'] -1,
 				'HEADER_INFO_NAME'						=> $row['header_info_name'],
 				'HEADER_INFO_TITLE'						=> $info_title,
 				'HEADER_INFO_DESC'						=> $row['header_info_desc'],
@@ -282,13 +284,13 @@ class admin_controller
 				'EXTENED_SITE_DESC'						=> $row['header_info_use_extdesc'],
 				'HEADER_INFO_RANDDESC'				=> $info_desc,
 				'HEADER_INFO_TYPE_SELECT'			=> $header_info_type_select,
-				'HEADER_INFO_DIR'							=> $this->language->lang($row['header_info_dir']),
+				'HEADER_INFO_DIR'							=> $this->user->lang[$row['header_info_dir']],
 				'HEADER_INFO_TYPE'						=> $row['header_info_type'],
-				'HEADER_INFO_DIR_SELECT' 			=> $this->gen_lang_dirs_select_list('html', 'header_info_dir', $row['header_info_dir']), 
-				'HEADER_INFO_FONT_SELECT' 			=> $this->gen_fonts_select_list('html', 'header_info_font', $row['header_info_font']), 
+				'HEADER_INFO_DIR_SELECT' 			=> $this->gen_lang_dirs_select_list('html', 'header_info_dir', $row['header_info_dir']), //ext/orynider/customheadernfo/language/movies/
+				'HEADER_INFO_FONT_SELECT' 			=> $this->gen_fonts_select_list('html', 'header_info_font', $row['header_info_font']), //ext/orynider/customheadernfo/assets/fonts/
 				'HEADER_INFO_DB_FONT' 				=> substr($header_info_font, 0, strrpos($header_info_font, '.')),
 				'HEADER_INFO_IMAGE'						=> $row['header_info_image'],
-				'THUMBNAIL_URL'   							=> generate_board_url() . '/app.' . $this->php_ext . '/thumbnail',
+				'THUMBNAIL_URL'   							=> generate_board_url() . '/app.php/thumbnail',
 				//New 0.9.0 start
 				'HEADER_INFO_TITLE_COLOUR'		=> isset($row['header_info_title_colour']) ? $row['header_info_title_colour'] : '',
 				'HEADER_INFO_DESC_COLOUR'		=> isset($row['header_info_desc_colour']) ? $row['header_info_desc_colour'] : '',
@@ -304,7 +306,7 @@ class admin_controller
 				'S_HTML_MULTI_TEXT_ENABLED'	=> ($row['header_info_type'] == 'lang_html_text'),
 				'S_SIMPLE_DB_TEXT_ENABLED'		=> ($row['header_info_type'] == 'simple_db_text'),
 				'S_HEADER_INFO_PIN_CHECKED'	=> $row['header_info_pin'],
-				'S_HEADER_INFO_DISABLE'			=> $row['header_info_disable'], 
+				'S_HEADER_INFO_DISABLE'			=> $row['header_info_disable'], // settings_disable,
 				'U_EDIT'										=> $this->u_action . "&amp;id=" . $row['header_info_id'] . "&amp;action=edit",
 				'U_DELETE'									=> $this->u_action . "&amp;id=" . $row['header_info_id'] . "&amp;action=delete"
 			));
@@ -313,29 +315,22 @@ class admin_controller
 
 		// Read out config values
 		$custom_header_info_config = $this->config_values();
-		
-		$header_info_type_select = $this->get_list_static('header_info_type', 
-			array('language' => $this->language->lang('MULTI_LANGUAGE_BANNER'),
-					'lang_html_text' => $this->language->lang('HTML_MULTI_LANGUAGE_TEXT'), 
-					'simple_db_text' => $this->language->lang('SIMPLE_DB_TEXT'), 
-					'simple_bg_logo' => $this->language->lang('SIMPLE_BG_LOGO')
-					), 
-				'language');
+
 		$header_info_direction_select	= $this->get_list_static('direction', 
-			array('up' => $this->language->lang('UP'),
-					'down' => $this->language->lang('DOWN')
-					), 
-				$custom_header_info_config['direction']);
+											array('up' => $this->user->lang('UP'),
+														'down' => $this->user->lang('DOWN')
+														), 
+														$custom_header_info_config['direction']);
 
 		$this->template->assign_vars(array(
-			'S_HEADER_INFO_ENABLED'   		=> $custom_header_info_config['header_info_enable'], 
+			'S_HEADER_INFO_ENABLED'   		=> $custom_header_info_config['header_info_enable'], // settings_disable
 			'S_HEADER_INFO_POSITION1'		=> $custom_header_info_config['banner_position1'],
 			'S_HEADER_INFO_POSITION2'		=> $custom_header_info_config['banner_position2'],
 			'S_HEADER_INFO_POSITION3'		=> $custom_header_info_config['banner_position3'],
 			'S_HEADER_INFO_POSITION4'		=> $custom_header_info_config['banner_position'],
 			'HEADER_INFO_TYPE_SELECT'		=> $header_info_type_select,
-			'HEADER_INFO_DIR_SELECT' 		=> $this->gen_lang_dirs_select_list('html', 'header_info_dir', 'politics'), /* ext/orynider/customheadernfo/language/movies/ */
-			'HEADER_INFO_FONT_SELECT'		=> $this->gen_fonts_select_list('html', 'header_info_font', ''), /* ext/orynider/customheadernfo/assets/fonts/ */
+			'HEADER_INFO_DIR_SELECT' 		=> $this->gen_lang_dirs_select_list('html', 'header_info_dir', 'politics'), //ext/orynider/customheadernfo/language/movies/
+			'HEADER_INFO_FONT_SELECT'		=> $this->gen_fonts_select_list('html', 'header_info_font', ''), //ext/orynider/customheadernfo/assets/fonts/
 			'HEADER_INFO_IMAGE'					=> generate_board_url() . '/' . $custom_header_info_config['banners_dir'] . 'custom_header_bg.png',
 
 			'ROW_HEIGHT'								=> $custom_header_info_config['row_height'],		/* Height of each ticker row in PX. Should be uniform. */
@@ -350,10 +345,14 @@ class admin_controller
 			* From admin_album_clown_SP.php
 			* Credits: clown@pimprig.com, Volodymyr (CLowN) Skoryk
 			*--------------------*/
+			//watermark
+			//'L_WATERMARK' => $lang['SP_Watermark'],
 			'S_WATERMARK_ENABLED' => $custom_header_info_config['use_watermark'],
 			'WATERMARK_ENABLED' => ($custom_header_info_config['use_watermark'] == 1) ? 'checked="checked"' : '',
 			'WATERMARK_DISABLED' => ($custom_header_info_config['use_watermark'] == 0) ? 'checked="checked"' : '',
 
+			//watermark placement
+			//'L_WATERMARK_PLACENT' => $lang['SP_Watermark_placent'],
 			'WATERMAR_PLACEMENT_AT' => $custom_header_info_config['disp_watermark_at'],
 			'WATERMAR_PLACEMENT_0' => ($custom_header_info_config['disp_watermark_at'] == 0) ? 'checked="checked"' : '',
 			'WATERMAR_PLACEMENT_1' => ($custom_header_info_config['disp_watermark_at'] == 1) ? 'checked="checked"' : '',
@@ -370,7 +369,7 @@ class admin_controller
 			'S_THUMB_CACHE_ENABLED'		=> $custom_header_info_config['thumb_cache'],
 			'HEADER_INFO_PIC_WIDTH'			=> $this->request->variable('header_info_pic_width', 458),
 			'HEADER_INFO_PIC_HEIGHT'			=> $this->request->variable('header_info_pic_height', 50),
-			'MODULE_NAME'							=> $custom_header_info_config['module_name'], 
+			'MODULE_NAME'							=> $custom_header_info_config['module_name'], // settings_dbname
 			'WYSIWYG_PATH'							=> $custom_header_info_config['wysiwyg_path'],
 			'BACKGROUNDS_DIR'					=> $custom_header_info_config['backgrounds_dir'],
 			'BANNERS_DIR'		   						=> $custom_header_info_config['banners_dir'],
@@ -386,21 +385,42 @@ class admin_controller
 		$edit = ($this->request->is_set_post('edit')) ? true : false;
 		$edit_id = $this->request->variable('edit', 0);
 
-		/* To do: $enabled = $this->request->variable('header_info_enable', 0); */
+		//$enabled = $this->request->variable('header_info_enable', 0);
 
 		if ($submit && !check_form_key($form_key) && !$edit)
 		{
-			trigger_error($this->language->lang('FORM_INVALID'));
+			trigger_error($this->user->lang['FORM_INVALID']);
 		}
 
 		if ($enable_submit && !check_form_key($form_key))
 		{
-			trigger_error($this->language->lang('FORM_INVALID'));
+			trigger_error($this->user->lang['FORM_INVALID']);
 		}
 
 		if ($submit)
 		{
+			$name = $this->request->variable('header_info_name', '', true);
+			$desc = $this->request->variable('header_info_desc', '', true);
+			$longdesc = $this->request->variable('header_info_longdesc', '', true);
+			$use_extdesc = $this->request->variable('header_info_use_extdesc', '', true);
+			$title_colour = $this->request->variable('header_info_title_colour', '#000000', true);
+			$desc_colour = $this->request->variable('header_info_desc_colour', '#12A3EB', true);
+			$dir = $this->request->variable('header_info_dir', 'politics', true);
+			$type = $this->request->variable('header_info_type', '', true);
+			$font = $this->request->variable('header_info_font', '', true);
 			$image = $this->request->variable('header_info_image', generate_board_url() . $custom_header_info_config['banners_dir'] . 'custom_header_bg.png');
+			$link = $this->request->variable('header_info_image_link', 0);
+			$radius = $this->request->variable('header_info_banner_radius', 0);
+			$pixels = $this->request->variable('header_info_pixels', 12);
+			$title_pixels = $this->request->variable('header_title_info_pixels', 18);
+			$desc_pixels = $this->request->variable('header_desc_info_pixels', 10);
+			$left = $this->request->variable('header_info_left', 0);
+			$right = $this->request->variable('header_info_right', 0);
+			$url = $this->request->variable('header_info_url', '');
+			$license = $this->request->variable('header_info_license', 'GNU GPL-2');
+			$time = $this->request->variable('header_info_time', time());
+			$pin = $this->request->variable('header_info_pin', 0);
+			$disable = $this->request->variable('header_info_disable', 0);
 			$thumb_cache = $this->request->variable('thumb_cache', 0);
 			$src_path = str_replace(generate_board_url() . '/', $this->root_path, $image);
 			
@@ -408,39 +428,34 @@ class admin_controller
 			$pic_width = (@function_exists('gd_info') && (@count(@gd_info()) !== 0)) ? $pic_size[0] : $this->request->variable('header_info_pic_width', 458);
 			$pic_height = (@function_exists('gd_info') && (@count(@gd_info()) !== 0)) ? $pic_size[1] : $this->request->variable('header_info_pic_height', 50);
 
-			$is_name = $this->request->is_set_post('header_info_name') ? true : false;
-			$is_url = $this->request->is_set_post('header_info_url') ? true : false;
-			$is_image = $this->request->is_set_post('header_info_image') ? true : false;
-			$is_font= $this->request->is_set_post('header_info_font') ? true : false;
-			
-			if (isset($is_name) && isset($is_url) && isset($is_image) && !$edit)
+			if($name != '' && $url != '' && $image != '' && !$edit)
 			{
 				$sql_array = array(
-					'header_info_name'				=> $this->request->variable('header_info_name', '', true),
-					'header_info_desc'				=> $this->request->variable('header_info_desc', '', true),
-					'header_info_longdesc'			=> $this->request->variable('header_info_longdesc', '', true),
-					'header_info_use_extdesc'		=> $this->request->variable('header_info_use_extdesc', '', true),
-					'header_info_title_colour'		=> $this->request->variable('header_info_title_colour', '#000000', true),
-					'header_info_desc_colour'		=> $this->request->variable('header_info_desc_colour', '#12A3EB', true),
-					'header_info_dir'					=> $this->request->variable('header_info_dir', 'politics', true), /* i.e. ext/orynider/customheadernfo/language/movies/ */
-					'header_info_type'					=> $this->request->variable('header_info_type', '', true),
-					'header_info_font'					=> $this->request->variable('header_info_font', '', true),
-					'header_info_image'				=> $image, /* We can replace 'prosilver' with 'all': str_replace('prosilver' 'all', $image) */
-					'header_info_image_link'		=> $this->request->variable('header_info_image_link', 0),
-					'header_info_banner_radius' 	=> $this->request->variable('header_info_banner_radius', 0),
-					'header_info_pixels'				=> $this->request->variable('header_info_pixels', 12),
-					'header_info_title_pixels'		=> $this->request->variable('header_title_info_pixels', 18),
-					'header_info_desc_pixels'		=> $this->request->variable('header_desc_info_pixels', 10),
-					'header_info_left'					=> $this->request->variable('header_info_left', 0),
-					'header_info_right'				=> $this->request->variable('header_info_right', 0),
-					'header_info_url'					=> $this->request->variable('header_info_url', ''),
-					'header_info_license'				=> $this->request->variable('header_info_license', 'GNU GPL-2'),
+					'header_info_name'				=> $name,
+					'header_info_desc'				=> $desc,
+					'header_info_longdesc'			=> $longdesc,
+					'header_info_use_extdesc'		=> $use_extdesc,
+					'header_info_title_colour'		=> $title_colour,
+					'header_info_desc_colour'		=> $desc_colour,
+					'header_info_dir'					=> $dir, //ext/orynider/customheadernfo/language/movies/
+					'header_info_type'					=> $type,
+					'header_info_font'					=> $font,
+					'header_info_image'				=> $image, //str_replace('prosilver' 'all', $data_files['header_info_image'])
+					'header_info_image_link'		=> $link,
+					'header_info_banner_radius' 	=> $radius,
+					'header_info_pixels'				=> $pixels,
+					'header_info_title_pixels'		=> $title_pixels,
+					'header_info_desc_pixels'		=> $desc_pixels,
+					'header_info_left'					=> $left,
+					'header_info_right'				=> $right,
+					'header_info_url'					=> $url,
+					'header_info_license'				=> $license,
 					'header_info_time'				=> time(),
 					'header_info_last'					=> 0,
-					'header_info_pin'					=> $this->request->variable('header_info_pin', 0),
+					'header_info_pin'					=> $pin,
 					'header_info_pic_width'			=> $pic_width,
 					'header_info_pic_height'		=> $pic_height,
-					'header_info_disable'				=> $this->request->variable('header_info_disable', 0), /* settings_disable */
+					'header_info_disable'				=> $disable, // settings_disable,
 					'forum_id'								=> 0,
 					'user_id'								=> $this->user->data['user_id'],
 					'bbcode_bitfield'					=> 'QQ==',
@@ -449,67 +464,64 @@ class admin_controller
 				);
 
 				$sql = 'INSERT INTO ' . $this->custom_header_info_table . ' ' . $this->db->sql_build_array('INSERT', $sql_array);
-				//$this->db->sql_query($sql);
-				if (!($result = $this->db->sql_query($sql)))
-				{
-					$this->message_die(E_USER_ERROR, 'Couldnt query portal configuration', '', __LINE__, __FILE__, $sql);
-				}
-				trigger_error($this->language->lang('HEADER_INFO_ADDED') . adm_back_link($this->u_action));
+				$this->db->sql_query($sql);
+				trigger_error($this->user->lang['HEADER_INFO_ADDED'] . adm_back_link($this->u_action));
 			}
-			else if (isset($is_name) && isset($is_url) && isset($is_image) && isset($is_font) && isset($edit) && ($edit_id !== 0))
+			else if($name != '' && $url != '' && $image != '' && $font != '' && isset($edit) && ($edit_id !== 0))
 			{
 				$sql_array = array(
-					'header_info_name'				=> $this->request->variable('header_info_name', '', true),
-					'header_info_desc'				=> $this->request->variable('header_info_desc', '', true),
-					'header_info_longdesc'			=> $this->request->variable('header_info_longdesc', '', true),
-					'header_info_use_extdesc'		=> $this->request->variable('header_info_use_extdesc', '', true),
-					'header_info_title_colour'		=> $this->request->variable('header_info_title_colour', '#000000', true),
-					'header_info_desc_colour'		=> $this->request->variable('header_info_desc_colour', '#12A3EB', true),
-					'header_info_dir'					=> $this->request->variable('header_info_dir', 'politics', true), 
-					'header_info_type'					=> $this->request->variable('header_info_type', '', true),
-					'header_info_font'					=> $this->request->variable('header_info_font', '', true),
-					'header_info_image'				=> $image, /* We can replace 'prosilver' with 'all': str_replace('prosilver' 'all', $image) */ 
-					'header_info_image_link'		=> $this->request->variable('header_info_image_link', 0),
-					'header_info_banner_radius' => $this->request->variable('header_info_banner_radius', 0),
-					'header_info_pixels'				=> $this->request->variable('header_info_pixels', 12),
-					'header_info_title_pixels'		=> $this->request->variable('header_title_info_pixels', 18),
-					'header_info_desc_pixels'		=> $this->request->variable('header_desc_info_pixels', 10),
-					'header_info_left'					=> $this->request->variable('header_info_left', 0),
-					'header_info_right'				=> $this->request->variable('header_info_right', 0),
-					'header_info_url'					=> $this->request->variable('header_info_url', ''),
-					'header_info_license'				=> $this->request->variable('header_info_license', 'GNU GPL-2'),
-					'header_info_time'				=> $this->request->variable('header_info_time', time()),
+					'header_info_name'				=> $name,
+					'header_info_desc'				=> $desc,
+					'header_info_longdesc'			=> $longdesc,
+					'header_info_use_extdesc'		=> $use_extdesc,
+					'header_info_title_colour'		=> $title_colour,
+					'header_info_desc_colour'		=> $desc_colour,
+					'header_info_dir'					=> $dir, //ext/orynider/customheadernfo/language/movies/
+					'header_info_type'					=> $type,
+					'header_info_font'					=> $font,
+					'header_info_image'				=> $image, //str_replace('prosilver' 'all', $data_files['header_info_image'])
+					'header_info_image_link'		=> $link,
+					'header_info_banner_radius' => $radius,
+					'header_info_pixels'				=> $pixels,
+					'header_info_title_pixels'		=> $title_pixels,
+					'header_info_desc_pixels'		=> $desc_pixels,
+					'header_info_left'					=> $left,
+					'header_info_right'				=> $right,
+					'header_info_url'					=> $url,
+					'header_info_license'				=> $license,
+					'header_info_time'				=> $time,
 					'header_info_last'					=> time(),
-					'header_info_pin'					=> $this->request->variable('header_info_pin', 0),
+					'header_info_pin'					=> $pin,
 					'header_info_pic_width'			=> $pic_width,
 					'header_info_pic_height'		=> $pic_height,
-					'header_info_disable'				=> $this->request->variable('header_info_disable', 0),
+					'header_info_disable'				=> $disable, // settings_disable,
 					'forum_id'								=> 0,
 					'user_id'								=> $this->user->data['user_id'],
 				);
 
 				$sql = 'UPDATE ' . $this->custom_header_info_table . ' SET ' . $this->db->sql_build_array('UPDATE', $sql_array) . ' WHERE header_info_id = ' . $edit_id;
-								$this->db->sql_query($sql);
-				trigger_error($this->language->lang('HEADER_INFO_UDPATED') . adm_back_link($this->u_action));
+				//print_r($sql);
+				$this->db->sql_query($sql);
+				trigger_error($this->user->lang['HEADER_INFO_UDPATED'] . adm_back_link($this->u_action));
 			}
 			else
 			{
-				trigger_error($this->language->lang('HEADER_INFO_ERROR') . ' '. $this->language->lang('ERROR')  . $this->language->lang('COLON') . ' ' . $is_name . $is_url . $is_image . $is_font . $edit . $edit_id . adm_back_link($this->u_action . '&amp;action=add'), E_USER_WARNING);
+				trigger_error($this->user->lang['HEADER_INFO_ERROR'] . adm_back_link($this->u_action . '&amp;action=add'), E_USER_WARNING);
 			}
 		}
 
 		if ($enable_submit)
 		{
 			// Update config values this::set_config($key, $new_value)
-			//Get Configuration i.e. $this->set_config('header_info_enable', $enabled);
+			//$this->set_config('header_info_enable', $enabled);
 			$sql = "SELECT *
 				FROM " . $this->custom_header_info_config_table;
 			if ( !( $result = $this->db->sql_query($sql) ) )
 			{
-				$this->message_die(E_USER_ERROR, 'Couldnt query portal configuration', '', __LINE__, __FILE__, $sql);
+				$this->message_die( GENERAL_ERROR, 'Couldnt query portal configuration', '', __LINE__, __FILE__, $sql );
 			}
 			
-			while ($row = $this->db->sql_fetchrow($result))
+			while ( $row = $this->db->sql_fetchrow( $result ) )
 			{
 				// Values for config
 				$config_name = $row['config_name'];
@@ -517,25 +529,55 @@ class admin_controller
 				
 				$new[$config_name] = ($this->request->is_set($config_name)) ? $this->request->variable($config_name, $config_value) : $config_value;
 			
-				/* Here we make some checks for the module configuration */			
+				//$new[$config_name] = trim($config_value);
+			
+				/* Here we make some checks for the module configuration * /
+					if ( ( empty( $size ) ) && ( !$submit ) && ( $config_name == 'max_file_size' ) )
+					{
+						$size = ( intval( $custom_header_info_config[$config_name] ) >= 1048576 ) ? 'mb' : ( ( intval( $custom_header_info_config[$config_name] ) >= 1024 ) ? 'kb' : 'b' );
+					}
+					if ( ( !$submit ) && ( $config_name == 'max_file_size' ) )
+					{
+						if ( $new[$config_name] >= 1048576 )
+						{
+							$new[$config_name] = round( $new[$config_name] / 1048576 * 100 ) / 100;
+						}
+						else if ( $new[$config_name] >= 1024 )
+						{
+							$new[$config_name] = round( $new[$config_name] / 1024 * 100 ) / 100;
+						}
+					}
+					/* Here we make some checks for the module configuration */
+					
+
+					/* Here we make some checks for the module configuration * /
+					if ( $config_name == 'max_file_size' )
+					{
+						$new[$config_name] = ( $size == 'kb' ) ? round( $new[$config_name] * 1024 ) : ( ( $size == 'mb' ) ? round( $new[$config_name] * 1048576 ) : $new[$config_name] );
+					}
+				/* Here we make some checks for the module configuration */
+				
 				if ($this->request->is_set($config_name) && ($new[$config_name] != $config_value))
 				{
 					// Update config values this::set_config($key, $new_value)
 					$this->set_config($config_name, $new[$config_name]);
+				
 					// Clear cache
 					$this->cache->destroy('custom_header_info_config');
 				}
-			}			
+			
+				// Log message
+				//$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_CONFIG_UPDATED');
+				//trigger_error($this->user->lang['HEADER_INFO_CONF_UDPATED'] . adm_back_link($this->u_action));
+			}
+			
 			$this->db->sql_freeresult($result);
-			if (!($new))
-			{
-				$this->message_die(E_USER_ERROR, $this->language->lang('COULDNT_GET') . ' ' . $this->ext_name . ' ' . $this->language->lang('CONFIG'), __FILE__, __LINE__, $sql);
-			}				
+			
 			$this->cache->put('custom_header_info_config', $new);
 			
 			// Log message
 			$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_CONFIG_UPDATED');
-			trigger_error($this->language->lang('ACP_CONFIG_SUCCESS') . adm_back_link($this->u_action));
+			trigger_error($this->user->lang['ACP_CONFIG_SUCCESS'] . adm_back_link($this->u_action));
 		}
 
 		//
@@ -555,11 +597,9 @@ class admin_controller
 		if ($action && $id_header_info != -1)
 		{
 			$action = $this->request->variable('action', '');
-			
 			switch ($action)
 			{
 				case 'edit':
-					
 					$sql = 'SELECT *
 						FROM ' . $this->custom_header_info_table . '
 						WHERE header_info_id = ' . $id_header_info;
@@ -567,19 +607,18 @@ class admin_controller
 					$row = $this->db->sql_fetchrow($result);
 
 					$header_info_type_select = $this->get_list_static('header_info_type', 
-						array('language' => $this->language->lang('MULTI_LANGUAGE_BANNER'),
-							'lang_html_text' => $this->language->lang('HTML_MULTI_LANGUAGE_TEXT'), 
-							'simple_db_text' => $this->language->lang('SIMPLE_DB_TEXT'), 
-							'simple_bg_logo' => $this->language->lang('SIMPLE_BG_LOGO')
-							), 
-							$row['header_info_type']
-						);
-					
-					$header_info_direction_select = $this->get_list_static('direction', 
-						array('up' => $this->language->lang('UP'),
-							'down' => $this->language->lang('DOWN')
-								), 
-							'up');
+											array('language' => $this->user->lang('MULTI_LANGUAGE_BANNER'),
+														'lang_html_text' => $this->user->lang('HTML_MULTI_LANGUAGE_TEXT'), 
+														'simple_db_text' => $this->user->lang('SIMPLE_DB_TEXT'), 
+														'simple_bg_logo' => $this->user->lang('SIMPLE_BG_LOGO')
+														), 
+														$row['header_info_type']);
+
+					$header_info_direction_select	= $this->get_list_static('direction', 
+											array('up' => $this->user->lang('UP'),
+														'down' => $this->user->lang('DOWN')
+														), 
+														'up');
 
 					//Populate info to display starts
 					$info_title = array();
@@ -618,12 +657,13 @@ class admin_controller
 						{
 							$i = count($this->entries);
 							$j = rand(0, $i);
+							//$j = 4;
 							$l_keys = array_keys($this->entries);
 							$l_values = array_values($this->entries);
 							$info_title = $l_keys[$j];
 							$info_desc = $l_values[$j];
 						}
-						
+						//die(print_r($info_desc, true));
 					}
 					else
 					{
@@ -641,7 +681,7 @@ class admin_controller
 						$info_desc = $l_values[$j];
 					}
 
-					//Populate info to display ends when edit header info item to database
+					//Populate info to display ends
 					$this->template->assign_vars(array(
 						'HEADER_INFO_EDIT'					=> $row['header_info_id'],
 						'HEADER_INFO_ID'						=> $row['header_info_id'],
@@ -660,12 +700,12 @@ class admin_controller
 						//New 0.9.0 ends
 						'HEADER_INFO_TYPE'					=> $row['header_info_type'],
 						'HEADER_INFO_TYPE_SELECT'		=> $header_info_type_select,
-						'HEADER_INFO_DIR'						=> $this->language->lang($row['header_info_dir']),
-						'HEADER_INFO_DIR_SELECT' 		=> $this->gen_lang_dirs_select_list('html', 'header_info_dir', $row['header_info_dir']), /* for ex. ext/orynider/customheadernfo/language/movies/ */
-						'HEADER_INFO_FONT_SELECT' 		=> $this->gen_fonts_select_list('html', 'header_info_font', $header_info_font), /* for ex. ext/orynider/customheadernfo/assets/fonts/ */
+						'HEADER_INFO_DIR'						=> $this->user->lang[$row['header_info_dir']],
+						'HEADER_INFO_DIR_SELECT' 		=> $this->gen_lang_dirs_select_list('html', 'header_info_dir', $row['header_info_dir']), //ext/orynider/customheadernfo/language/movies/
+						'HEADER_INFO_FONT_SELECT' 		=> $this->gen_fonts_select_list('html', 'header_info_font', $header_info_font), //ext/orynider/customheadernfo/assets/fonts/
 						'HEADER_INFO_DB_FONT' 			=> substr($header_info_font, 0, strrpos($header_info_font, '.')),
 						'HEADER_INFO_IMAGE'					=> $row['header_info_image'],
-						'THUMBNAIL_URL'   						=> generate_board_url() . '/app.'.$this->php_ext.'/thumbnail',
+						'THUMBNAIL_URL'   						=> generate_board_url() . '/app.php/thumbnail',
 
 						//New 0.9.0 start
 						'HEADER_INFO_RADIUS'				=> isset($row['header_info_banner_radius']) ? $row['header_info_banner_radius'] : '',
@@ -688,9 +728,8 @@ class admin_controller
 						'S_HEADER_INFO_PIN_CHECKED'	=> $row['header_info_pin'],
 						'HEADER_INFO_PIC_WIDTH'			=> $row['header_info_pic_width'],
 						'HEADER_INFO_PIC_HEIGHT'			=> $row['header_info_pic_height'],
-						'S_HEADER_INFO_DISABLE'			=> $row['header_info_disable'], 
+						'S_HEADER_INFO_DISABLE'			=> $row['header_info_disable'], // settings_disable,
 					));
-					
 					$this->db->sql_freeresult($result);
 				break;
 					
@@ -705,7 +744,7 @@ class admin_controller
 					}
 					else
 					{
-						confirm_box(false, $this->language->lang('CONFIRM_OPERATION'), build_hidden_fields(array(
+						confirm_box(false, $this->user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
 								'action'		=> $action,
 								'id'	        => $id_header_info))
 						);
@@ -713,96 +752,11 @@ class admin_controller
 				break;
 			}
 		}
-		else
-		{				
-			//Query DB to populate info to display when we add a new banner not from 'in construction' id=1
-			$sql = 'SELECT *
-						FROM ' . $this->custom_header_info_table;
-			$result = $this->db->sql_query($sql);
-			$rows = $this->db->sql_fetchrowset($result);
-			// Define sample article data from db_install
-			$row_disable = array(
-			array(
-				'header_info_id'				=> 0,
-				'header_info_name'			=> 'Board Disabled',
-				'header_info_desc'			=> 'Board Disabled Info for the Custom Header Info extension.',
-				'header_info_longdesc'		=> 'This is the Board Disabled Logo for the Custom Header Info extension.',
-				'header_info_use_extdesc'	=> 0,
-				'header_info_title_colour'	=> '#000000',
-				'header_info_desc_colour'	=> '#0c6a99',
-				'header_info_dir'				=> 'politics', 
-				'header_info_font'				=>  'tituscbz.ttf',
-				'header_info_type'				=> 'simple_bg_logo',
-				'header_info_image'			=> generate_board_url() . '/ext/orynider/customheadernfo/styles/prosilver/theme/images/banners/under_construction.gif', //str_replace('prosilver' 'all', $data_files['header_info_image'])
-				'header_info_image_link'	=> 0,	
-				'header_info_banner_radius' => '10',
-				'header_info_title_pixels'	=> '12',
-				'header_info_desc_pixels'	=> '10',
-				'header_info_pixels'			=> '10',
-				'header_info_left'				=> 0,
-				'header_info_right'			=> 0,
-				'header_info_url'				=> 'http://mxpcms.sourceforge.net/',
-				'header_info_license'			=> 'GNU GPL-2',
-				'header_info_time'			=> time(),
-				'header_info_last'				=> 0,
-				'header_info_pin'				=> '0',
-				'header_info_pic_width'		=> '458',
-				'header_info_pic_height'	=> '193',
-				'header_info_disable'			=> 0,
-				'forum_id'							=> 1,
-				'user_id'							=> $this->user->data['user_id'],
-				'bbcode_bitfield'				=> 'QQ==',
-				'bbcode_uid'						=> '2p5lkzzx',
-				'bbcode_options'				=> '',
-			) );
-			
-			//Merge disable with db rows
-			$count = count($rows);
-			$i = ($count == 0) ? 0 : $count -1;
-			$rows = ($count == 0) ? $row_disable : $rows;
-			
-			$new_id = isset($rows[$i]['header_info_id']) ? $rows[$i]['header_info_id'] +1 : $count + 1;
-			$header_info_font = isset($rows[$i]['header_info_font']) ? $rows[$i]['header_info_font'] : 'tituscbz.ttf';
-			
-			//Populate info to display ends when there is no action
-			$this->template->assign_vars(array(
-				'HEADER_INFO_ID'						=> $new_id,
-				'HEADER_INFO_NAME'					=> $this->language->lang('HEADER_INFO_NAME') . ' #' . $new_id,
-				'HEADER_INFO_DESC'					=> $this->language->lang('HEADER_INFO_DESC') . ' #' . $new_id,
-				'HEADER_INFO_LONGDESC'			=> $this->language->lang('HEADER_INFO_LONGDESC') . ' #' . $new_id,
-				'HEADER_INFO_USE_EXTDESC'		=> $this->language->lang('HEADER_INFO_USE_EXTDESC') . ' #' . $new_id,
-				'EXTENED_SITE_DESC'					=> 0,
-				
-				//New 0.9.0 start
-				'HEADER_INFO_TITLE_COLOUR'		=>'#12A3EB',
-				'HEADER_INFO_DESC_COLOUR'		=> '#000000',
+	}
 
-				//New 0.9.0 ends
-				'HEADER_INFO_TYPE'					=> $rows[$i]['header_info_type'],
-
-				'HEADER_INFO_DIR'						=> $this->language->lang($rows[$i]['header_info_dir']),
-				'HEADER_INFO_DIR_SELECT' 		=> $this->gen_lang_dirs_select_list('html', 'header_info_dir', $rows[$i]['header_info_dir']), 
-				'HEADER_INFO_FONT_SELECT' 		=> $this->gen_fonts_select_list('html', 'header_info_font', $header_info_font), 
-				'HEADER_INFO_DB_FONT' 			=> substr($header_info_font, 0, strrpos($header_info_font, '.')),
-				'HEADER_INFO_IMAGE'					=> $rows[$i]['header_info_image'],
-				'THUMBNAIL_URL'   						=> generate_board_url() . '/app.'.$this->php_ext.'/thumbnail',
-
-				//New 0.9.0 start
-				'HEADER_INFO_RADIUS'				=> isset($rows[$i]['header_info_banner_radius']) ? $rows[$i]['header_info_banner_radius'] : 7,
-				'HEADER_INFO_PIXELS'					=> isset($rows[$i]['header_info_pixels']) ? $rows[$i]['header_info_pixels'] : 12,
-				'HEADER_INFO_TITLE_PIXELS'		=> isset($rows[$i]['header_info_title_pixels']) ? $rows[$i]['header_info_title_pixels'] : 10,
-				'HEADER_INFO_DESC_PIXELS'		=> isset($rows[$i]['header_info_desc_pixels']) ? $rows[$i]['header_info_desc_pixels'] : 10,
-				'HEADER_INFO_LEFT'					=> isset($rows[$i]['header_info_left']) ? $rows[$i]['header_info_left'] : 0,
-				'HEADER_INFO_RIGHT'					=> isset($rows[$i]['header_info_right']) ? $rows[$i]['header_info_right'] : 0,
-
-				//New 0.9.0 ends
-				'S_HEADER_INFO_LINK_CHECKED'	=>  isset($rows[$i]['header_info_image_link']) ? $rows[$i]['header_info_image_link'] : $rows[1]['header_info_image_link'],
-				'HEADER_INFO_URL'						=>  isset($rows[$i]['header_info_url']) ? $rows[$i]['header_info_url'] : $rows[1]['header_info_url'],
-				'HEADER_INFO_LICENSE'				=>  isset($rows[$i]['header_info_license']) ? $rows[$i]['header_info_license'] : $rows[1]['header_info_license'],
-				'HEADER_INFO_TIME'					=>  isset($rows[$i]['header_info_time']) ? $rows[$i]['header_info_time'] : $rows[1]['header_info_time'],
-			
-			));
-		}
+	public function display_info()
+	{
+		$this->user->add_lang('posting');
 	}
 
 	/**
@@ -815,7 +769,7 @@ class admin_controller
 	{
 		$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, $log_message, time(), array($title));
 
-		trigger_error($this->language->lang($user_message) . adm_back_link($this->u_action));
+		trigger_error($this->user->lang[$user_message] . adm_back_link($this->u_action));
 	}
 
 	/**
@@ -833,16 +787,17 @@ class admin_controller
 	function manage_pages_header( $page = 1, $depth = 0 )
 	{
 		// Read out config values
-		$config = $this->config_values();
+		$pafiledb_config = $this->config_values();
 		$this->tpl_name = 'acp_custom_header_pages';
 		$action = $this->request->variable('action', '');
 		$form_action = $this->u_action. '&amp;action='.$action;
 		
-		$this->user->lang_mode = $this->language->lang('ACP_MANAGE_PAGES');
+		$this->user->lang_mode = $this->user->lang['ACP_MANAGE_PAGES'];
 
 		$page_id = $this->request->is_set('page') ? $this->request->variable('page') : $page;
 
-		//Assign template variables. We could add here aditional languages since $this->user->add_lang('common'); is automaticly added.	
+		//$this->user->add_lang('common');
+		
 		$this->template->assign_vars(array(
 			'BASE'	=> $this->u_action,
 		));	
@@ -869,7 +824,10 @@ class admin_controller
 			$sql = 'INSERT INTO ' . $this->custom_header_info_config_table . ' ' . $this->db->sql_build_array('INSERT', array(
 				'config_name'	=> $config_name,
 				'config_value'	=> $config_value));
-			$this->db->sql_query($sql);
+			if (!@$this->db->sql_query($sql))
+			{
+				$this->message_die( GENERAL_ERROR, "Failed to update pafiledb configuration for $config_name", "", __LINE__, __FILE__, $sql );
+			}
 		}
 		
 		$config[$config_name] = $config_value;
@@ -877,10 +835,9 @@ class admin_controller
 	}
 
 	/**
-	 * Get custom_header_info configuration
+	 * Enter description here...
 	 *
-	 * @param type array
-	 * @return variable $config
+	 * @return unknown
 	 */
 	function config_values($use_cache = true)
 	{
@@ -892,17 +849,16 @@ class admin_controller
 		{
 			$sql = "SELECT *
 				FROM " . $this->custom_header_info_config_table;
-			$result = $this->db->sql_query($sql);
-						
-			while ($row = $this->db->sql_fetchrow($result) )
+			if ( !( $result = $this->db->sql_query($sql) ) )
+			{
+				$this->message_die( GENERAL_ERROR, 'Couldnt query portal configuration', '', __LINE__, __FILE__, $sql );
+			}
+			while ( $row = $this->db->sql_fetchrow( $result ) )
 			{
 				$config[$row['config_name']] = trim($row['config_value']);
 			}
 			$this->db->sql_freeresult($result);
-			if ( !($config) )
-			{
-				$this->message_die(E_USER_ERROR, $this->language->lang('COULDNT_GET') . ' ' . $this->ext_name . ' ' . $this->language->lang('CONFIG'), __FILE__, __LINE__, $sql);
-			}			
+			
 			$this->cache->put('custom_header_info_config', $config);
 			
 			return($config);
@@ -910,27 +866,17 @@ class admin_controller
 	}
 
 	/**
-		; User error handling and logging in PHP;
-		; E_USER_ERROR      		- user-generated error message
-		; E_USER_WARNING    	- user-generated warning message
-		; E_USER_NOTICE     		- user-generated notice message
-		; E_USER_DEPRECATED - user-generated deprecation warnings 
+	 * Dummy function
 	 */
 	function message_die($msg_code, $msg_text = '', $msg_title = '', $err_line = '', $err_file = '', $sql = '')
 	{		
-		
-		// Do not display notices if we suppress them via @
-		if (error_reporting() == 0 && $errno != E_USER_ERROR && $errno != E_USER_WARNING && $errno != E_USER_NOTICE && $errno != E_USER_DEPRECATED)
-		{
-			return;
-		}	
-		
 		//
 		// Get SQL error if we are debugging. Do this as soon as possible to prevent
 		// subsequent queries from overwriting the status of sql_error()
 		//
-		if (DEBUG && ($msg_code == E_USER_NOTICE || $msg_code == E_USER_ERROR))
-		{	
+		if (DEBUG && ($msg_code == GENERAL_ERROR || $msg_code == CRITICAL_ERROR))
+		{
+				
 			if ( isset($sql) )
 			{
 				$sql_error = $this->db->sql_error($sql);
@@ -940,37 +886,17 @@ class admin_controller
 			else
 			{
 				$sql_error = $this->db->sql_error_returned;
-				$sql_error['message'] = $this->db->sql_error_returned['message']; 
-				$sql_error['code'] = $this->db->sql_error_returned['code'];
+				$sql_error['message'] = $sql_error['message'] ? $sql_error['message'] : '<br /><br />SQL : ' . $sql; 
+				$sql_error['code'] = $sql_error['code'] ? $sql_error['code'] : 0;
 			}
 			
 			$debug_text = '';
-			
-			//Some code with harcoded language from function db::sql_error() and other from msg_handler() with some fixes here
-			// If error occurs in initiating the session we need to use a pre-defined language string
-			// This could happen if the connection could not be established for example (then we are not able to grab the default language)
+
 			if ( isset($sql_error['message']) )
-			{	
-				$message = 'SQL  ' . $this->language->lang('ERROR') . ' [ ' . $this->db->sql_layer . ' ]<br /><br />' . $sql_error['message'] . ' [' . $sql_error['code'] . ']';
-				
-				if (!empty($this->language->lang('SQL_ERROR_OCCURRED')))
-				{
-					$message .= '<br /><br />An sql error occurred while fetching this page. Please contact an administrator if this problem persists.';
-				}
-				else
-				{
-					if (!empty($this->config['board_contact']))
-					{
-						$message .= '<br /><br />' . sprintf($this->language->lang('SQL_ERROR_OCCURRED'), '<a href="mailto:' . $this->config['board_contact'] . '">', '</a>');
-					}
-					else
-					{
-						$message .= '<br /><br />' . sprintf($this->language->lang('SQL_ERROR_OCCURRED'), '', '');
-					}
-				}
-				$debug_text .= '<br /><br />SQL '  . $this->user->language->lang('ERROR') . ' ' . $this->language->lang('COLON') . ' ' . $sql_error['code'] . ' ' . $sql_error['message'];
+			{
+				$debug_text .= '<br /><br />SQL Error : ' . $sql_error['code'] . ' ' . $sql_error['message'];
 			}
-			
+
 			if ( isset($sql_store) )
 			{
 				$debug_text .= "<br /><br />$sql_store";
@@ -984,41 +910,42 @@ class admin_controller
 		
 		switch($msg_code)
 		{
-			case E_USER_ERROR:
+			case GENERAL_MESSAGE:
 				if ( $msg_title == '' )
 				{
-					$msg_title = $this->language->lang('GENERAL_ERROR'); 
+					$msg_title = $this->user->lang('Information');
 				}
 			break;
 
-			case E_USER_WARNING:
+			case CRITICAL_MESSAGE:
+				if ( $msg_title == '' )
+				{
+					$msg_title = $this->user->lang('Critical_Information');
+				}
+			break;
+
+			case GENERAL_ERROR:
 				if ( $msg_text == '' )
 				{
-					$msg_text = $this->language->lang('GENERAL_ERROR');
+					$msg_text = $this->user->lang('An_error_occured');
 				}
 
 				if ( $msg_title == '' )
 				{
-					$msg_title = $this->language->lang('ERROR');
+					$msg_title = $this->user->lang('General_Error');
 				}
 			break;
-			
-			case E_USER_NOTICE:
-				if ( $msg_title == '' )
-				{
-					$msg_title = $this->language->lang('INFORMATION');
-				}
-			break;
-			
-			case E_USER_DEPRECATED:
+
+			case CRITICAL_ERROR:
+
 				if ($msg_text == '')
 				{
-					$msg_text = $this->language->lang('GENERAL_ERROR');
+					$msg_text = $this->user->lang('A_critical_error');
 				}
 
 				if ($msg_title == '')
 				{
-					$msg_title = 'phpBB' . $this->language->lang('COLON') . '<b>' . $this->language->lang('ERROR') . '</b>';
+					$msg_title = 'phpBB : <b>' . $this->user->lang('Critical_Error') . '</b>';
 				}
 			break;
 		}
@@ -1028,7 +955,7 @@ class admin_controller
 		// prevents debug info being output for general messages should DEBUG be
 		// set TRUE by accident (preventing confusion for the end user!)
 		//
-		if ( DEBUG && ( $msg_code == E_USER_NOTICE || $msg_code == E_USER_ERROR ) )
+		if ( DEBUG && ( $msg_code == GENERAL_ERROR || $msg_code == CRITICAL_ERROR ) )
 		{
 			if ( $debug_text != '' )
 			{
@@ -1036,10 +963,7 @@ class admin_controller
 			}
 		}
 		
-		$msg_text = (!empty($user->lang[$msg_text])) ? $user->lang[$msg_text] : $msg_text;
-		$msg_title = (!empty($user->lang[$msg_title])) ? $user->lang[$msg_title] : $msg_title;
-		
-		trigger_error(sprintf($msg_title, $err_file, $err_line), $msg_code);
+		trigger_error($msg_title . ': ' . $msg_text);
 	}
 	
 	/**
@@ -1052,21 +976,607 @@ class admin_controller
 		return false;
 	}
 	
-	/**
-	* Populate Language entries (all lang keys) from single multilangual file to a variable
-	*
-	* $this->entries = $this->load_lang_file($this->ext_path . 'language/' . $this->language_into . '/' . $header_info_dir . '/common.' . $this->php_ext);
-	*
-	* @param mixed $multi_lang_set specifies the mutilangual file to include
-	*/	
-	function load_lang_file($multi_lang_set)
+	function load_lang_file($filename)
 	{
-		if (!is_file($multi_lang_set))
+		if (!is_file($filename))
 		{
 			return array();
 		}
-		include($multi_lang_set);
+		include($filename);
 		return $lang;
+	}
+	
+	/**
+	 * encode_lang
+	 *
+	 * $default_lang = $mxp_translator->encode_lang($config['default_lang']);
+	 *
+	 * @param unknown_type $lang
+	 * @return unknown
+	 */
+	function encode_lang($lang)
+	{
+			$lang = str_replace('lang_', '', $lang);
+			switch($lang)
+			{
+				case 'afar':
+					$lang_name = 'aa';
+				break;
+				case 'abkhazian':
+					$lang_name = 'ab';
+				break;
+				case 'avestan':
+					$lang_name = 'ae';
+				break;
+				case 'afrikaans':
+					$lang_name = 'af';
+				break;
+				case 'akan':
+					$lang_name = 'ak';
+				break;
+				case 'amharic':
+					$lang_name = 'am';
+				break;
+				case 'aragonese':
+					$lang_name = 'an';
+				break;
+				case 'arabic':
+					$lang_name = 'ar';
+				break;
+				case 'assamese':
+					$lang_name = 'as';
+				break;
+				case 'avaric':
+					$lang_name = 'av';
+				break;
+				case 'aymara':
+					$lang_name = 'ay';
+				break;
+				case 'azerbaijani':
+					$lang_name = 'az';
+				break;
+				case 'bashkir':
+					$lang_name = 'ba';
+				break;
+				case 'belarusian':
+					$lang_name = 'be';
+				break;
+				case 'bulgarian':
+					$lang_name = 'bg';
+				break;
+				case 'bihari':
+					$lang_name = 'bh';
+				break;
+				case 'bislama':
+					$lang_name = 'bi';
+				break;
+				case 'bambara':
+					$lang_name = 'bm';
+				break;
+				case 'bengali':
+					$lang_name = 'bn';
+				break;
+				case 'tibetan':
+					$lang_name = 'bo';
+				break;
+				case 'breton':
+					$lang_name = 'br';
+				break;
+				case 'bosnian':
+					$lang_name = 'bs';
+				break;
+				case 'catalan':
+					$lang_name = 'ca';
+				break;
+				case 'chechen':
+					$lang_name = 'ce';
+				break;
+				case 'chamorro':
+					$lang_name = 'ch';
+				break;
+				case 'corsican':
+					$lang_name = 'co';
+				break;
+				case 'cree':
+					$lang_name = 'cr';
+				break;
+				case 'czech':
+					$lang_name = 'cs';
+				break;
+				case 'slavonic':
+					$lang_name = 'cu';
+				break;
+				case 'chuvash':
+					$lang_name = 'cv';
+				break;
+				case 'welsh_cymraeg':
+					$lang_name = 'cy';
+				break;
+				case 'danish':
+					$lang_name = 'da';
+				break;
+				case 'german':
+					$lang_name = 'de';
+				break;
+				case 'divehi':
+					$lang_name = 'dv';
+				break;
+				case 'dzongkha':
+					$lang_name = 'dz';
+				break;
+				case 'ewe':
+					$lang_name = 'ee';
+				break;
+				case 'greek':
+					$lang_name = 'el';
+				break;
+				case 'hebrew':
+					$lang_name = 'he';
+				break;
+				case 'english':
+					$lang_name = 'en';
+				break;
+				case 'english_us':
+					$lang_name = 'en_us';
+				break;
+				case 'esperanto':
+					$lang_name = 'eo';
+				break;
+				case 'spanish':
+					$lang_name = 'es';
+				break;
+				case 'estonian':
+					$lang_name = 'et';
+				break;
+				case 'basque':
+					$lang_name = 'eu';
+				break;
+				case 'persian':
+					$lang_name = 'fa';
+				break;
+				case 'fulah':
+					$lang_name = 'ff';
+				break;
+				case 'finnish':
+					$lang_name = 'fi';
+				break;
+				case 'fijian':
+					$lang_name = 'fj';
+				break;
+				case 'faroese':
+					$lang_name = 'fo';
+				break;
+				case 'french':
+					$lang_name = 'fr';
+				break;
+				case 'frisian':
+					$lang_name = 'fy';
+				break;
+				case 'irish':
+					$lang_name = 'ga';
+				break;
+				case 'scottish':
+					$lang_name = 'gd';
+				break;
+				case 'galician':
+					$lang_name = 'gl';
+				break;
+				case 'guaraní':
+					$lang_name = 'gn';
+				break;
+				case 'gujarati':
+					$lang_name = 'gu';
+				break;
+				case 'manx':
+					$lang_name = 'gv';
+				break;
+				case 'hausa':
+					$lang_name = 'ha';
+				break;
+				case 'hebrew':
+					$lang_name = 'he';
+				break;
+				case 'hindi':
+					$lang_name = 'hi';
+				break;
+				case 'hiri_motu':
+					$lang_name = 'ho';
+				break;
+				case 'croatian':
+					$lang_name = 'hr';
+				break;
+				case 'haitian':
+					$lang_name = 'ht';
+				break;
+				case 'hungarian':
+					$lang_name = 'hu';
+				break;
+				case 'armenian':
+					$lang_name = 'hy';
+				break;
+				case 'herero':
+					$lang_name = 'hz';
+				break;
+				case 'interlingua':
+					$lang_name = 'ia';
+				break;
+				case 'indonesian':
+					$lang_name = 'id';
+				break;
+				case 'interlingue':
+					$lang_name = 'ie';
+				break;
+				case 'igbo':
+					$lang_name = 'ig';
+				break;
+				case 'sichuan_yi':
+					$lang_name = 'ii';
+				break;
+				case 'inupiaq':
+					$lang_name = 'ik';
+				break;
+				case 'ido':
+					$lang_name = 'io';
+				break;
+				case 'icelandic':
+					$lang_name = 'is';
+				break;
+				case 'italian':
+					$lang_name = 'it';
+				break;
+				case 'inuktitut':
+					$lang_name = 'iu';
+				break;
+				case 'japanese':
+					$lang_name = 'ja';
+				break;
+				case 'javanese':
+					$lang_name = 'jv';
+				break;
+				case 'georgian':
+					$lang_name = 'ka';
+				break;
+				case 'kongo':
+					$lang_name = 'kg';
+				break;
+				case 'kikuyu':
+					$lang_name = 'ki';
+				break;
+				case 'kwanyama':
+					$lang_name = 'kj';
+				break;
+				case 'kazakh':
+					$lang_name = 'kk';
+				break;
+				case 'kalaallisut':
+					$lang_name = 'kl';
+				break;
+				case 'khmer':
+					$lang_name = 'km';
+				break;
+				case 'kannada':
+					$lang_name = 'kn';
+				break;
+				case 'korean':
+					$lang_name = 'ko';
+				break;
+				case 'kanuri':
+					$lang_name = 'kr';
+				break;
+				case 'kashmiri':
+					$lang_name = 'ks';
+				break;
+				case 'kurdish':
+					$lang_name = 'ku';
+				break;
+				case 'kv':
+					$lang_name = 'komi';
+				break;
+				case 'cornish_kernewek':
+					$lang_name = 'kw';
+				break;
+				case 'kirghiz':
+					$lang_name = 'ky';
+				break;
+				case 'latin':
+					$lang_name = 'la';
+				break;
+				case 'luxembourgish':
+					$lang_name = 'lb';
+				break;
+				case 'ganda':
+					$lang_name = 'lg';
+				break;
+				case 'limburgish':
+					$lang_name = 'li';
+				break;
+				case 'lingala':
+					$lang_name = 'ln';
+				break;
+				case 'lao':
+					$lang_name = 'lo';
+				break;
+				case 'lithuanian':
+					$lang_name = 'lt';
+				break;
+				case 'luba-katanga':
+					$lang_name = 'lu';
+				break;
+				case 'latvian':
+					$lang_name = 'lv';
+				break;
+				case 'malagasy':
+					$lang_name = 'mg';
+				break;
+				case 'marshallese':
+					$lang_name = 'mh';
+				break;
+				case 'maori':
+					$lang_name = 'mi';
+				break;
+				case 'macedonian':
+					$lang_name = 'mk';
+				break;
+				case 'malayalam':
+					$lang_name = 'ml';
+				break;
+				case 'mongolian':
+					$lang_name = 'mn';
+				break;
+				case 'moldavian':
+					$lang_name = 'mo';
+				break;
+				case 'marathi':
+					$lang_name = 'mr';
+				break;
+				case 'malay':
+					$lang_name = 'ms';
+				break;
+				case 'maltese':
+					$lang_name = 'mt';
+				break;
+				case 'burmese':
+					$lang_name = 'my';
+				break;
+				case 'nauruan':
+					$lang_name = 'na';
+				break;
+				case 'norwegian':
+					$lang_name = 'nb';
+				break;
+				case 'ndebele':
+					$lang_name = 'nd';
+				break;
+				case 'nepali':
+					$lang_name = 'ne';
+				break;
+				case 'ndonga':
+					$lang_name = 'ng';
+				break;
+				case 'dutch':
+					$lang_name = 'nl';
+				break;
+				case 'norwegian_nynorsk':
+					$lang_name = 'nn';
+				break;
+				case 'norwegian':
+					$lang_name = 'no';
+				break;
+				case 'southern_ndebele':
+					$lang_name = 'nr';
+				break;
+				case 'navajo':
+					$lang_name = 'nv';
+				break;
+				case 'chichewa':
+					$lang_name = 'ny';
+				break;
+				case 'occitan':
+					$lang_name = 'oc';
+				break;
+				case 'ojibwa':
+					$lang_name = 'oj';
+				break;
+				case 'oromo':
+					$lang_name = 'om';
+				break;
+				case 'oriya':
+					$lang_name = 'or';
+				break;
+				case 'ossetian':
+					$lang_name = 'os';
+				break;
+				case 'panjabi':
+					$lang_name = 'pa';
+				break;
+				case 'pali':
+					$lang_name = 'pi';
+				break;
+				case 'polish':
+					$lang_name = 'pl';
+				break;
+				case 'pashto':
+					$lang_name = 'ps';
+				break;
+				case 'portuguese':
+					$lang_name = 'pt';
+				break;
+				case 'portuguese_brasil':
+					$lang_name = 'pt_br';
+				break;
+				case 'quechua':
+					$lang_name = 'qu';
+				break;
+				case 'romansh':
+					$lang_name = 'rm';
+				break;
+				case 'kirundi':
+					$lang_name = 'rn';
+				break;
+				case 'romanian':
+					$lang_name = 'ro';
+				break;
+				case 'russian':
+					$lang_name = 'ru';
+				break;
+				case 'kinyarwanda':
+					$lang_name = 'rw';
+				break;
+				case 'sanskrit':
+					$lang_name = 'sa';
+				break;
+				case 'sardinian':
+					$lang_name = 'sc';
+				break;
+				case 'sindhi':
+					$lang_name = 'sd';
+				break;
+				case 'northern_sami':
+					$lang_name = 'se';
+				break;
+				case 'sango':
+					$lang_name = 'sg';
+				break;
+				case 'serbo-croatian':
+					$lang_name = 'sh';
+				break;
+				case 'sinhala':
+					$lang_name = 'si';
+				break;
+				case 'slovak':
+					$lang_name = 'sk';
+				break;
+				case 'slovenian':
+					$lang_name = 'sl';
+				break;
+				case 'samoan':
+					$lang_name = 'sm';
+				break;
+				case 'shona':
+					$lang_name = 'sn';
+				break;
+				case 'somali':
+					$lang_name = 'so';
+				break;
+				case 'albanian':
+					$lang_name = 'sq';
+				break;
+				case 'serbian':
+					$lang_name = 'sr';
+				break;
+				case 'swati':
+					$lang_name = 'ss';
+				break;
+				case 'sotho':
+					$lang_name = 'st';
+				break;
+				case 'sundanese':
+					$lang_name = 'su';
+				break;
+				case 'swedish':
+					$lang_name = 'sv';
+				break;
+				case 'swahili':
+					$lang_name = 'sw';
+				break;
+				case 'tamil':
+					$lang_name = 'ta';
+				break;
+				case 'telugu':
+					$lang_name = 'te';
+				break;
+				case 'tajik':
+					$lang_name = 'tg';
+				break;
+				case 'thai':
+					$lang_name = 'th';
+				break;
+				case 'tigrinya':
+					$lang_name = 'ti';
+				break;
+				case 'turkmen':
+					$lang_name = 'tk';
+				break;
+				case 'tagalog':
+					$lang_name = 'tl';
+				break;
+				case 'tswana':
+					$lang_name = 'tn';
+				break;
+				case 'tonga':
+					$lang_name = 'to';
+				break;
+				case 'turkish':
+					$lang_name = 'tr';
+				break;
+				case 'tsonga':
+					$lang_name = 'ts';
+				break;
+				case 'tatar':
+					$lang_name = 'tt';
+				break;
+				case 'twi':
+					$lang_name = 'tw';
+				break;
+				case 'tahitian':
+					$lang_name = 'ty';
+				break;
+				case 'uighur':
+					$lang_name = 'ug';
+				break;
+				case 'ukrainian':
+					$lang_name = 'uk';
+				break;
+				case 'urdu':
+					$lang_name = 'ur';
+				break;
+				case 'uzbek':
+					$lang_name = 'uz';
+				break;
+				case 'venda':
+					$lang_name = 've';
+				break;
+				case 'vietnamese':
+					$lang_name = 'vi';
+				break;
+				case 'volapuk':
+					$lang_name = 'vo';
+				break;
+				case 'walloon':
+					$lang_name = 'wa';
+				break;
+				case 'wolof':
+					$lang_name = 'wo';
+				break;
+				case 'xhosa':
+					$lang_name = 'xh';
+				break;
+				case 'yiddish':
+					$lang_name = 'yi';
+				break;
+				case 'yoruba':
+					$lang_name = 'yo';
+				break;
+				case 'zhuang':
+					$lang_name = 'za';
+				break;
+				case 'chinese':
+					$lang_name = 'zh';
+				break;
+				case 'chinese_simplified':
+					$lang_name = 'zh_cmn_hans';
+				break;
+				case 'chinese_traditional':
+					$lang_name = 'zh_cmn_hant';
+				break;
+				case 'zulu':
+					$lang_name = 'zu';
+				break;
+				default:
+					$lang_name = (strlen($lang) > 2) ? substr($lang, 0, 2) : $lang;
+				break;
+			}
+		return $lang_name;
 	}
 
 	/**
@@ -1090,7 +1600,7 @@ class admin_controller
 			
 			if ($this->language_from == '')
 			{
-				$this->language_from = $this->set_cookie($this->ext_name . 'language_from', $f);
+				$this->language_from = $this->phpbb_cookie($this->ext_name . 'language_from', $f);
 			}
 			$this->module_language_list[$f] =  $this->ucstrreplace('lang_', '', $f);
 		}
@@ -1104,7 +1614,6 @@ class admin_controller
 	*/
 	function load_lang_dirs($path, $lang_from = '', $add_path = '', $lang_into = '')
 	{
-		
 		/* root path at witch we add ie. extension path */  
 		$root_path = $this->module_root_path;
 		
@@ -1117,7 +1626,7 @@ class admin_controller
 			$this->dir_select_into = ($this->trisstr('\.' . $php_ext . '$', $this->dir_select_into) == false) ? $this->dir_select_into : dirname($this->dir_select_into);
 		}
 
-		if (!file_exists($root_path . 'app.'.$php_ext) && !file_exists($root_path . 'mcp'.$php_ext))
+		if (!file_exists($root_path . 'mx_meta.inc') && !file_exists($root_path . 'mcp'.$php_ext))
 		{
 			$language = $this->language_from;
 			if ($this->language_from == '')
@@ -1189,14 +1698,13 @@ class admin_controller
 	/**
 	*
 	* Load available module language files list for a language
-	*
 	*/
 	function load_lang_files($path, $language, $add_path = '', $dir_select = '')
 	{
 		/* root path at witch we add ie. extension path */  
 		$root_path = $this->module_root_path;
 		
-		$php_ext = $this->php_ext;		
+		$php_ext = $this->php_ext;
 		
 		if (($this->dir_select_from == $this->dir_select_into) && ($this->language_from !== $this->language_into))
 		{
@@ -1205,9 +1713,9 @@ class admin_controller
 			$this->dir_select_into = ($this->trisstr('\.' . $php_ext . '$', $this->dir_select_into) == false) ? $this->dir_select_into : dirname($this->dir_select_into);
 		}
 
-		if (!file_exists($root_path . 'app.'.$php_ext) && !file_exists($root_path . 'mcp'.$php_ext))
+		if (!file_exists($root_path . 'mx_meta.inc') && !file_exists($root_path . 'modcp'.$php_ext))
 		{
-			$language = $this->language_from;
+			$language = $this->encode_lang($language);
 			if ($this->language_from == '')
 			{
 				$this->language_from = 'en';
@@ -1283,24 +1791,30 @@ class admin_controller
 	 * @param $name string cookie name of the value
 	 * @param $value mixed value which should be setted for cookie
 	 */
-	function set_cookie($name, $value = '')
+	function phpbb_cookie($name, $value = '')
 	{
-		/* cookie_name', 'phpbb3_li1e6', 0 */
+		$board_config = $this->config; /* cookie_name', 'phpbb3_li1e6', 0 */
+		$cookie_board_name = $name;
 		$return = '';
 		if ($value != '')
 		{
 			$return = $value;
-			$this->user->set_cookie($name, $value, (time() + 21600), false);
-			$this->set_cookie[$name] = $value;
+			// Currently not working under linux machines [Ubuntu GG]
+			//setcookie( $cookie_board_name, $value, (time()+21600), $board_config['cookie_path'], $board_config['cookie_domain'], $board_config['cookie_secure']);
+			setcookie( $cookie_board_name, $value, (time() + 21600), $board_config['cookie_path']);
+			
+			$this->cookie[$cookie_board_name] = $value;
 			
 		}
-		else if (isset($_COOKIE[$name]))
+		else if(isset($_COOKIE[$cookie_board_name]))
 		{
-			$value = $this->set_cookie[$name] = $this->request->variable($name, 0, false, \phpbb\request\request_interface::COOKIE);
-			$this->user->set_cookie($name, $value, (time() + 21600), false);
+			$value = $this->cookie[$cookie_board_name] = $this->request->variable($cookie_board_name, 0, false, \phpbb\request\request_interface::COOKIE);
+			// Currently not working under linux machines [Ubuntu GG]
+			//setcookie( $cookie_board_name, $_COOKIE[ $cookie_board_name], (time()+21600), $board_config['cookie_path'], $board_config['cookie_domain'], $board_config['cookie_secure']);
+			setcookie($cookie_board_name, $value, (time() + 21600), $board_config['cookie_path']);
 			
 		}
-		$this->set_cookie['test' . $name] = $value;		
+		$this->cookie['test' . $name] = $value;		
 		return $value;
 	}
 	
@@ -1422,8 +1936,8 @@ class admin_controller
 			return '';
 		}
 
-		//asort($list_ary);
-		//reset($list_ary);
+		asort($list_ary);
+		reset($list_ary);
 		$option_list = '';
 		$num_args = func_num_args();
 
@@ -1473,18 +1987,6 @@ class admin_controller
 		return $option_list;
 	}
 	
-	/**
-	* Decode language country codes returning countries with first uppercase
-	*
-	 * ucstrreplace replacement for decode_lang()
-	 * the reverse of encode_lang()
-	 *
-	 *  from MXP version 3.0.0-beta1
-	 * $country_name = $this->ucstrreplace($lang_iso);
-	 *
-	 * @param array_type $lang
-	 * @return unknown
-	 */	
 	function ucstrreplace($pattern = '%{$regex}%i', $matches = '', $string) 
 	{
 		/* return with no uppercase if patern not in string */
@@ -2074,16 +2576,11 @@ class admin_controller
 		}
 		return ucwords(str_replace(array(" ","-","_"), ' ', str_replace($pattern, '', $string)));
 	}
-	
-	/**
-	* Get lang key or value
-	* To do: update this->user->lang[] into this->language->lang()
-	* Not used, to be removed in 1.0.0-RC4
-	* @return unknown
-	 */	
+
 	function get_lang($key)
 	{
-		return ((!empty($key) && isset($this->user->lang[$key])) ? $this->user->lang[$key] : $key);
+		global $lang;
+		return ((!empty($key) && isset($lang[$key])) ? $lang[$key] : $key);
 	}
 
 	function get_fonts()
@@ -2108,6 +2605,27 @@ class admin_controller
 		@asort($fonts);
 
 		return $fonts;
+	}
+
+	function get_countries()
+	{
+		// get all countries installed
+		$countries = array();
+		$dir = @opendir($this->root_path . 'language');
+		while ($file = @readdir($dir))
+		{
+			if (preg_match('#^lang_#i', $file) && !is_file($this->root_path . 'language/' . $file) && !is_link($this->root_path . 'language/' . $file))
+			{
+				$filename = trim(str_replace('lang_', '', $file));
+				$displayname = preg_replace("/^(.*?)_(.*)$/", "\\1 [ \\2 ]", $filename);
+				$displayname = preg_replace("/\[(.*?)_(.*)\]/", "[ \\1 - \\2 ]", $displayname);
+				$countries[$file] = ucfirst($displayname);
+			}
+		}
+		@closedir($dir);
+		@asort($countries);
+
+		return $countries;
 	}
 
 	function get_packs()
@@ -2136,7 +2654,10 @@ class admin_controller
 				
 				$pattern = 'lang_u';
 				if (preg_match('/' . $pattern . '/i', $file))
-				//i.e if(preg_match("/^info_acp_custom_headernfo*?\." . $this->php_ext . "$/", $file))
+				//if(preg_match("/^lang_user_created.*?\." . $this->php_ext . "$/", $file))
+				//if((preg_match("/^lang_user_created.*?\." . $this->php_ext . "$/", $file)) || (preg_match("/^lang_main.*?\." . $this->php_ext . "$/", $file)))
+				//if((preg_match("/^lang_user_created.*?\." . $this->php_ext . "$/", $file)) || (preg_match("/^lang_admin.*?\." . $this->php_ext . "$/", $file)))
+				//if(preg_match("/^lang_user_created.*?\." . $this->php_ext . "$/", $file))
 				{
 					/* MG Lang DB - BEGIN */
 					if (!in_array($file, $skip_files))
@@ -2156,17 +2677,17 @@ class admin_controller
 			}
 			@closedir($dir);
 		}
-
+		/* MG Lang DB - BEGIN */
+		/*
+		$packs['lang'] = '_phpBB';
+		$packs['custom'] = '_custom';
+		*/
+		/* MG Lang DB - END */
 		@asort($packs);
 
 		return $packs;
 	}
-	
-	/**
-	* Read entries (all lang keys) from all multilangual files of a package
-	* $this->module_root_path . 'language/' . $country_dir . '/' . 'common' . $this->php_ext
-	*
-	*/	
+
 	function read_one_pack($country_dir, $pack_file, &$entries)
 	{
 		global $countries, $packs;
@@ -2175,7 +2696,8 @@ class admin_controller
 		$file = $this->root_path . 'language/' . $country_dir . '/' . $pack_file;
 		if (($pack_file != 'lang') && ($pack_file != 'custom') && !file_exists($file))
 		{
-			$this->message_die(E_USER_NOTICE, 'FILE_NOT_EXISTS' . $file, '', __LINE__, __FILE__, $packs);
+			//die('This file doesn\'t exist: ' . $file);
+			$this->message_die(GENERAL_ERROR, 'This file doesn\'t exist: ' . $file, '', __LINE__, __FILE__, $packs);
 		}
 
 		// process first admin then standard keys
@@ -2229,13 +2751,173 @@ class admin_controller
 			}
 		}
 	}
+
+	function get_entries($modified = true)
+	{
+		global $config;
+		global $countries, $packs;
+
+		// init
+		$entries = array();
+
+		// process by countries first
+		/* MG Lang DB - BEGIN */
+		/*
+		@reset($countries);
+		while (list($country_dir, $country_name) = @each($countries))
+		{
+			// phpBB lang keys
+			$pack_file = 'lang';
+			$this->read_one_pack($country_dir, $pack_file, $entries);
+		}
+
+		// process other packs except custom one
+		@reset($countries);
+		while (list($country_dir, $country_name) = @each($countries))
+		{
+			@reset($packs);
+			while (list($pack_file, $pack_name) = @each($packs))
+			{
+				if (($pack_file != 'lang') && ($pack_file != 'custom'))
+				{
+					$this->read_one_pack($country_dir, $pack_file, $entries);
+				}
+			}
+		}
+		*/
+		/* MG Lang DB - END */
+
+		/* MG Lang DB - BEGIN */
+		@reset($countries);
+		while (list($country_dir, $country_name) = @each($countries))
+		{
+			@reset($packs);
+			while (list($pack_file, $pack_name) = @each($packs))
+			{
+				$this->read_one_pack($country_dir, $pack_file, $entries);
+			}
+		}
+		/* MG Lang DB - END */
+
+		// process the added/modified keys
+		if ($modified)
+		{
+			/* MG Lang DB - BEGIN */
+			@reset($countries);
+			while (list($country_dir, $country_name) = @each($countries))
+			{
+				$pack_file = 'custom';
+				$this->read_one_pack($country_dir, $pack_file, $entries);
+			}
+			/* MG Lang DB - END */
+
+			// add the missing keys in a language
+			$default_lang = 'lang_' . $config['default_lang'];
+			$english_lang = 'lang_english';
+			@reset($entries['pack']);
+			while (list($key_main, $data) = @each($entries['pack']))
+			{
+				@reset($data);
+				while (list($key_sub, $pack_file) = @each($data))
+				{
+					// add the key to the default lang if missing by using the english one
+					if (!isset($entries['value'][$key_main][$key_sub][$default_lang]))
+					{
+						// add the key to english lang if missing
+						if (!isset($entries['value'][$key_main][$key_sub][$english_lang]))
+						{
+							// find the first not empty value
+							$found = false;
+							$new_value = '';
+							@reset($entries['value'][$key_main][$key_sub]);
+							while (list($country_dir, $value) = @each($entries['value'][$key_main][$key_sub]))
+							{
+								$found = !empty($value);
+								if ($found)
+								{
+									$new_value = $value;
+								}
+							}
+							// add it (even if empty)
+							$entries['value'][$key_main][$key_sub][$english_lang] = $new_value;
+							$entries['status'][$key_main][$key_sub][$english_lang] = 2; // 2=added
+						}
+
+						// fill the default lang
+						if ($default_lang!= $english_lang)
+						{
+							$entries['value'][$key_main][$key_sub][$default_lang] = $entries['value'][$key_main][$key_sub][$english_lang];
+							$entries['status'][$key_main][$key_sub][$default_lang] = 2; // 2=added
+						}
+					}
+
+					// process all langs for this key
+					@reset($countries);
+					while (list($country_dir, $country_name) = @each($countries))
+					{
+						if (!isset($entries['value'][$key_main][$key_sub][$country_dir]))
+						{
+							$entries['value'][$key_main][$key_sub][$country_dir] = $entries['value'][$key_main][$key_sub][$default_lang];
+							$entries['status'][$key_main][$key_sub][$country_dir] = 2; // 2=added
+						}
+					}
+				}
+			}
+		}
+
+		// all is done : return the result
+		return $entries;
+	}
 		
 	/* replacement for eregi($pattern, $string); outputs 0 or 1*/
 	function trisstr($pattern = '%{$regex}%i', $string, $matches = '') 
 	{      
 		return preg_match('/' . $pattern . '/i', $string, $matches);
-	}			
+	}
+		
+	/* replacement for stripslashes(); */
+	function removeslashes($string, $all = true) 
+	{  	
+		//remove also slashes inside the string
+		//or remove only leading and trailing slashes		
+		return ($all !== false)  ? str_replace('/', '', $string)  : trim($string, '/');
+	}
+	
+	/* replacement for print_r(array(), true); */
+	function array_to_string($val, $all = true) 
+	{  	
+			if(is_array($val))
+			{
+				foreach($val as $k => $v)
+				{
+					$val[$k] = $this->removeslashes($v);
+				}
+				return $k . ', ' . $v;
+			}
+			else
+			{
+				$val = $this->removeslashes($val);
+				return $val;
+			}
+	}
+	
+	function clean_string($string)
+	{
+		$array_find = array(
+			"''",
+			"'",
+			"\r\n",
+		);
 
+		$array_replace = array(
+			"'",
+			"\'",
+			"\n",
+		);
+
+		$string = str_replace($array_find, $array_replace, $this->array_to_string($string, true));
+		return $string;
+	}
 }
-
+// THE END
 ?>
