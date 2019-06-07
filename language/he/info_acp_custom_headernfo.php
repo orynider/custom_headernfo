@@ -22,175 +22,175 @@ if (empty($lang) || !is_array($lang))
 }
 
 $lang = array_merge($lang, array(
-	'ACP_HEADER_INFO_TITLE'								=> 'Custom Header Info',
-    'ACP_HEADER_INFO_CONFIG'							=> 'Header Info Configuration',
-	'ACP_MANAGE_CONFIG'									=> 'Configuration',
-
-	'ACP_MANAGE_FORUMS'									=> 'Forums',
-	'ACP_MANAGE_PAGES'									=> 'Pages',
-	'ACP_NO_BANNER'									=> 'No Banner',
+	'ACP_HEADER_INFO_TITLE'				=> 'Custom Header Info',
+	'ACP_HEADER_INFO_CONFIG' 			=> 'תצורת פרטי כותרת',
+	'ACP_MANAGE_CONFIG' 					=> 'תצורה ',
 	
+	'ACP_MANAGE_FORUMS' 					=> 'פורומים',
+	'ACP_MANAGE_PAGES' 					=> 'דפים',
+	'ACP_NO_BANNER' 							=> 'אין באנר',
 
-	'HEADER_INFO_INTRO'									=> 'This is configuration page for the Custom Header Info Extension by orynider.',
+	'HEADER_INFO_INTRO' 					=> '.הארכה של אורינדר Custom Header Info זהו דף תצורה עבור אל',
+	'HEADER_INFO_DONATE' 					=> '<a href="https://www.paypal.me/orynider"><strong>תרום</strong></a>',
+	'HEADER_INFO_DONATE_EXPLAIN' 	=> 'אם אתה אוהב את התוסף הזה לשקול תרומה',
 
-	'HEADER_INFO_DONATE'				                => '<a href="https://www.paypal.me/orynider"><strong>Donate</strong></a>',
-	'HEADER_INFO_DONATE_EXPLAIN'	                => 'If you like this extension considers a donation',
+	'HEADER_INFO_VERSION' 				=> 'גרסה',
+	'HEADER_INFO_CHECK' 					=> 'בדוק ידנית בכתובת <a href="http://mxpcms.sf.net/forum/index.php"><strong> פורום ראשי </strong></a>',
+	'HEADER_INFO_EDIT' 						=> '.ערוך פרטי כותרת למסד הנתונים',
 
-	'HEADER_INFO_VERSION'								=> 'Version',
- 	'HEADER_INFO_CHECK'									=> 'Check Manually at <a href="http://mxpcms.sf.net/forum/index.php"><strong>Forum Home</strong></a>',
-	'HEADER_INFO_EDIT'										=> 'Edit header info item to database.',
+	'ROW_HEIGHT' 									=> 'גובה כל שורה של טיקר ב- PX',
+	'ROW_HEIGHT_EXPLAIN' 						=> 'כל מודעת באנר נטענת בטיקר המידע כשורה באמצעות יישום JavaScript זה. גובה כל שורה טיקר צריך להיות אחיד. ',
 
-	'ROW_HEIGHT'											=> 'Height of each ticker row in PX',
-	'ROW_HEIGHT_EXPLAIN'								=> 'Each banner is loaded in in the info ticker as a row using this JavaScript aplication. Height of each ticker row should be uniform.',
-
-	'THUMBNAIL_FONT_DADABASE_ERROR_FOR_ID'	=> 'Thumbnail font dadabase error for id. <br />Edit the banner in ACP and reselect a font uploaded with the font css files.',
-	'SPEED'														=> 'Speed of transition animation in milliseconds',
-	'SPEED_EXPLAIN'										=> 'Speed of transition animation between banner scrolling in the info ticker.',
-
-	'INTERVAL'												=> 'Time between change in milliseconds',
-	'INTERVAL_EXPLAIN'									=> 'Time to read the info before scrolling the ticker.',
-
-	'MOUSESTOP'											=> 'Stop on mouseover the ticker',
-	'MOUSESTOP_EXPLAIN'								=> 'If set to true, the ticker will stop on mouseover.',
-
-	'INFO_DIRECTION'										=> 'The scrolling direction',
-	'INFO_DIRECTION_EXPLAIN'						=> 'Direction in witch the list will scroll. That is up or down.',
-
-	'HEADER_INFO_EDIT'										=> 'Edit header info item to database',
-	'HEADER_INFO_ADD'									    => 'Add header info item to database.',
-
-	'HEADER_INFO_NAME'									=> 'Banner Title Name',
-	'HEADER_INFO_NAME_EXPLAIN'						=> 'Title of new header info item. The title will appear in the header_info tooltip when you navigate with the mouse above.',
-
-	'HEADER_INFO_TITLE_PIXELS'							=> 'Banner Title Size',
-	'HEADER_INFO_TITLE_PIXELS_EXPLAIN'			=> 'Sets the number of pixels for banner title.<br /><em>The default for prosilver is 12px.</em>',
-
-	'HEADER_INFO_DESC'										=> 'Short Description',
-	'HEADER_INFO_DESC_EXPLAIN'						=> 'Short description of new header info item. The description will appear in the header info tooltip when you navigate with the mouse above.',
-
-	'HEADER_INFO_DESC_PIXELS'							=> 'Banner Description Size',
-	'HEADER_INFO_DESC_PIXELS_EXPLAIN'			=> 'Sets the number of pixels for banner description.',
-
-	'HEADER_INFO_LONGDESC'								=> 'Long Description',
-	'HEADER_INFO_LONGDESC_EXPLAIN'				=> 'Long description of new header info item. The description will appear in the header info tooltip when you navigate with the mouse above. Note: Maximum 255 characters',
-
-	'HEADER_INFO_FORUM_DESC'						=> 'Note: already added forums are disabled. Edit the entry instead.',
-	'CLICK_TO_SELECT'									=> 'Click in the box to select a colour',
-
-	'USE_EXTENED_SITE_DESC'							=> 'Use extended site description',
-	'USE_EXTENED_SITE_DESC_EXPLAIN'			=> 'Use the standard site description with this header info item.<br /><strong>Note: This will disable the above description and the language directory selected, and so they will have no affect if this <em>extended site description</em> has been selected.</strong> ',
-
-	'HEADER_INFO_RADIUS'								=> 'Header info banner\'s border radius',
-	'HEADER_INFO_RADIUS_EXPLAIN'				=> 'Sets the number of pixels for rounding the header info banner\'s corners. Setting this to 0 means that the banner will have square corners.',
-
-	'HEADER_INFO_PIXELS'								=> 'Header info logo\'s radius',
-	'HEADER_INFO_PIXELS_EXPLAIN'					=> 'Sets the number of pixels for rounding the header info logo\'s corners.<br /><em>The default for prosilver is 7px.</em>',
-
-	'HEADER_INFO_LEFT'								=> 'Header info banner\'s left corners',
-	'HEADER_INFO_LEFT_EXPLAIN'				=> 'Round the left side corners to match the header banner.',
+	'THUMBNAIL_FONT_DADABASE_ERROR_FOR_ID' => 'שגיאת dadabase של גופן ממוזערת עבור מזהה. <br /> לערוך את הבאנר ב- ACP ולבחור מחדש את הגופן המועלה עם קובצי css של הגופן. ',
 	
-	'HEADER_INFO_RIGHT'							=> 'Header info banner\'s right corners',
-	'HEADER_INFO_RIGHT_EXPLAIN'				=> 'Round the right side corners to match the header banner.',
+	'SPEED' 											=> 'מהירות של אנימציה מעבר למילי-שניות',
+	'SPEED_EXPLAIN' 								=> '.מהירות של אנימציה מעבר בין גלילה באנר בטיקר מידע',
+
+	'INTERVAL' 										=> 'זמן בין שינויים במילי-שניות',
+	'INTERVAL_EXPLAIN' 						=> 'הזמן לקרוא את המידע לפני גלילה את הטיקר',
+
+	'MOUSESTOP' 									=> 'עצור את העכבר על הטיקר',
+	'MOUSESTOP_EXPLAIN' 					=> 'אם מוגדר כ \'אמת\', הטיקר יפסיק לפעול עם העכבר. ',
+
+	'INFO_DIRECTION' 						=> 'כיוון הגלילה',
+	'INFO_DIRECTION_EXPLAIN' 		=> 'כיוון המכשפה הרשימה תגלגל. זה למעלה או למטה. ',
+
+	'HEADER_INFO_EDIT' 					=> 'ערוך פרטי כותרת למסד נתונים',
+	'HEADER_INFO_ADD' 					=> '. ץהוספת פרטי כותרת למסד הנתונים',
+
+	'HEADER_INFO_NAME' 					=> 'שם כותרת באנר',
+	'HEADER_INFO_NAME_EXPLAIN' 	=> 'כותרת פריט פרטי כותרת חדש. הכותרת תופיע ב- header_info tooltip כשאתה מנווט עם העכבר למעלה. ',
+
+	'HEADER_INFO_TITLE_PIXELS' 		=> 'גודל כותרת באנר',
+	'HEADER_INFO_TITLE_PIXELS_EXPLAIN' => 'קובע את מספר הפיקסלים עבור כותרת הבאנר. <br /> <em>ברירת המחדל עבור prosilver הוא 12 פיקסלים.</em>',
+
+	'HEADER_INFO_DESC' 					=> 'תיאור קצר',
+	'HEADER_INFO_DESC_EXPLAIN' 	=> 'תיאור קצר של פריט פרטי כותרת חדש. התיאור יופיע על-ידי הסבר קצר על הכותרת בעת ניווט עם העכבר לעיל. ',
+
+	'HEADER_INFO_DESC_PIXELS' 					=> 'תיאור מודעת באנר',
+	'HEADER_INFO_DESC_PIXELS_EXPLAIN'		=> 'קובע את מספר הפיקסלים לתיאור הבאנר.',
+
+	'HEADER_INFO_LONGDESC' 					=> 'תיאור ארוך',
+	'HEADER_INFO_LONGDESC_EXPLAIN'	=> 'תיאור ארוך של פריט פרטי כותרת חדש. התיאור יופיע בטקסט הסבר הכותרת של הכותרת כאשר אתה מנווט עם העכבר לעיל. הערות: 255 תווים לכל היותר',
+
+	'HEADER_INFO_FORUM_DESC'				=> 'הערה: פורומים שכבר נוספו מושבתים. במקום זאת, ערוך את הערך. ',
+	'CLICK_TO_SELECT' 								=> 'לחץ בתיבה כדי לבחור צבע',
+
+	'USE_EXTENED_SITE_DESC' 					=> 'השתמש בתיאור האתר המורחב',
+	'USE_EXTENED_SITE_DESC_EXPLAIN' 	=> 'השתמש בתיאור האתר הרגיל עם פריט פרטי כותרת זה. <br /> <strong> תיאור האתר המורחב</em> נבחר.</strong>',
+
+	'HEADER_INFO_RADIUS' 						=> 'כותרת הרדיוס של מודעת כותרת הכותרת',
+	"HEADER_INFO_RADIUS_EXPLAIN" 			=> 'קובע את מספר הפיקסלים עבור עיגול מידע בכותרת באנר \" s פינות. הגדרת 0 זה אומר שלבאנר יהיו פינות מרובעים. ',
+
+	'HEADER_INFO_PIXELS' 						=> 'מידע ברדיו של הרדיוס', 
+	'HEADER_INFO_PIXELS_EXPLAIN' 			=> 'קובע את מספר הפיקסלים עבור עיגול בכותרת הלוגו מידע \' s פינות. <br /> <em> ברירת המחדל עבור prosilver הוא 7px. </em>',
+
+	'HEADER_INFO_LEFT' 							=> 'פינות בפינה השמאלית של כותרת הכותרת',
+	'HEADER_INFO_LEFT_EXPLAIN' 				=> 'סובב את פינות הצד השמאלי כדי להתאים את כותרת הבאנר',
+
+	'HEADER_INFO_RIGHT' 							=> 'כותרת בפינה הימנית',
+	'HEADER_INFO_RIGHT_EXPLAIN' 			=> 'סיבוב בפינות הצד הימני כדי להתאים את כותרת הבאנר',
+
+	'HEADER_INFO_TITLE_COLOUR' 					=> '.צבע כותרת כותרת כותרת בתוך לוגו או כרזה',
+	'HEADER_INFO_TITLE_COLOUR_EXPLAIN' 		=> 'בחר צבע עבור בכותרת של טקסט המידע בכותרת. <br /> הגדרת אפשרות זו תחול, במידת האפשר, את אותה מנטרלת את צבע רקע השיפוע הפנימי המשמש \'prosilver\'. <br /> <em> ברירת מחדל = # 12A3EB </em>',
 	
-	'HEADER_INFO_TITLE_COLOUR'					=> 'Header info title colour inside logo or banner.',
-	'HEADER_INFO_TITLE_COLOUR_EXPLAIN'		=> 'Select a colour for the header info title text.<br />Setting this option will apply, where possible, the same gradient offsets to the inner background colour that are used in “prosilver”.<br /><em>Default = #12A3EB</em>',
-
-	'HEADER_INFO_DESC_COLOUR'					=> 'Header info description colour inside logo or banner.',
-	'HEADER_INFO_DESC_COLOUR_EXPLAIN'		=> 'Select a colour for the header info description text.<br />Setting this option will apply, where possible, the same gradient offsets to the text colour that are used in “prosilver”.<br /><em>Default = #000000</em>',
-
-	'HEADER_INFO_OPTIONS'							=> 'Header options',
+	'HEADER_INFO_DESC_COLOUR' 					=> '.תיאור צבע כותרת כותרת בתוך לוגו או כרזה',
+	'HEADER_INFO_DESC_COLOUR_EXPLAIN'		=> 'בחר צבע עבור הכותרת',
 	
-	'FILE_NOT_EXISTS'										=> 'This file dos not exist.',
+	'HEADER_INFO_OPTIONS' => 'אפשרויות כותרת',
+
+	'FILE_NOT_EXISTS' => 'קובץ זה אינו קיים.',
+
+	'HEADER_INFO_URL' => 'URL',
+	'HEADER_INFO_URL_EXPLAIN' => 'הזן את כתובת האתר של פרטי הכותרת, אם ברצונך שהקישורים הפנימיים והחיצוניים יזוהו באופן אוטומטי.',
+
+	'HEADER_INFO_IMAGE' => 'תמונה',
+	'HEADER_INFO_IMAGE_EXPLAIN' => 'כתובת אתר של תמונה של מודעת באנר של כותרת. לקבלת תמונות נכונות של תמונות חזותיות בגודל <strong> 458x50px </ strong>. כרזות כותרת ניתן להעלות לתיקייה תמונות / באנרים. ',
+
+	'HEADER_INFO_NAME_B' => 'שם או תיאור של פרטי הכותרת',
+	'HEADER_INFO_IMAGE_B' => 'תמונה של פרטי הכותרת',
+	'HEADER_INFO_URL_B' => 'כתובת אתר של פרטי הכותרת',
+
+	'HEADER_INFO_COPYRIGHT' => '<strong> פרטי כותרת מותאמת אישית של הרחבה על ידי <a href="http://mxpcms.sf.net/"> orynider </a> </ strong>',
+	'HEADER_INFO_ADDED' => 'פרטי כותרת חדשים נוספו!',
+	'HEADER_INFO_UDPATED' => 'כותרת עודכנה!',
 	
-	'HEADER_INFO_URL'									=> 'URL',
-	'HEADER_INFO_URL_EXPLAIN'						=> 'Enter the URL of the header info, If you want the internal and external links to be recognized automatically.',
+	'HEADER_INFO_NAVBAR' => 'BreadCrumbs לאחר (1)',
+	'HEADER_INFO_SEARCHBOX' => 'SearchBox לפני (2)',
+	'HEADER_INFO_HEADER' => 'HeaderBar לאחר (4)',
+	'HEADER_INFO_INDEX' => 'PageBody לפני (3)',	
+	'HEADER_INFO_POSITION' => 'מיקום מותאם אישית של פרטי כותרת',
+	'HEADER_INFO_POSITION_EXPLAIN' => 'האם ברצונך להציג את פרטי הכותרת המותאמת אישית ב- NavBar או בכותרת?',
+	'HEADER_INFO_ENABLE' => 'PageHeader לפני (0)',
+	'HEADER_INFO_ENABLE_EXPLAIN' => 'אפשר פרטי כותרת מותאמים אישית בלוח הכללי.',
 
-	'HEADER_INFO_IMAGE'								=> 'Image',
-	'HEADER_INFO_IMAGE_EXPLAIN'					=> 'URL of image of header info banner. For a correct visual insert images of size <strong>458x50px</strong>. Header banners can be uploaded to the images/banners folder.',
+	'THUMB_CACHE' => 'השתמש בקובץ שמור של תמונות ממוזערות',
+	'THUMB_CACHE_EXPLAIN' => 'אפשר אחסון במטמון של תמונה ממוזערת. אם אתה משתמש בתכונה \'מטמון תמונות ממוזערות\', עליך לנקות את המטמון של התמונות הממוזערות לאחר עריכת הבנרים שלך כדי ליצור אותם מחדש. ',
 
-	'HEADER_INFO_NAME_B'								=> 'Name or description of the header info',
-	'HEADER_INFO_IMAGE_B'							=> 'Image of the header info',
-	'HEADER_INFO_URL_B'								=> 'URL of the header info',
+	'HEADER_INFO_PIC_WIDTH' => 'רוחב (פיקסל)',
+	'HEADER_INFO_PIC_WIDTH_EXPLAIN' => '.בחר את רוחב הבאנר',
 
-	'HEADER_INFO_COPYRIGHT'					        => '<strong>Extension Custom Header Info by <a href="http://mxpcms.sf.net/">orynider</a></strong>',
-	'HEADER_INFO_ADDED'							        => 'New header Info has been added!',
-	'HEADER_INFO_UDPATED'						        => 'Header has been updated!',
+	'HEADER_INFO_PIC_HEIGHT' => 'גובה (פיקסל)',
+	'HEADER_INFO_PIC_HEIGHT_EXPLAIN' => 'בחר את גובה הכרזה.',
 
-	'HEADER_INFO_NAVBAR'							=> 'Header Info BreadCrumbs after (1)',
-	'HEADER_INFO_SEARCHBOX'						=> 'Header Info SearchBox before (2)',
-	'HEADER_INFO_HEADER'								=> 'Header Info HeaderBar after (4)',
-	'HEADER_INFO_INDEX'								=> 'Header Info PageBody before (3)',
-	'HEADER_INFO_POSITION'							=> 'Header Info Custom Position',
-	'HEADER_INFO_POSITION_EXPLAIN'				=> 'Do you want to show the Custom Header Info in the NavBar or Header?',
-	'HEADER_INFO_ENABLE'								=> 'Header Info Page Header before (0)',
-	'HEADER_INFO_ENABLE_EXPLAIN'				=> 'Enable Custom Header Info in overall board.',
+	'HEADER_INFO_LICENSE' => 'רישיון',
+	'HEADER_INFO_LICENSE_EXPLAIN' => 'זהו סוג הרישיון והגירסה של משתמש או מפתח חייב להסכים להוריד ולהשתמש בבאנר או בטקסט מתוך הכותרת.',
 
-	'THUMB_CACHE'												=> 'Use thumbnail cache',
-	'THUMB_CACHE_EXPLAIN'									=> 'Enable caching of thumbnail. If you use the Thumbnail Cache feature you must clear your thumbnail cache after editing your banners to make them re-generated.',
+	'HEADER_INFO_PINNED' => 'פרטי פין',
+	'HEADER_INFO_PINNED_EXPLAIN' => 'בחרו אם ברצונכם להצמיד או לא. ההצמדה תוצג תמיד בראש הרשימה. ',
 
-	'HEADER_INFO_PIC_WIDTH'									=> 'Width (pixel)',
-	'HEADER_INFO_PIC_WIDTH_EXPLAIN'					=> 'Choose the width of the banner.',
+	'HEADER_INFO_DISABLE' => 'השבת תצוגת פריטים', 
+	'HEADER_INFO_DISABLE_EXPLAIN' => 'הגדרה זו הופכת את הפריט למושבת, אך עדיין גלויה. הודעה מודיעה למשתמש על פריט זה או שקישור כתובת האתר אינו זמין כרגע. ',
 
-	'HEADER_INFO_PIC_HEIGHT'							=> 'Height (pixel)',
-	'HEADER_INFO_PIC_HEIGHT_EXPLAIN'				=> 'Choose the height of the banner.',
+	'HEADER_INFO_CONF_UDPATED' => 'הגדרות התצורה של מידע כותרת מותאמת אישית עודכנו בהצלחה.',
+	'HEADER_INFO_ERROR' => '.עדכון הגדרות תצורה של פרטי כותרת מותאמת אישית',
 
-	'HEADER_INFO_LICENSE'									=> 'License',
-	'HEADER_INFO_LICENSE_EXPLAIN'					=> 'This is the license type and version a user or developer must agree to download and use a banner or a text from the header.',
+	'MODULE_NAME' => 'שם מסד נתונים',
+	'MODULE_NAME_EXPLAIN' => 'זהו שם מסד הנתונים, כגון\' פרטי כותרת מותאמים אישית ',
 
-	'HEADER_INFO_PINNED'								=> 'Pin Info',
-	'HEADER_INFO_PINNED_EXPLAIN'				=> 'Choose if you want the file pinned or not. Pinned files will always be shown at the top of the file list.',
+	'HEADER_INFO_LINK' => 'אפשר קישורים',
+	'HEADER_INFO_LINKS_MESSAGE' => 'ברירת מחדל \' ללא קישורים \'הודעה',
+	'HEADER_INFO_LINKS_EXPLAIN' => 'אם קישורים אינם מותרים, הטקסט יוצג במקום זאת',
 
-	'HEADER_INFO_DISABLE'							=> 'Disable item display',
-	'HEADER_INFO_DISABLE_EXPLAIN'			=> 'This setting makes the item disabled, but still visible. A message informs the user this item or the item url link is not available at the moment.',
+	'WYSIWYG_PATH' => 'נתיב לתוכנת WYSIWYG',
+	'WYSIWYG_PATH_EXPLAIN' => 'זהו השביל (מתוך השורש MX-Publisher / phpBB) לתיקיית התוכנה WYSIWYG, למשל \' נכסים / JavaScript \ \'אם העליתם, לדוגמה, את TinyMCE בנכסים /javascript/tinymce.',
 
-	'HEADER_INFO_CONF_UDPATED'			    => 'Custom Header Info configuration was succesfully updated.',
-	'HEADER_INFO_ERROR'				            => 'Custom Header Info configuration settings update error.',
+	'HEADER_INFO_TYPE' => '.ברירת המחדל של הקטגוריה',
+	'HEADER_INFO_TYPE_EXPLAIN' => 'בחר ברירת מחדל של הקטגוריה הדו-לשונית עבור פרטי מודעת הבאנר או הכותרת. כל קטגוריה לשוני הוא תיקיה בספריית השפה הרחבה ויש לי קובץ common.php בפנים עם הטקסט מטופל כמו תמונה ב thumnail או כמו טקסט באנר. ',
 
-	'MODULE_NAME'									=> 'Database Name',
-	'MODULE_NAME_EXPLAIN'						=> 'This is the name of the database, such as \'Custom Header Info\'',
+	'MULTI_LANGUAGE_BANNER' => 'מודעת באנר רב-לשונית', 
+	'HTML_MULTI_LANGUAGE_TEXT' => 'טקסט רב-לשוני',
+	'SIMPLE_DB_TEXT' => 'טקסט מסד נתונים פשוט',
+	'SIMPLE_BG_LOGO' => 'לוגו רקע פשוט',
 
-	'HEADER_INFO_LINK'								=> 'Allow Links',
-	'HEADER_INFO_LINKS_MESSAGE'				=> 'Default \'No Links\' Message',
-	'HEADER_INFO_LINKS_EXPLAIN'				=> 'If links are not allowed this text will be displayed instead',
+	'SP_WATERMARK' => 'הגדרות WaterMark',
+	'SP_WATERMARK_EXPLAIN' => 'קביעת תצורה של WaterMark i.e. המדריך לקטגוריה categoty כדי להציב באנר על התמונה הממוזערת.',
 
-	'WYSIWYG_PATH'								=> 'Path to WYSIWYG software',
-	'WYSIWYG_PATH_EXPLAIN'					=> 'This is the path (from MX-Publisher/phpBB root) to the WYSIWYG software folder, eg \'assets/javascript/\' if you have uploaded, for example, TinyMCE in assets/javascript/tinymce.',
+	'WATERMARK' => 'השתמש ב- WaterMark',
 
-	'HEADER_INFO_TYPE'							=> 'default language category',
-	'HEADER_INFO_TYPE_EXPLAIN'			=> 'Select default language category for Your banner or header info.',
+	'WATERMARK_PLACENT' => 'סימן מים על הדגל',
+	'WATERMARK_PLACENT_EXPLAIN' => 'בחר את המיקום היו WaterMark להיות ממוקם על הדגל.',
 
-	'MULTI_LANGUAGE_BANNER'		        => 'Multi Language Banner',
-	'HTML_MULTI_LANGUAGE_TEXT'	        => 'Html Multi Language Text',
-	'SIMPLE_DB_TEXT'						        => 'Simple Database Text',
-	'SIMPLE_BG_LOGO'						        => 'Simple Background Logo',
+	'BACKGROUNDS_DIR' => '.מידע על רקע של כותרת',
+	'BACKGROUNDS_PATH' => 'מידע רקע של רקע\' נתיב אחסון תמונות',
+	'BACKGROUNDS_DIR_EXPLAIN' => 'נתיב תחת ספריית השורש של phpBB, למשל. <samp> תמונות / רקעים </samp>.',
 
-	'SP_WATERMARK' 							=> 'WaterMark Settings',
-	'SP_WATERMARK_EXPLAIN' 			=> 'Configure a WaterMark i.e. the categoty language directory to be placed on the thumbnail banner.',
+	'HEADER_INFO_DIR' => '.ספריית מידע רב-לשונית\' של header ',
+	'HEADER_INFO_PATH' => '.כותרת של מידע\' נתיב אחסון טקסט רב-לשוני ',
+	'HEADER_INFO_DIR_EXPLAIN' => 'הנתיב שמתחת',
+	
+	'HEADER_INFO_FONT' => 'header \' s מידע תמונה ממוזערת של קובץ גופן. ',
+	'HEADER_INFO_FONT_EXPLAIN' => 'בחר שם גופן בתיקיית השורש של התוסף \' נכסים \ גופנים \', למשל. <samp>tituscbz</samp>. ',
 
-	'WATERMARK' 						        => 'Use WaterMark',
+	'BANNERS_DIR' => '.מידע על באנרים',
+	'BANNERS_PATH' => 'כותרת של מידע מידע באנרים נתיב אחסון תמונות.',
+	'BANNERS_DIR_EXPLAIN' => 'נתיב תחת ספריית השורש של phpBB, למשל. <samp>תמונות / כרזות</ samp>. ',
 
-	'WATERMARK_PLACENT' 				        => 'WaterMark position on the banner',
-	'WATERMARK_PLACENT_EXPLAIN'	         => 'Select the position were the WaterMark to be placed on the banner.',
+	'ACP_NO_HEADER_INFO' => 'אין פריט.',
+	    
+	'ACL_A_HEADER_INFO' => 'יכול לנהל מידע כותרת מותאמת אישית',
 
-	'BACKGROUNDS_DIR'								=> 'Header\'s Info backgrounds directory.',
-	'BACKGROUNDS_PATH'							=> 'Header\'s Info backgrounds image storage path',
-	'BACKGROUNDS_DIR_EXPLAIN' 				=> 'Path under your phpBB root directory, e.g. <samp>images/backgrounds</samp>.',
+	'SHOW_AMOUNT' => 'פריטים מינימליים להצגה',
+	'SHOW_AMOUNT_EXPLAIN' => '.פריטים מינימליים לשאילתה לתצוגה בפרטי כותרת',
 
-	'HEADER_INFO_DIR'							        => 'Header\'s Info language directory.',
-	'HEADER_INFO_PATH'							        => 'Header\'s Info text language storage path.',
-	'HEADER_INFO_DIR_EXPLAIN'				        => 'Path under your phpBB root directory, e.g. <samp>language/politics</samp>.',
-
-	'HEADER_INFO_FONT'							        => 'Header\'s Info thumbnail banner font file.',
-	'HEADER_INFO_FONT_EXPLAIN'			        => 'Select font name from the extension \'assets/fonts\' root folder, e.g. <samp>tituscbz</samp>.',
-
-	'BANNERS_DIR'									        => 'Header\'s Info banners directory.',
-	'BANNERS_PATH'								        => 'Header\'s Info banners image storage path.',
-	'BANNERS_DIR_EXPLAIN'						        => 'Path under your phpBB root directory, e.g. <samp>images/banners</samp>.',
-
-	'ACP_NO_HEADER_INFO'                                 => 'There is no custom header info.',
-    //Add permissions acp	
-	'ACL_A_HEADER_INFO'									=> 'Can manage Custom Header Info',
-
-	'SHOW_AMOUNT'											=> 'Minimum items to show',
-	'SHOW_AMOUNT_EXPLAIN'								=> 'Minimum items to query for display in header info.',
 ));

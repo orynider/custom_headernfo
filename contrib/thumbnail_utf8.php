@@ -1819,7 +1819,5 @@ class thumbnail
 	{      
 		return preg_match('/' . $pattern . '/i', $string, $matches);
 	}
-	
-// THE END
 }
 ?>

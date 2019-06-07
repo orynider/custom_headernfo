@@ -473,11 +473,9 @@ class listener implements EventSubscriberInterface
 			
 			if ( empty($config) )
 			{		
-				msg_handler(E_USER_ERROR, $this->user->lang['COULDNT_GET'] . ' ' . $this->ext_name . ' ' . $this->user->lang['CONFIG'], __FILE__, __LINE__);
-			}
-			
-			$this->db->sql_freeresult($result);
-			
+				trigger_error($this->language->lang('COULDNT_GET') . ' ' . $this->ext_name . ' ' . $this->language->lang('CONFIG'), E_USER_ERROR);
+			}		
+			$this->db->sql_freeresult($result);		
 			$this->cache->put('custom_header_info_config', $config);
 			
 			return($config);
@@ -485,4 +483,3 @@ class listener implements EventSubscriberInterface
 	}
 
 }
-?>

@@ -65,8 +65,8 @@ $lang = array_merge($lang, array(
 	'Emil Constantinescu about Democracy, 09 Dec 2018.'	=> '“We are within a moment in witch ... the Elites dissolve, ... the Political discourse collapses in populism, the democracies need democratic conscience, not just democratic institutions.”',
 	//old.presidency.ro/index.php?_RID=det&tb=date_arhiva&id=6361&_PRID=arh
 	//Zilei Solidaritatii Nationale Împotriva Dictaturii
-	'Ion Iliescu, the Ending of the “Eminescu Year”, Botoşani, 14 Jan 2001.'	=> '“In a world that is searching for new foundations for a solidarity existence, preoccupied to resiste some multiple challenges and unimaginable with decades or just years ago, we come with the treasure of amazing parable of inter-human communion, lived under the sign of that intraductible “humaneness”.',
-	'Ion Iliescu, the Ending of the “Eminescu Year”, Botoşani, 14 Jan 2001.'	=> '“For the Romanian people, humanness represents the eternal expression of the conviction that the supreme value is the human soul; but the integral "expression" of the Romanian soul”, after a famous formula, was Mihai Eminescu.”',
+	'Ion Iliescu, the Ending of the “Eminescu Year”, Botoshani, 14 Jan 2001.'	=> '“In a world that is searching for new foundations for a solidarity existence, preoccupied to resiste some multiple challenges and unimaginable with decades or just years ago, we come with the treasure of amazing parable of inter-human communion, lived under the sign of that intraductible “humaneness”.',
+	'Ion Iliescu, the Ending of the “Eminescu Year”, Botoshani, 14 Jan 2001.'	=> '“For the Romanian people, humanness represents the eternal expression of the conviction that the supreme value is the human soul; but the integral "expression" of the Romanian soul”, after a famous formula, was Mihai Eminescu.”',
 	//old.presidency.ro/index.php?_RID=det&tb=date_arhiva&id=936&_PRID=arh
 	'Emil Constantinescu about Revolution and Democracy, 16 Dec 1998.'	=> '“...the people got arisen, they fought and some of them died to obtain rights then forbidden and which today already seems natural to us.”', 
 	'Emil Constantinescu about Romanian Revolution, 16 Dec 1998.'	=> '“Then it proved once again that many people can owe almost everything to very few people.”', 
@@ -81,5 +81,6 @@ $lang = array_merge($lang, array(
 	'Benjamin Netanyahu despre ISIS, 03 Mar 2015'	=> '"They just disagree among themselves who will be the ruler of that empire. In this deadly game of thrones, there is no place for America or for Israel, no peace for Christians, Jews, or Muslims who don\'t share the Islamist medieval creed. No rights for women. No freedom for anyone. So when it comes to Iran and ISIS, the enemy of your enemy is your enemy."',
 	//www.haaretz.com/transcript-of-netanyahu-speech-1.5343049
 	'Benjamin Netanyahu on Iran\'s Nuclear Weapons, before the UN General Assembly, 01 Oct 2013.'	=> '“If Israel is forced to stand alone, Israel will stand alone. Yet, in standing alone, Israel will know that we will be defending many, many others.”',
+	//https://www.youtube.com/watch?v=dR5fpeEDGmc
 	'Benjamin Netanyahu vowed, “as PM of Israel in a speech before a joint session of US Congress, 03 Mar 2015.'	=> '“Even if Israel has to stand alone, Israel will stand. But I know that Israel does not stand alone, I know that America stands with Israel, I know that you stand with Israel.”',
 ));

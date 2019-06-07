@@ -1,4 +1,4 @@
-{% include 'overall_header.html' %}
+{% INCLUDE 'overall_header.html' %}
 
 <h1>{{ lang('HEADER_INFO_TITLE') }}</h1>
 
@@ -8,18 +8,18 @@
 
 <form id="acp_header_info" method="post" action="{U_ACTION}">
   <fieldset>
-	<!-- IF MODULE_NAME -->
+	{% if MODULE_NAME %}
         <dl>
 				<dt><label for="module_name">{{ lang('MODULE_NAME') }}</label><br /><span class="text medium">{{ lang('MODULE_NAME_EXPLAIN') }}</span></dt>
 				<dd><input type="text" size="40" id="module_name" name="module_name" value="{MODULE_NAME}" /></dd>
 		</dl>
-	<!-- ENDIF -->
-	<!-- IF HEADER_INFOVERSION -->
+	{% endif %}
+	{% if HEADER_INFOVERSION %}
         <dl>
 				<dt><label for="header_info_version">{{ lang('HEADER_INFO_VERSION') }}</label><br /><span class="text medium">{{ lang('HEADER_INFO_CHECK') }}</span></dt>
 				<dd><input type="text" size="40" id="header_info_version" name="header_info_version" value="{HEADER_INFOVERSION}"  readonly="readonly" /></dd>
 		</dl>
-	<!-- ENDIF -->
+	{% endif %}
 		<dl>
 			<dt><label for="row_height">{{ lang('ROW_HEIGHT') }}{{ lang('COLON') }}</label><br /><span class="text medium">{{ lang('ROW_HEIGHT_EXPLAIN') }}</span></dt>
 			<dd><input name="row_height" type="number" id="row_height" value="{{ ROW_HEIGHT }}" min="48" max="1024" /> {{ lang('PIXELS') }}</dd>
@@ -32,12 +32,12 @@
 			<dt><label for="interval">{{ lang('INTERVAL') }}{{ lang('COLON') }}</label><br /><span class="text medium">{{ lang('INTERVAL_EXPLAIN') }}</span></dt>
 			<dd><input name="interval" type="number" id="interval" value="{{ INTERVAL }}" min="1000" max="9999" /> {{ lang('PIXELS') }}</dd>
 		</dl>
-	<!-- IF SHOW_AMOUNT -->
+	{% if SHOW_AMOUNT %}
 		<dl>
 			<dt><label for="show_amount">{{ lang('SHOW_AMOUNT') }}{{ lang('COLON') }}</label><br /><span class="text medium">{{ lang('SHOW_AMOUNT_EXPLAIN') }}</span></dt>
 			<dd><input type="number" id="show_amount" name="show_amount" value="{SHOW_AMOUNT}" size="3" maxlength="3" min="0" max="999" /> </dd>
 		</dl>
-	<!-- ENDIF -->
+	{% endif %}
       <dl>
 		<dt class="bg1"><label>{{ lang('MOUSESTOP') }}{{ lang('COLON') }}</label><br><span class="text medium">{{ lang('MOUSESTOP_EXPLAIN') }}</span></dt>
 		<dt class="bg2">
@@ -53,12 +53,12 @@
 			{DIRECTION_SELECT}
 			</dd>
 	</dl>
-	<!-- IF WYSIWYG_PATH -->
+	{% if WYSIWYG_PATH %}
         <dl>
 				<dt><label for="wysiwyg_path">{{ lang('WYSIWYG_PATH') }}</label><br /><span class="text medium">{{ lang('WYSIWYG_PATH_EXPLAIN') }}</span></dt>
 				<dd><input type="text" size="40" id="wysiwyg_path" name="wysiwyg_path" value="{WYSIWYG_PATH}" /></dd>
 		</dl>
-	<!-- ENDIF -->
+	{% endif %}
 	
         <dl>
 				<dt><label for="backgrounds_dir">{{ lang('BACKGROUNDS_DIR') }}</label><br /><span class="text medium">{{ lang('BACKGROUNDS_DIR_EXPLAIN') }}</span></dt>
@@ -179,18 +179,18 @@
 
 <form id="acp_header_info" method="post" action="{U_ACTION}">  
   <fieldset>
-    <legend><!-- IF HEADER_INFO_EDIT -->{{ lang('HEADER_INFO_EDIT') }}{{ lang('COLON') }}<!-- ELSE -->{{ lang('HEADER_INFO_ADD') }}<!-- ENDIF --></legend>
+    <legend>{% if HEADER_INFO_EDIT %}{{ lang('HEADER_INFO_EDIT') }}{{ lang('COLON') }}{% else %}{{ lang('HEADER_INFO_ADD') }}{% endif %}</legend>
 	<dl>
 		<dt><label for="name">{{ lang('HEADER_INFO_NAME') }}{{ lang('COLON') }}</label><br /><span class="text medium">{{ lang('HEADER_INFO_NAME_EXPLAIN') }}</span></dt>
-		<dd><input type="text" size="40" id="name" name="header_info_name"<!-- IF HEADER_INFO_NAME --> value="{HEADER_INFO_NAME}"<!-- ENDIF --> /></dd>
+		<dd><input type="text" size="40" id="name" name="header_info_name"{% if HEADER_INFO_NAME %} value="{HEADER_INFO_NAME}"{% endif %} /></dd>
 	</dl>
 	<dl>
 		<dt><label for="desc">{{ lang('HEADER_INFO_DESC') }}{{ lang('COLON') }}</label><br /><span class="text medium">{{ lang('HEADER_INFO_DESC_EXPLAIN') }}</span></dt>
-		<dd><input type="text" size="40" id="desc" name="header_info_desc"<!-- IF HEADER_INFO_DESC --> value="{HEADER_INFO_DESC}"<!-- ENDIF --> /></dd>
+		<dd><input type="text" size="40" id="desc" name="header_info_desc"{% if HEADER_INFO_DESC %} value="{HEADER_INFO_DESC}"{% endif %} /></dd>
 	</dl>
      <dl>
 		<dt><label for="longdesc">{{ lang('HEADER_INFO_LONGDESC') }}{{ lang('COLON') }}</label><br /><span class="text medium">{{ lang('HEADER_INFO_LONGDESC_EXPLAIN') }}</span></dt>
-		<dd><input type="text" size="40" id="longdesc" name="header_info_longdesc"<!-- IF HEADER_INFO_LONGDESC --> value="{HEADER_INFO_LONGDESC}"<!-- ENDIF --> /></dd>
+		<dd><input type="text" size="40" id="longdesc" name="header_info_longdesc"{% if HEADER_INFO_LONGDESC %} value="{HEADER_INFO_LONGDESC}"{% endif %} /></dd>
 	</dl>
 	<dl>
 		<dt>
@@ -218,8 +218,8 @@
 		<dd><input name="header_info_pixels" type="number" id="header_info_pixels" value="{{ HEADER_INFO_PIXELS }}" min="0" max="99" /> {{ lang('PIXELS') }}</dd>
 	</dl>
 	<dl>
-		<dt><label for="header_info_title_pixels">{{ lang('HEADER_INFO_TITLE_PIXELS') }}{{ lang('COLON') }}</label><br /><span class="text medium">{{ lang('HEADER_INFO_TITLE_PIXELS_EXPLAIN') }}</span></dt>
-		<dd><input name="header_info_title_pixels" type="number" id="header_info_title_pixels" value="{{ HEADER_INFO_TITLE_PIXELS }}" min="0" max="99" /> {{ lang('PIXELS') }}</dd>
+		<dt><label for="header_title_info_pixels">{{ lang('HEADER_INFO_TITLE_PIXELS') }}{{ lang('COLON') }}</label><br /><span class="text medium">{{ lang('HEADER_INFO_TITLE_PIXELS_EXPLAIN') }}</span></dt>
+		<dd><input name="header_title_info_pixels" type="number" id="header_title_info_pixels" value="{{ HEADER_INFO_TITLE_PIXELS }}" min="0" max="99" /> {{ lang('PIXELS') }}</dd>
 	</dl>
 	<dl>
 		<dt><label for="header_info_desc_pixels">{{ lang('HEADER_INFO_DESC_PIXELS') }}{{ lang('COLON') }}</label><br /><span class="text medium">{{ lang('HEADER_INFO_DESC_PIXELS_EXPLAIN') }}</span></dt>
@@ -241,19 +241,19 @@
 	</dl>
 	<dl>
 		<dt><label for="url">{{ lang('HEADER_INFO_URL') }}{{ lang('COLON') }}</label><br /><span class="text medium">{{ lang('HEADER_INFO_URL_EXPLAIN') }}</span></dt>
-		<dd><input type="text" size="40" id="url" name="header_info_url"<!-- IF HEADER_INFO_URL --> value="{HEADER_INFO_URL}"<!-- ENDIF --> /></dd>
+		<dd><input type="text" size="40" id="url" name="header_info_url"{% if HEADER_INFO_URL %} value="{HEADER_INFO_URL}"{% endif %} /></dd>
 	</dl>
 	<dl>
 		<dt><label for="type">{{ lang('HEADER_INFO_TYPE') }}{{ lang('COLON') }}</label><br /><span class="explain">{{ lang('HEADER_INFO_TYPE_EXPLAIN') }}</span></dt>
 		<dd>	
-			<!-- IF HEADER_INFO_TYPE_SELECT -->
+			{% if HEADER_INFO_TYPE_SELECT %}
 			{HEADER_INFO_TYPE_SELECT}
-			<!-- ELSEIF HEADER_INFO_TYPE -->
+			{% elseif HEADER_INFO_TYPE %}
 			<input type="text" size="40" id="type" name="header_info_type" value="{HEADER_INFO_TYPE}" />
-			<!-- ENDIF -->		
+			{% endif %}		
 		</dd>		
 	</dl>
-	<!-- IF HEADER_INFO_TYPE  eq 'language' or HEADER_INFO_TYPE  eq 'lang_html_text' or HEADER_INFO_NAME eq '' -->
+	{% if HEADER_INFO_TYPE eq 'language' or HEADER_INFO_TYPE  eq 'lang_html_text' or HEADER_INFO_NAME eq '' %}
 	<dl>
 			<dt>
 				<label for="dir">{{ lang('HEADER_INFO_DIR') }}{{ lang('COLON') }}</label>
@@ -262,7 +262,7 @@
 			</dt>
 			<dd>{HEADER_INFO_DIR_SELECT}</dd>
 	</dl>
-	<!-- ENDIF -->
+	{% endif %}
 	<dl>
 			<dt>
 				<label for="font">{{ lang('HEADER_INFO_FONT') }}{{ lang('COLON') }}</label>
@@ -271,13 +271,9 @@
 			</dt>
 			<dd>{HEADER_INFO_FONT_SELECT}</dd>
 	</dl>
-		<!--dl>
-			<dt><label for="forum">{{ lang('LOOK_UP_FORUM') }}{{ lang('COLON') }}</label><br /><span class="text medium">{{ lang('HEADER_INFO_FORUM_DESC') }}</span></dt>
-			<dd><select id="forum" name="forum_id" size="10">{S_FORUM_OPTIONS}</select></dd>
-		</dl-->
 	<dl>
 		<dt><label for="image">{{ lang('HEADER_INFO_IMAGE') }}{{ lang('COLON') }}</label><br /><span class="text medium">{{ lang('HEADER_INFO_IMAGE_EXPLAIN') }}</span></dt>
-		<dd><input type="text" size="40" id="image" name="header_info_image"<!-- IF HEADER_INFO_IMAGE --> value="{HEADER_INFO_IMAGE}"<!-- ENDIF --> /></dd>
+		<dd><input type="text" size="40" id="image" name="header_info_image"{% if HEADER_INFO_IMAGE %} value="{HEADER_INFO_IMAGE}"{% endif %} /></dd>
 	</dl>
      <dl>
 		<dt>
@@ -290,7 +286,7 @@
 	</dl>
 	<dl>
 		<dt><label for="type">{{ lang('HEADER_INFO_LICENSE') }}{{ lang('COLON') }}</label><br /><span class="text medium">{{ lang('HEADER_INFO_LICENSE_EXPLAIN') }}</span></dt>
-		<dd><input type="text" size="40" id="licence" name="header_info_license"<!-- IF HEADER_INFO_LICENSE --> value="{HEADER_INFO_LICENSE}"<!-- ENDIF --> /></dd>
+		<dd><input type="text" size="40" id="licence" name="header_info_license"{% if HEADER_INFO_LICENSE %} value="{HEADER_INFO_LICENSE}"{% endif %} /></dd>
 	</dl>
 	<dl>
 		<dt class="bg1"><label for="pin">{{ lang('HEADER_INFO_PINNED') }}{{ lang('COLON') }}</label><br><span class="text medium">{{ lang('HEADER_INFO_PINNED_EXPLAIN') }}</span></dt>
@@ -319,9 +315,9 @@
 			</dd>
 	</dl>
     <p class="submit-buttons">
-		  <!-- IF HEADER_INFO_EDIT -->
+		  {% if HEADER_INFO_EDIT %}
 		  <input type="hidden" name="edit" value="{HEADER_INFO_EDIT}" />
-		  <!-- ENDIF -->
+		  {% endif %}
 		  <input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />
 		  <input class="button2" type="reset" id="reset" name="reset" value="{{ lang('RESET') }}" />
     </p>
@@ -339,40 +335,40 @@
 	</tr>
 	</thead>
 	<tbody>
-	<!-- BEGIN header_info_scroll -->
-		<!-- IF header_info_scroll.HEADER_INFO_DB_FONT eq '' -->
+	{% for header_info_scroll in loops.header_info_scroll %}
+		{% if header_info_scroll.HEADER_INFO_DB_FONT eq '' %}
 		{{ lang('THUMBNAIL_FONT_DADABASE_ERROR_FOR_ID') }}{{ lang('COLON') }} {header_info_scroll.HEADER_INFO_ID} <br />
 		<!-- INCLUDECSS @orynider_customheadernfo/tituscbz.css -->
-		<!-- ELSE -->
+		{% else %}
 		<!-- INCLUDECSS @orynider_customheadernfo/{header_info_scroll.HEADER_INFO_DB_FONT}.css -->
-		<!-- ENDIF -->
+		{% endif %}
 		<tr>
 		    <td width="10%">{header_info_scroll.HEADER_INFO_EDIT}</td>
 			<td class="row1">
-			<!-- IF header_info_scroll.S_SIMPLE_DB_TEXT_ENABLED --><div style="background-image: url('{header_info_scroll.HEADER_INFO_IMAGE}');"><!-- ENDIF -->
-				<!-- IF header_info_scroll.S_HTML_MULTI_TEXT_ENABLED or header_info_scroll.S_SIMPLE_DB_TEXT_ENABLED -->
+			{% if header_info_scroll.S_SIMPLE_DB_TEXT_ENABLED %}<div style="background-image: url('{header_info_scroll.HEADER_INFO_IMAGE}');">{% endif %}
+				{% if header_info_scroll.S_HTML_MULTI_TEXT_ENABLED or header_info_scroll.S_SIMPLE_DB_TEXT_ENABLED %}
 							<div id="header_info_title" style="font-size: 11px; font-family: {header_info_scroll.HEADER_INFO_DB_FONT};">
 								<a href="{header_info_scroll.HEADER_INFO_URL}">
 								  <p>{header_info_scroll.HEADER_INFO_RANDDESC}</p>
 								</a>
 							</div>
 							<br />
-							<div id="header_info_title" style="float: <!-- IF S_CONTENT_DIRECTION eq 'ltr' -->left<!-- ELSE -->right<!-- ENDIF -->; font-weight: bold; font-size: 18px; color: #000000; font-family: {header_info_scroll.HEADER_INFO_DB_FONT};">
+							<div id="header_info_title" style="float: {% if S_CONTENT_DIRECTION eq 'ltr' %}left{% else %}right{% endif %}; font-weight: bold; font-size: 18px; color: #000000; font-family: {header_info_scroll.HEADER_INFO_DB_FONT};">
 								{header_info_scroll.HEADER_INFO_TITLE}
 							</div>
-				<!-- ELSE -->
-				<img src="<!-- IF S_THUMBNAIL -->{header_info_scroll.THUMBNAIL_URL}?info_id={header_info_scroll.HEADER_INFO_ID}&resize_width={header_info_scroll.HEADER_INFO_PIC_WIDTH}&resize_height={header_info_scroll.HEADER_INFO_PIC_HEIGHT}<!-- ELSE -->{header_info_scroll.HEADER_INFO_IMAGE} <!-- ENDIF -->" title="{{ lang('HEADER_INFO_URL_B') }}{{ lang('COLON') }} {header_info_scroll.HEADER_INFO_URL}" alt="" />
-				<!-- ENDIF -->
-				 <!-- IF header_info_scroll.S_SIMPLE_DB_TEXT_ENABLED --></div><!-- ENDIF -->
+				{% else %}
+				<img src="{% if S_THUMBNAIL %}{header_info_scroll.THUMBNAIL_URL}?info_id={header_info_scroll.HEADER_INFO_ID}&resize_width={header_info_scroll.HEADER_INFO_PIC_WIDTH}&resize_height={header_info_scroll.HEADER_INFO_PIC_HEIGHT}{% else %}{header_info_scroll.HEADER_INFO_IMAGE} {% endif %}" title="{{ lang('HEADER_INFO_URL_B') }}{{ lang('COLON') }} {header_info_scroll.HEADER_INFO_URL}" alt="" />
+				{% endif %}
+				 {% if header_info_scroll.S_SIMPLE_DB_TEXT_ENABLED %}</div>{% endif %}
 			</td>
             <td>{header_info_scroll.HEADER_INFO_NAME}</td>
 			<td class="actions"><a href="{header_info_scroll.U_EDIT}">{ICON_EDIT}</a> <a href="{header_info_scroll.U_DELETE}" data-ajax="row_delete">{ICON_DELETE}</a></td>
 		</tr>
-	<!-- BEGINELSE -->
+	{% else %}
 		<tr class="row3">
 			<td colspan="3">{{ lang('ACP_NO_BANNER') }}</td>
 		</tr>
-	<!-- END header_info_scroll -->
+	{% endfor %}
 	</tbody>
 	</table>
     <br />
@@ -381,4 +377,4 @@
 	</div>
 
 {% INCLUDEJS '@orynider_customheadernfo/jscolor.js' %}
-{% include 'overall_footer.html' %}
+{% INCLUDE 'overall_footer.html' %}

@@ -403,7 +403,7 @@ class admin_controller
 			$image = $this->request->variable('header_info_image', generate_board_url() . $custom_header_info_config['banners_dir'] . 'custom_header_bg.png');
 			$thumb_cache = $this->request->variable('thumb_cache', 0);
 			$src_path = str_replace(generate_board_url() . '/', $this->root_path, $image);
-			
+			print_r($this->request->variable('header_title_info_pixels', 18));
 			$pic_size = (@function_exists('gd_info') && (@count(@gd_info()) !== 0)) ? @GetImageSize($src_path) : array(0 => 458, 1 => 50);
 			$pic_width = (@function_exists('gd_info') && (@count(@gd_info()) !== 0)) ? $pic_size[0] : $this->request->variable('header_info_pic_width', 458);
 			$pic_height = (@function_exists('gd_info') && (@count(@gd_info()) !== 0)) ? $pic_size[1] : $this->request->variable('header_info_pic_height', 50);
@@ -449,11 +449,7 @@ class admin_controller
 				);
 
 				$sql = 'INSERT INTO ' . $this->custom_header_info_table . ' ' . $this->db->sql_build_array('INSERT', $sql_array);
-				//$this->db->sql_query($sql);
-				if (!($result = $this->db->sql_query($sql)))
-				{
-					$this->message_die(E_USER_ERROR, 'Couldnt query portal configuration', '', __LINE__, __FILE__, $sql);
-				}
+				$this->db->sql_query($sql);
 				trigger_error($this->language->lang('HEADER_INFO_ADDED') . adm_back_link($this->u_action));
 			}
 			else if (isset($is_name) && isset($is_url) && isset($is_image) && isset($is_font) && isset($edit) && ($edit_id !== 0))
@@ -489,7 +485,7 @@ class admin_controller
 				);
 
 				$sql = 'UPDATE ' . $this->custom_header_info_table . ' SET ' . $this->db->sql_build_array('UPDATE', $sql_array) . ' WHERE header_info_id = ' . $edit_id;
-								$this->db->sql_query($sql);
+				$this->db->sql_query($sql);
 				trigger_error($this->language->lang('HEADER_INFO_UDPATED') . adm_back_link($this->u_action));
 			}
 			else
@@ -504,11 +500,7 @@ class admin_controller
 			//Get Configuration i.e. $this->set_config('header_info_enable', $enabled);
 			$sql = "SELECT *
 				FROM " . $this->custom_header_info_config_table;
-			if ( !( $result = $this->db->sql_query($sql) ) )
-			{
-				$this->message_die(E_USER_ERROR, 'Couldnt query portal configuration', '', __LINE__, __FILE__, $sql);
-			}
-			
+			$result = $this->db->sql_query($sql);			
 			while ($row = $this->db->sql_fetchrow($result))
 			{
 				// Values for config
@@ -529,7 +521,7 @@ class admin_controller
 			$this->db->sql_freeresult($result);
 			if (!($new))
 			{
-				$this->message_die(E_USER_ERROR, $this->language->lang('COULDNT_GET') . ' ' . $this->ext_name . ' ' . $this->language->lang('CONFIG'), __FILE__, __LINE__, $sql);
+				trigger_error($this->language->lang('COULDNT_GET') . ' ' . $this->ext_name . ' ' . $this->language->lang('CONFIG'), E_USER_ERROR);
 			}				
 			$this->cache->put('custom_header_info_config', $new);
 			
@@ -851,8 +843,8 @@ class admin_controller
 	}
 
 	/**
-	 * This class is used for general pafiledb handling
-	 *
+	 * This class is used for extension configuration handling
+	 * (update or add)
 	 * @param unknown_type $config_name
 	 * @param unknown_type $config_value
 	 */
@@ -901,7 +893,7 @@ class admin_controller
 			$this->db->sql_freeresult($result);
 			if ( !($config) )
 			{
-				$this->message_die(E_USER_ERROR, $this->language->lang('COULDNT_GET') . ' ' . $this->ext_name . ' ' . $this->language->lang('CONFIG'), __FILE__, __LINE__, $sql);
+				trigger_error($this->language->lang('COULDNT_GET') . ' ' . $this->ext_name . ' ' . $this->language->lang('CONFIG'), E_USER_ERROR);
 			}			
 			$this->cache->put('custom_header_info_config', $config);
 			
@@ -909,138 +901,7 @@ class admin_controller
 		}
 	}
 
-	/**
-		; User error handling and logging in PHP;
-		; E_USER_ERROR      		- user-generated error message
-		; E_USER_WARNING    	- user-generated warning message
-		; E_USER_NOTICE     		- user-generated notice message
-		; E_USER_DEPRECATED - user-generated deprecation warnings 
-	 */
-	function message_die($msg_code, $msg_text = '', $msg_title = '', $err_line = '', $err_file = '', $sql = '')
-	{		
-		
-		// Do not display notices if we suppress them via @
-		if (error_reporting() == 0 && $errno != E_USER_ERROR && $errno != E_USER_WARNING && $errno != E_USER_NOTICE && $errno != E_USER_DEPRECATED)
-		{
-			return;
-		}	
-		
-		//
-		// Get SQL error if we are debugging. Do this as soon as possible to prevent
-		// subsequent queries from overwriting the status of sql_error()
-		//
-		if (DEBUG && ($msg_code == E_USER_NOTICE || $msg_code == E_USER_ERROR))
-		{	
-			if ( isset($sql) )
-			{
-				$sql_error = $this->db->sql_error($sql);
-				$sql_error['message'] = $sql_error['message'] ? $sql_error['message'] : '<br /><br />SQL : ' . $sql; 
-				$sql_error['code'] = $sql_error['code'] ? $sql_error['code'] : 0;
-			}
-			else
-			{
-				$sql_error = $this->db->sql_error_returned;
-				$sql_error['message'] = $this->db->sql_error_returned['message']; 
-				$sql_error['code'] = $this->db->sql_error_returned['code'];
-			}
-			
-			$debug_text = '';
-			
-			//Some code with harcoded language from function db::sql_error() and other from msg_handler() with some fixes here
-			// If error occurs in initiating the session we need to use a pre-defined language string
-			// This could happen if the connection could not be established for example (then we are not able to grab the default language)
-			if ( isset($sql_error['message']) )
-			{	
-				$message = 'SQL  ' . $this->language->lang('ERROR') . ' [ ' . $this->db->sql_layer . ' ]<br /><br />' . $sql_error['message'] . ' [' . $sql_error['code'] . ']';
-				
-				if (!empty($this->language->lang('SQL_ERROR_OCCURRED')))
-				{
-					$message .= '<br /><br />An sql error occurred while fetching this page. Please contact an administrator if this problem persists.';
-				}
-				else
-				{
-					if (!empty($this->config['board_contact']))
-					{
-						$message .= '<br /><br />' . sprintf($this->language->lang('SQL_ERROR_OCCURRED'), '<a href="mailto:' . $this->config['board_contact'] . '">', '</a>');
-					}
-					else
-					{
-						$message .= '<br /><br />' . sprintf($this->language->lang('SQL_ERROR_OCCURRED'), '', '');
-					}
-				}
-				$debug_text .= '<br /><br />SQL '  . $this->user->language->lang('ERROR') . ' ' . $this->language->lang('COLON') . ' ' . $sql_error['code'] . ' ' . $sql_error['message'];
-			}
-			
-			if ( isset($sql_store) )
-			{
-				$debug_text .= "<br /><br />$sql_store";
-			}
 
-			if ( isset($err_line) && isset($err_file) )
-			{
-				$debug_text .= '</br /><br />Line : ' . $err_line . '<br />File : ' . $err_file;
-			}
-		}
-		
-		switch($msg_code)
-		{
-			case E_USER_ERROR:
-				if ( $msg_title == '' )
-				{
-					$msg_title = $this->language->lang('GENERAL_ERROR'); 
-				}
-			break;
-
-			case E_USER_WARNING:
-				if ( $msg_text == '' )
-				{
-					$msg_text = $this->language->lang('GENERAL_ERROR');
-				}
-
-				if ( $msg_title == '' )
-				{
-					$msg_title = $this->language->lang('ERROR');
-				}
-			break;
-			
-			case E_USER_NOTICE:
-				if ( $msg_title == '' )
-				{
-					$msg_title = $this->language->lang('INFORMATION');
-				}
-			break;
-			
-			case E_USER_DEPRECATED:
-				if ($msg_text == '')
-				{
-					$msg_text = $this->language->lang('GENERAL_ERROR');
-				}
-
-				if ($msg_title == '')
-				{
-					$msg_title = 'phpBB' . $this->language->lang('COLON') . '<b>' . $this->language->lang('ERROR') . '</b>';
-				}
-			break;
-		}
-		
-		//
-		// Add on DEBUG info if we've enabled debug mode and this is an error. This
-		// prevents debug info being output for general messages should DEBUG be
-		// set TRUE by accident (preventing confusion for the end user!)
-		//
-		if ( DEBUG && ( $msg_code == E_USER_NOTICE || $msg_code == E_USER_ERROR ) )
-		{
-			if ( $debug_text != '' )
-			{
-				$msg_text = $msg_text . '<br /><br /><b><u>DEBUG MODE</u></b> ' . $debug_text;
-			}
-		}
-		
-		$msg_text = (!empty($user->lang[$msg_text])) ? $user->lang[$msg_text] : $msg_text;
-		$msg_title = (!empty($user->lang[$msg_title])) ? $user->lang[$msg_title] : $msg_title;
-		
-		trigger_error(sprintf($msg_title, $err_file, $err_line), $msg_code);
-	}
 	
 	/**
 	 * Not Implemented
@@ -2175,7 +2036,7 @@ class admin_controller
 		$file = $this->root_path . 'language/' . $country_dir . '/' . $pack_file;
 		if (($pack_file != 'lang') && ($pack_file != 'custom') && !file_exists($file))
 		{
-			$this->message_die(E_USER_NOTICE, 'FILE_NOT_EXISTS' . $file, '', __LINE__, __FILE__, $packs);
+			trigger_error(sprintf($this->language->lang('FILE_NOT_EXISTS') . ' ' . $file, __FILE__, __LINE__), E_USER_ERROR);
 		}
 
 		// process first admin then standard keys
@@ -2223,7 +2084,7 @@ class admin_controller
 					$entries['value'][$key_main][$key_sub][$country_dir] = $value;
 					$entries['original'][$key_main][$key_sub][$country_dir] = $original;
 					$entries['admin'][$key_main][$key_sub] = $lang_extend_admin;
-					// status : 0 = original, 1 = modified, 2 = added
+					/* status : 0 = original, 1 = modified, 2 = added */
 					$entries['status'][$key_main][$key_sub][$country_dir] = (!$custom ? 0 : (($pack != $pack_file) ? 1 : 2));
 				}
 			}
@@ -2237,5 +2098,3 @@ class admin_controller
 	}			
 
 }
-
-?>

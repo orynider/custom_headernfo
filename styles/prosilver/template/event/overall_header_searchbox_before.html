@@ -1,14 +1,16 @@
 {% if S_HEADER_INFO_POSITION2 %}
-	<div id="info-scroll" class="info-scroll rightside responsive-hide">
+	<div id="info-scroll" class="info-scroll responsive-hide">
       <ul class="topiclist">
          <li class="header">
             <dl class="row-item">
-            <dt><i class="fa fa-thumbs-up" aria-hidden="true"></i> {{ lang('HEADER_INFO_SCROLL_INDEX') }}</dt>
-	       <dd></dd>
+            <dt>
+			<i class="fa fa-thumbs-up" aria-hidden="true"></i> 
+			{{ lang('HEADER_INFO_SCROLL_INDEX') }}
+			</dt>
 	      </dl>
          </li>
       </ul>
-	<div style="position: relative; float: right; padding-right: 20px; margin-top: -20px; height: 17px;">
+	<div style="position: relative; float:left; padding-right: 3px; margin-top: -20px; height:17px;">
 	<a href="#" title="{{ lang('PREVIOUS_SCROLL') }}" id="tickerb-previous">
 		<img src="{BOARD_URL}ext/orynider/customheadernfo/styles/prosilver/theme/images/rewind.png" width="16" height="16" alt="{{ lang('PREVIOUS_SCROLL') }}" />
 	</a> 
@@ -22,19 +24,19 @@
 		<img src="{BOARD_URL}ext/orynider/customheadernfo/styles/prosilver/theme/images/control_play.png" width="16" height="16" alt="{{ lang('START_SCROLL') }}" />
 	</a>
 	</div>
-<!-- IF HEADER_INFO_IS_COLLAPSIBLE -->
-<a href="{U_HEADER_INFO_COLLAPSE_URL}" class="collapse-btn collapse-<!-- IF S_HEADER_INFO_HIDDEN -->show<!-- ELSE -->hide<!-- ENDIF -->"
+{% if HEADER_INFO_IS_COLLAPSIBLE %}
+<a href="{U_HEADER_INFO_COLLAPSE_URL}" class="collapse-btn collapse-{% if S_HEADER_INFO_HIDDEN %}show{% else %}hide{% endif %}"
 		data-hidden="{S_HEADER_INFO_HIDDEN}"
 		data-ajax="phpbb_collapse"
 		data-overlay="true"
 		title="{{ lang('COLLAPSIBLE_CATEGORIES_TITLE') }}">
 </a>
-<!-- ENDIF -->
+{% endif %}
 	<div class="vertical-tickerb">   
 	    <ul id="vertical-tickerb" class="topiclist forums">
-			<!-- BEGIN header_info_scroll -->
+			{% for header_info_scroll in loops.header_info_scroll %}
 	            <li class="row">
-						<!-- IF header_info_scroll.S_HTML_MULTI_TEXT_ENABLED or header_info_scroll.S_SIMPLE_DB_TEXT_ENABLED -->
+						{% if header_info_scroll.S_HTML_MULTI_TEXT_ENABLED or header_info_scroll.S_SIMPLE_DB_TEXT_ENABLED %}
 						<div style="max-width: {header_info_scroll.HEADER_INFO_PIC_WIDTH}; max-height: {header_info_scroll.HEADER_INFO_PIC_HEIGHT}; border-radius: {header_info_scroll.HEADER_INFO_CORNERS};">
 							<dt id="header_info_title" style="font-color: {header_info_scroll.HEADER_INFO_DESC_COLOUR}; font-size: 11px; font-family: {header_info_scroll.HEADER_INFO_DB_FONT};">
 								<a href="{header_info_scroll.HEADER_INFO_URL}">
@@ -42,21 +44,21 @@
 								</a>
 							</dt>
 							<br />
-							<div id="header_info_title" style="font-color: {header_info_scroll.HEADER_INFO_TITLE_COLOUR}; float: <!-- IF S_CONTENT_DIRECTION neq 'rtl' -->left<!-- ELSE -->right<!-- ENDIF -->; font-weight: bold; font-size: 18px; color: #000000; font-family: {header_info_scroll.HEADER_INFO_DB_FONT};">
+							<div id="header_info_title" style="font-color: {header_info_scroll.HEADER_INFO_TITLE_COLOUR}; float: {% if S_CONTENT_DIRECTION neq 'rtl' %}left{%  else %}right{% endif %}; font-weight: bold; font-size: 18px; color: #000000; font-family: {header_info_scroll.HEADER_INFO_DB_FONT};">
 								{header_info_scroll.HEADER_INFO_TITLE}
 							</div>
 						</div>
-						<!-- ELSE -->
-					<div style="text-align: center;">
+						{% else %}
+					<div style="text-align: left;">
 	                    <a href="{header_info_scroll.HEADER_INFO_URL}">
-						<img src="<!-- IF S_THUMBNAIL -->{header_info_scroll.THUMBNAIL_URL}?info_id={header_info_scroll.HEADER_INFO_ID}<!-- ELSE -->{header_info_scroll.HEADER_INFO_IMAGE} <!-- ENDIF -->" title="{header_info_scroll.HEADER_INFO_NAME}" alt="{header_info_scroll.HEADER_INFO_URL}" />
+						<img src="{% if S_THUMBNAIL %}{header_info_scroll.THUMBNAIL_URL}?info_id={header_info_scroll.HEADER_INFO_ID}{%  else %}{header_info_scroll.HEADER_INFO_IMAGE} {% endif %}" title="{header_info_scroll.HEADER_INFO_NAME}" alt="{header_info_scroll.HEADER_INFO_URL}" />
 						</a>
 					</div>
-						<!-- ENDIF -->
+						{% endif %}
 			    </li>
-		    <!-- BEGINELSE -->
+		    {% else %}
 			<span class="center-inforoll">{{ lang('HEADER_INFO_SCROLL_NOTHING') }}</span>
-		    <!-- END header_info_scroll --> 
+		    {% endfor %} 
 		</ul>
 	</div> 
 	</div>

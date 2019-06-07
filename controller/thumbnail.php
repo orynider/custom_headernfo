@@ -320,8 +320,8 @@ class thumbnail
 				$header_info_image = str_replace('prosilver', $this->user_style, $header_info_image);
 			}
 		}
-		
-		$src_path = str_replace($phpbb_url, $this->root_path, $header_info_image);
+		/* http://localhost/Rhea/ext/orynider/customheadernfo/styles/prosilver/theme/images/banners/custom_header_bg.png */
+		$src_path = str_replace(array('localhost' . $this->config['script_path'], $phpbb_url), $this->root_path, $header_info_image);
 		$pic_filename = basename($src_path);
 		$pic_filetype = strtolower(substr($pic_filename, strlen($pic_filename) - 4, 4)); 
 		$pic_ext = str_replace('jpg', 'jpeg', substr(strrchr($pic_filename, '.'), 1));
@@ -720,11 +720,10 @@ class thumbnail
 			$this->db->sql_freeresult($result);
 			
 			if (empty($config))
-			{		
-				msg_handler(E_USER_ERROR, $this->language->lang('COULDNT_GET') . ' ' . $this->ext_name . ' ' . $this->language->lang('CONFIG'), __FILE__, __LINE__);
+			{
+				trigger_error($this->language->lang('COULDNT_GET') . ' ' . $this->ext_name . ' ' . $this->language->lang('CONFIG'), E_USER_ERROR);
 			}			
 			$this->cache->put('custom_header_info_config', $config);
-			
 			return($config);
 		}
 	}
@@ -1819,7 +1818,4 @@ class thumbnail
 	{      
 		return preg_match('/' . $pattern . '/i', $string, $matches);
 	}
-	
-// THE END
 }
-?>
