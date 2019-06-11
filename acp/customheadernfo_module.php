@@ -49,21 +49,7 @@ class customheadernfo_module
 			break;
 			
 			/* Not used atm
-			//To do: We select custom header informations for each forums
-			case 'forums':
-				$this->page_title = $user->lang['ACP_MANAGE_FORUMS'];
-				$this->tpl_name = 'acp_custom_header_forums';
-				$admin_controller->manage_forums_header();
-			break;
-			*/
-			
-			/* Not used atm	
-			//To do: We select custom header informations for each pages			
-			case 'pages':
-				$this->page_title = $user->lang['ACP_MANAGE_PAGES'];
-				$this->tpl_name = 'acp_custom_header_pages';
-				$admin_controller->manage_pages_header();
-			break;
+			//To do: We split config in two
 		}
 		*/	
 		}

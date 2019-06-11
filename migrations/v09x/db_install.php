@@ -43,9 +43,9 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 				$this->table_prefix . 'custom_header_info'	=> array(
 					'COLUMNS'	=> array(
 						'header_info_id'				=> array('UINT:8', null, 'auto_increment'),
-						'header_info_name'			=> array('VCHAR:255', ''),
+						'header_info_name'		=> array('VCHAR:255', ''),
 						'header_info_desc'			=> array('MTEXT_UNI', ''),
-						'header_info_longdesc'		=> array('MTEXT_UNI', ''),
+						'header_info_longdesc'	=> array('MTEXT_UNI', ''),
 						'header_info_use_extdesc'	=> array('TINT:2', 0),
 						'header_info_title_colour'	=> array('VCHAR:8', '#000000'),
 						'header_info_desc_colour'	=> array('VCHAR:8', '#12A3EB'),
@@ -54,37 +54,27 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 						'header_info_type'				=> array('VCHAR:190', ''),
 						'header_info_url'				=> array('MTEXT_UNI', ''),
 						'header_info_image'	    	=> array('MTEXT_UNI', ''),
-						'header_info_image_link'		=> array('TINT:1', 0),
+						'header_info_image_link'	=> array('TINT:1', 0),
 						'header_info_banner_radius' =>  array('INT:8', 10),
-						'header_info_title_pixels'		=>  array('INT:8', 14),
+						'header_info_title_pixels'	=>  array('INT:8', 14),
 						'header_info_desc_pixels'	=>  array('INT:8', 10),
-						'header_info_pixels'			=>  array('INT:8', 12),
-						'header_info_left'				=> array('TINT:2', 0),
+						'header_info_pixels'		=>  array('INT:8', 12),
+						'header_info_left'			=> array('TINT:2', 0),
 						'header_info_right'			=> array('TINT:2', 0),
-						'header_info_license'			=> array('MTEXT_UNI', ''),
+						'header_info_license'		=> array('MTEXT_UNI', ''),
 						'header_info_time'			=> array('UINT:8', 0),
-						'header_info_last'				=> array('INT:50', 0),
-						'header_info_pic_width'	    => array('INT:8', 458),
+						'header_info_last'			=> array('INT:50', 0),
+						'header_info_pic_width'	=> array('INT:8', 458),
 						'header_info_pic_height'	=> array('INT:8', 50),
-						'header_info_pin'				=> array('TINT:2', 0),
-						'header_info_disable'			=> array('TINT:1', 0),
+						'header_info_pin'			=> array('TINT:2', 0),
+						'header_info_disable'	=> array('TINT:1', 0),
 						'forum_id' 						=> array('INT:8', 0),
 						'user_id'							=> array('INT:8', 0),
-						'bbcode_bitfield'				=> array('VCHAR:255', ''),
-						'bbcode_uid'						=> array('VCHAR:8', ''),
-						'bbcode_options'				=> array('VCHAR:255', ''),
+						'bbcode_bitfield'			=> array('VCHAR:255', ''),
+						'bbcode_uid'					=> array('VCHAR:8', ''),
+						'bbcode_options'			=> array('VCHAR:255', ''),
 					),
 					'PRIMARY_KEY'	=> 'header_info_id',
-				),
-				// --------------------------------------------------------
-				// Table structure for table 'phpbb_custom_header_info_config'
-				$this->table_prefix . 'custom_header_info_config' => array(
-					'COLUMNS' => array(
-						'config_name'	=> array('VCHAR:255', ''),
-						'config_value'	=> array('VCHAR_UNI', ''),
-						'is_dynamic'	=> array('BOOL', 0),
-					),
-					'PRIMARY_KEY'	=> 'config_name',
 				),
 			),
 		);
@@ -142,8 +132,6 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 					array(
 						'module_basename' => '\orynider\customheadernfo\acp\customheadernfo_module',
 						'modes' => array('config', 
-											//'forums', 
-											//'pages'
 					),
 				),
 			)),
@@ -161,11 +149,25 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 		return array(
 			'drop_tables'	=> array(
 				$this->table_prefix . 'custom_header_info',
-				$this->table_prefix . 'custom_header_info_config',
 			),
 		);
 	}
-
+	
+	/**
+	* Reverts data by returning a list of instructions to be executed
+	*
+	* @return array Array of data instructions that will be performed on revert
+	* 	NOTE: calls to tools (such as config.add) are automatically reverted when
+	* 		possible, so you should not attempt to revert those, this is mostly for
+	* 		otherwise unrevertable calls (custom functions for example)
+	*/
+	public function revert_data()
+	{
+		return array(
+			array('custom', array(array($this, 'clean_config_data'))),
+		);
+	}
+	
 	/**
 	 * Custom function query permission roles
 	 *
@@ -185,24 +187,21 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 	}
 
 	/**
-	* install config values. 	
-	*/	
+	* install config values.
+	*
+	* @param  String $key       The configuration option's name
+	* @param  bool   $use_cache Whether this variable should be cached or if it
+	*                           changes too frequently to be efficiently cached
+	* @return true
+	*/
 	public function install_config()
 	{
 		// Read out config values
-		$customheadernfo_config = $this->config_values();
-		$this->custom_header_info_config_table = $this->table_prefix . 'custom_header_info_config';
 		foreach (self::$configs as $key => $new_value)
 		{
 			// Read out old config db values
-			$value = isset($customheadernfo_config[$key]) ? $customheadernfo_config[$key] : $new_value;
-		
-			$sql = "";
-			if ($value !== false)
-			{
-				$sql .= " AND config_value = '" . $this->db->sql_escape($value) . "'";
-			}
-		
+			$old_value = isset($this->config[$key]) ? $this->config[$key] : false;
+			
 			if (isset(self::$is_dynamic[$key]))
 			{
 				$use_cache  = true;
@@ -210,49 +209,42 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 			else
 			{
 				$use_cache  = false;
-			}
-			// Read out config values
-			if (isset($customheadernfo_config[$key]))
-			{
-				$sql = 'UPDATE ' . $this->custom_header_info_config_table . "
-					SET config_value = '" . $this->db->sql_escape($value) . "'
-					WHERE config_name = '" . $this->db->sql_escape($key) . "'";
-			}
-			else
-			{
-				$sql = 'INSERT INTO ' . $this->custom_header_info_config_table . ' ' . $this->db->sql_build_array('INSERT', array(
-					'config_name'	=> $key,
-					'config_value'	=> $value,
-					'is_dynamic'	=> ($use_cache) ? 0 : 1));
-			}
-			$this->db->sql_query($sql);
-			$this->customheadernfo_config[$key] = $customheadernfo_config[$key] = $value;
+			}			
+			//This if is set does update or sets the config entry 
+			$this->config->set_atomic($key, $old_value, $new_value, $use_cache);
 		}
 		return true;
 	}
-
+	
 	/**
-	* Obtain customheadernfo config values
+	*
+	* Cleans the customheadernfo configuration options
+	*
+	* @param  String $key       The configuration option's name
+	* @param  bool   $use_cache Whether this variable should be cached or if it
+	*                           changes too frequently to be efficiently cached
+	* @return true
 	*/
-	public function config_values()
-	{	
-		if ($this->db_tools->sql_table_exists($this->table_prefix . 'custom_header_info_config'))
-		{
-			$sql = 'SELECT *
-				FROM ' . $this->table_prefix . 'custom_header_info_config';
-			$result = $this->db->sql_query($sql);
-			$row = $this->db->sql_fetchrow($result);
-			$this->db->sql_freeresult($result);
-			if (!empty($row))
-			{
-				$customheadernfo_config[$row['config_name']] = $row['config_value'];
-				return $customheadernfo_config;
+	public function clean_config_data()
+	{
+		// Read out config values
+		foreach (self::$configs as $key => $value)
+		{	
+			$sql = "";			
+			
+			//This also unset's $this->config[$key]
+			$this->config->delete($key);
+			
+			// Read out config values and check if the entry is deleted and unset
+			if (isset($this->config[$key]))
+			{		
+				// If we reach here then we make sure entries are removed from database
+				$sql = 'DELETE FROM ' . CONFIG_TABLE . "
+					WHERE config_name = '" . $this->db->sql_escape($key) . "'";
+				$this->db->sql_query($sql);
 			}
 		}
-		else
-		{
-			return array();
-		}
+		return true;
 	}
 	
 	static public $is_dynamic = array(
@@ -269,33 +261,33 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 		// Add configs
 		'header_info_enable' => '0',  //Pos 0
 		// Add positions to configuration
-		'banner_position1' => '0', //Pos 1
-		'banner_position2' => '0', //Pos 2
-		'banner_position3' => '0', //Pos 3
-		'banner_position' => '1', //Pos 4 (Default)
+		'header_info_banner_position1' => '0', //Pos 1
+		'header_info_banner_position2' => '0', //Pos 2
+		'header_info_banner_position3' => '0', //Pos 3
+		'header_info_banner_position' => '1', //Pos 4 (Default)
 
-		'module_name' => 'Custom Header Info', // settings_dbname
-		'wysiwyg_path' => 'assets/javascript/',
-		'banners_dir' => 'ext/orynider/customheadernfo/styles/prosilver/theme/images/banners/',
-		'backgrounds_dir' => 'ext/orynider/customheadernfo/styles/prosilver/theme/images/backgrounds/',
-		'thumb_cache' => '1',
+		'header_info_module_name' => 'Custom Header Info', // settings_dbname
+		'header_info_wysiwyg_path' => 'assets/javascript/',
+		'header_info_banners_dir' => 'ext/orynider/customheadernfo/styles/prosilver/theme/images/banners/',
+		'header_info_backgrounds_dir' => 'ext/orynider/customheadernfo/styles/prosilver/theme/images/backgrounds/',
+		'header_info_thumb_cache' => '1',
 
   		 //new items added 01.01.2019 by orynider for all ticker rows
 
-		'row_height' =>'120',	/* Height of each ticker row in PX. Should be uniform. */
-		'speed' => '800',		/* Speed of transition animation in milliseconds */
-		'interval' => '4000',		/* Time between change in milliseconds */
-		'show_amount' => '15',		/* Integer for how many items to query and display at once. Resizes height accordingly (OPTIONAL) */
-		'mousestop' => '1',	/* If set to true, the ticker will stop on mouseover */
-		'direction' => 'up',		/* Direction that list will scroll */
+		'header_info_row_height' =>'120',	/* Height of each ticker row in PX. Should be uniform. */
+		'header_info_speed' => '800',		/* Speed of transition animation in milliseconds */
+		'header_info_interval' => '4000',		/* Time between change in milliseconds */
+		'header_info_show_amount' => '15',		/* Integer for how many items to query and display at once. Resizes height accordingly (OPTIONAL) */
+		'header_info_mousestop' => '1',	/* If set to true, the ticker will stop on mouseover */
+		'header_info_direction' => 'up',		/* Direction that list will scroll */
 
-		'use_watermark' => '1',
-		'disp_watermark_at' => '3',
+		'header_info_use_watermark' => '1',
+		'header_info_disp_watermark_at' => '3',
 
 		//Version
 		'header_info_version'		=> '1.0.0',
 	);
-
+	
 	/**
 	 * Custom function to add sample data to the database
 	 *
@@ -323,9 +315,9 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 				'header_info_font'				=>  'tituscbz.ttf',
 				'header_info_type'				=> 'simple_bg_logo',
 				'header_info_image'			=> generate_board_url() . '/ext/orynider/customheadernfo/styles/prosilver/theme/images/banners/under_construction.gif', //str_replace('prosilver' 'all', $data_files['header_info_image'])
-				'header_info_image_link'		=> 0,	
+				'header_info_image_link'	=> 0,	
 				'header_info_banner_radius' => '10',
-				'header_info_title_pixels'		=> '12',
+				'header_info_title_pixels'	=> '12',
 				'header_info_desc_pixels'	=> '10',
 				'header_info_pixels'			=> '10',
 				'header_info_left'				=> 0,
@@ -335,11 +327,11 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 				'header_info_time'				=> time(),
 				'header_info_last'				=> 0,
 				'header_info_pin'				=> '0',
-				'header_info_pic_width'		=> '458',
-				'header_info_pic_height'		=> '193',
-				'header_info_disable'			=> 0,
+				'header_info_pic_width'	=> '458',
+				'header_info_pic_height'	=> '193',
+				'header_info_disable'		=> 0,
 				'forum_id'							=> 1,
-				'user_id'							=> $user->data['user_id'],
+				'user_id'								=> $user->data['user_id'],
 				'bbcode_bitfield'				=> 'QQ==',
 				'bbcode_uid'						=> '2p5lkzzx',
 				'bbcode_options'				=> '',
@@ -349,16 +341,16 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 				'header_info_name'			=> 'Test Header Info #1',
 				'header_info_desc'				=> 'Test Header Info for the Custom Header Info extension.',
 				'header_info_longdesc'		=> 'Sample text description: Test text for the Custom Header Info extension.',
-				'header_info_use_extdesc'	=> 0,
+				'header_info_use_extdesc' => 0,
 				'header_info_title_colour'	=> '#000000',
 				'header_info_desc_colour'	=> '#0000ff',
 				'header_info_dir'				=> 'movies', //ext/orynider/customheadernfo/language/movies/
 				'header_info_font'				=>  'tituscbz.ttf',
 				'header_info_type'				=> 'language',
 				'header_info_image'			=> generate_board_url() . '/ext/orynider/customheadernfo/styles/prosilver/theme/images/banners/custom_header_bg.png', //str_replace('prosilver' 'all', $data_files['header_info_image'])
-				'header_info_image_link'		=> 0,	
+				'header_info_image_link'	=> 0,	
 				'header_info_banner_radius' => '10',
-				'header_info_title_pixels'		=> '12',
+				'header_info_title_pixels'	=> '12',
 				'header_info_desc_pixels'	=> '10',
 				'header_info_pixels'			=> '10',
 				'header_info_left'				=> 0,
@@ -368,53 +360,53 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 				'header_info_time'				=> time(),
 				'header_info_last'				=> 0,
 				'header_info_pin'				=> '1',
-				'header_info_pic_width'		=> '458',
-				'header_info_pic_height'		=> '70',
-				'header_info_disable'			=> 0,
+				'header_info_pic_width'	=> '458',
+				'header_info_pic_height'	=> '70',
+				'header_info_disable'		=> 0,
 				'forum_id'							=> 0,
-				'user_id'							=> $user->data['user_id'],
+				'user_id'								=> $user->data['user_id'],
 				'bbcode_bitfield'				=> 'QQ==',
 				'bbcode_uid'						=> '2p5lkzzx',
 				'bbcode_options'				=> '',
 			),
 			array(
-				'header_info_id'					=> 3,
-				'header_info_name'			=> 'Test Header Info #2',
-				'header_info_desc'				=> 'Test Header Info text for the Custom Header Info extension.',
-				'header_info_longdesc'		=> 'Sample text description: Test text for the Custom Header Info extension.',
-				'header_info_use_extdesc'	=> 0,
+				'header_info_id'				=> 3,
+				'header_info_name'		=> 'Test Header Info #2',
+				'header_info_desc'			=> 'Test Header Info text for the Custom Header Info extension.',
+				'header_info_longdesc'	=> 'Sample text description: Test text for the Custom Header Info extension.',
+				'header_info_use_extdesc' => 0,
 				'header_info_title_colour'	=> '#000000',
 				'header_info_desc_colour'	=> '#066c9f',
 				'header_info_dir'				=> 'wlcodex', //ext/orynider/customheadernfo/language/wlcodex/
 				'header_info_font'				=>  'tituscbz.ttf',
 				'header_info_type'				=> 'language',
 				'header_info_image'			=> generate_board_url() . '/ext/orynider/customheadernfo/styles/prosilver/theme/images/banners/linen.png', //str_replace('prosilver' 'all', $data_files['header_info_image'])
-				'header_info_image_link'		=> 0,	
+				'header_info_image_link'	=> 0,	
 				'header_info_banner_radius' => 0,
-				'header_info_title_pixels'		=> '18',
+				'header_info_title_pixels'	=> '18',
 				'header_info_desc_pixels'	=> '10',
 				'header_info_pixels'			=> '10',
 				'header_info_left'				=> 0,
-				'header_info_right'				=> 0,
-				'header_info_url'				=> 'http://mxpcms.sourceforge.net/',
-				'header_info_license'			=> 'GNU GPL-2',
-				'header_info_time'				=> time(),
-				'header_info_last'				=> 0,
-				'header_info_pin'				=> 0,
-				'header_info_pic_width'		=> '458',
-				'header_info_pic_height'		=> '70',
-				'header_info_disable'			=> 0,
+				'header_info_right'			=> 0,
+				'header_info_url'			=> 'http://mxpcms.sourceforge.net/',
+				'header_info_license'		=> 'GNU GPL-2',
+				'header_info_time'			=> time(),
+				'header_info_last'			=> 0,
+				'header_info_pin'			=> 0,
+				'header_info_pic_width'	=> '458',
+				'header_info_pic_height'	=> '70',
+				'header_info_disable'		=> 0,
 				'forum_id'							=> 0,
-				'user_id'							=> $user->data['user_id'],
+				'user_id'								=> $user->data['user_id'],
 				'bbcode_bitfield'				=> 'QQ==',
 				'bbcode_uid'						=> '2p5lkzzx',
 				'bbcode_options'				=> '',
 			),
 			array(
-				'header_info_id'					=> 4,
-				'header_info_name'			=> 'Demo Prototype Header Dimensions',
-				'header_info_desc'				=> 'Test Header Info Prototype for the Custom Header Info extension.',
-				'header_info_longdesc'		=> 'Sample text description: Test text for the Custom Header Info\'s extension Demo Prototype.',
+				'header_info_id'				=> 4,
+				'header_info_name'		=> 'Demo Prototype Header Dimensions',
+				'header_info_desc'			=> 'Test Header Info Prototype for the Custom Header Info extension.',
+				'header_info_longdesc'	=> 'Sample text description: Test text for the Custom Header Info\'s extension Demo Prototype.',
 				'header_info_use_extdesc'	=> 0,
 				'header_info_title_colour'	=> '#000000',
 				'header_info_desc_colour'	=> '#066c9f',
@@ -422,31 +414,31 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 				'header_info_font'				=>  'tituscbz.ttf',
 				'header_info_type'				=> 'language',
 				'header_info_image'			=> generate_board_url() . '/ext/orynider/customheadernfo/styles/prosilver/theme/images/banners/signature_bg.png', //str_replace('prosilver' 'all', $data_files['header_info_image'])
-				'header_info_image_link'		=> 0,
+				'header_info_image_link'	=> 0,
 				'header_info_banner_radius' => '8',
-				'header_info_title_pixels'		=> '18',
+				'header_info_title_pixels'	=> '18',
 				'header_info_desc_pixels'	=> '10',
-				'header_info_pixels'			=> '10',
-				'header_info_left'				=> 0,
-				'header_info_right'				=> 0,
-				'header_info_url'				=> 'http://mxpcms.sourceforge.net/',
-				'header_info_license'			=> 'GNU GPL-2',
-				'header_info_time'				=> time(),
-				'header_info_last'				=> 1,
-				'header_info_pin'				=> 1,
-				'header_info_pic_width'		=> '500',
-				'header_info_pic_height'		=> '50',
-				'header_info_disable'			=> 0,
+				'header_info_pixels'		=> '10',
+				'header_info_left'			=> 0,
+				'header_info_right'			=> 0,
+				'header_info_url'			=> 'http://mxpcms.sourceforge.net/',
+				'header_info_license'		=> 'GNU GPL-2',
+				'header_info_time'			=> time(),
+				'header_info_last'			=> 1,
+				'header_info_pin'			=> 1,
+				'header_info_pic_width'	=> '500',
+				'header_info_pic_height'	=> '50',
+				'header_info_disable'		=> 0,
 				'forum_id'							=> 0,
-				'user_id'							=> $user->data['user_id'],
+				'user_id'								=> $user->data['user_id'],
 				'bbcode_bitfield'				=> 'QQ==',
 				'bbcode_uid'						=> '2p5lkzzx',
 				'bbcode_options'				=> '',
 			),
 			array(
-				'header_info_id'					=> 5,
-				'header_info_name'			=> 'Test Header Info #4',
-				'header_info_desc'				=> 'Test Header Info for the Custom Header Info extension.',
+				'header_info_id'				=> 5,
+				'header_info_name'		=> 'Test Header Info #4',
+				'header_info_desc'			=> 'Test Header Info for the Custom Header Info extension.',
 				'header_info_longdesc'		=> 'Sample text description: Test text for the Custom Header Info extension.',
 				'header_info_use_extdesc'	=> 0,
 				'header_info_title_colour'	=> '#000000',
@@ -455,9 +447,9 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 				'header_info_font'				=>  'tituscbz.ttf',
 				'header_info_type'				=> 'language',
 				'header_info_image'			=> generate_board_url() . '/ext/orynider/customheadernfo/styles/prosilver/theme/images/banners/custom_header_bg.png', //str_replace('prosilver' 'all', $data_files['header_info_image'])
-				'header_info_image_link'		=> 0,	
+				'header_info_image_link'	=> 0,	
 				'header_info_banner_radius' => '10',
-				'header_info_title_pixels'		=> '12',
+				'header_info_title_pixels'	=> '12',
 				'header_info_desc_pixels'	=> '10',
 				'header_info_pixels'			=> '10',
 				'header_info_left'				=> 0,
@@ -467,11 +459,11 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 				'header_info_time'				=> time(),
 				'header_info_last'				=> 0,
 				'header_info_pin'				=> '1',
-				'header_info_pic_width'		=> '458',
-				'header_info_pic_height'		=> '70',
-				'header_info_disable'			=> 0,
+				'header_info_pic_width'	=> '458',
+				'header_info_pic_height'	=> '70',
+				'header_info_disable'		=> 0,
 				'forum_id'							=> 0,
-				'user_id'							=> $user->data['user_id'],
+				'user_id'								=> $user->data['user_id'],
 				'bbcode_bitfield'				=> 'QQ==',
 				'bbcode_uid'						=> '2p5lkzzx',
 				'bbcode_options'				=> '',
@@ -490,7 +482,7 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 				'header_info_image'			=> generate_board_url() . '/ext/orynider/customheadernfo/styles/prosilver/theme/images/banners/custom_header_bg.png', //str_replace('prosilver' 'all', $data_files['header_info_image'])
 				'header_info_image_link'	=> 0,	
 				'header_info_banner_radius' => '10',
-				'header_info_title_pixels'		=> '12',
+				'header_info_title_pixels'	=> '12',
 				'header_info_desc_pixels'	=> '10',
 				'header_info_pixels'			=> '10',
 				'header_info_left'				=> 0,
@@ -500,11 +492,11 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 				'header_info_time'				=> time(),
 				'header_info_last'				=> 0,
 				'header_info_pin'				=> '1',
-				'header_info_pic_width'		=> '458',
-				'header_info_pic_height'		=> '70',
-				'header_info_disable'			=> 0,
+				'header_info_pic_width'	=> '458',
+				'header_info_pic_height'	=> '70',
+				'header_info_disable'		=> 0,
 				'forum_id'							=> 0,
-				'user_id'							=> $user->data['user_id'],
+				'user_id'								=> $user->data['user_id'],
 				'bbcode_bitfield'				=> 'QQ==',
 				'bbcode_uid'						=> '2p5lkzzx',
 				'bbcode_options'				=> '',

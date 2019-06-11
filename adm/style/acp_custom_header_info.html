@@ -10,8 +10,8 @@
   <fieldset>
 	{% if MODULE_NAME %}
         <dl>
-				<dt><label for="module_name">{{ lang('MODULE_NAME') }}</label><br /><span class="text medium">{{ lang('MODULE_NAME_EXPLAIN') }}</span></dt>
-				<dd><input type="text" size="40" id="module_name" name="module_name" value="{MODULE_NAME}" /></dd>
+				<dt><label for="header_info_module_name">{{ lang('MODULE_NAME') }}</label><br /><span class="text medium">{{ lang('MODULE_NAME_EXPLAIN') }}</span></dt>
+				<dd><input type="text" size="40" id="header_info_module_name" name="header_info_module_name" value="{MODULE_NAME}" /></dd>
 		</dl>
 	{% endif %}
 	{% if HEADER_INFOVERSION %}
@@ -21,149 +21,149 @@
 		</dl>
 	{% endif %}
 		<dl>
-			<dt><label for="row_height">{{ lang('ROW_HEIGHT') }}{{ lang('COLON') }}</label><br /><span class="text medium">{{ lang('ROW_HEIGHT_EXPLAIN') }}</span></dt>
-			<dd><input name="row_height" type="number" id="row_height" value="{{ ROW_HEIGHT }}" min="48" max="1024" /> {{ lang('PIXELS') }}</dd>
+			<dt><label for="header_info_row_height">{{ lang('ROW_HEIGHT') }}{{ lang('COLON') }}</label><br /><span class="text medium">{{ lang('ROW_HEIGHT_EXPLAIN') }}</span></dt>
+			<dd><input name="header_info_row_height" type="number" id="header_info_row_height" value="{ROW_HEIGHT}" min="48" max="1024" /> {{ lang('PIXELS') }}</dd>
 		</dl>
 		<dl>
-			<dt><label for="speed">{{ lang('SPEED') }}{{ lang('COLON') }}</label><br /><span class="text medium">{{ lang('SPEED_EXPLAIN') }}</span></dt>
-			<dd><input name="speed" type="number" id="speed" value="{{ SPEED }}" min="100" max="999" /> {{ lang('PIXELS') }}</dd>
+			<dt><label for="header_info_speed">{{ lang('SPEED') }}{{ lang('COLON') }}</label><br /><span class="text medium">{{ lang('SPEED_EXPLAIN') }}</span></dt>
+			<dd><input name="header_info_speed" type="number" id="speed" value="{SPEED}" min="100" max="999" /> {{ lang('PIXELS') }}</dd>
 		</dl>
 		<dl>
-			<dt><label for="interval">{{ lang('INTERVAL') }}{{ lang('COLON') }}</label><br /><span class="text medium">{{ lang('INTERVAL_EXPLAIN') }}</span></dt>
-			<dd><input name="interval" type="number" id="interval" value="{{ INTERVAL }}" min="1000" max="9999" /> {{ lang('PIXELS') }}</dd>
+			<dt><label for="header_info_interval">{{ lang('INTERVAL') }}{{ lang('COLON') }}</label><br /><span class="text medium">{{ lang('INTERVAL_EXPLAIN') }}</span></dt>
+			<dd><input name="header_info_interval" type="number" id="header_info_interval" value="{INTERVAL}" min="1000" max="9999" /> {{ lang('PIXELS') }}</dd>
 		</dl>
 	{% if SHOW_AMOUNT %}
 		<dl>
-			<dt><label for="show_amount">{{ lang('SHOW_AMOUNT') }}{{ lang('COLON') }}</label><br /><span class="text medium">{{ lang('SHOW_AMOUNT_EXPLAIN') }}</span></dt>
-			<dd><input type="number" id="show_amount" name="show_amount" value="{SHOW_AMOUNT}" size="3" maxlength="3" min="0" max="999" /> </dd>
+			<dt><label for="header_info_show_amount">{{ lang('SHOW_AMOUNT') }}{{ lang('COLON') }}</label><br /><span class="text medium">{{ lang('SHOW_AMOUNT_EXPLAIN') }}</span></dt>
+			<dd><input type="number" id="header_info_show_amount" name="header_info_show_amount" value="{SHOW_AMOUNT}" size="3" maxlength="3" min="0" max="999" /> </dd>
 		</dl>
 	{% endif %}
       <dl>
 		<dt class="bg1"><label>{{ lang('MOUSESTOP') }}{{ lang('COLON') }}</label><br><span class="text medium">{{ lang('MOUSESTOP_EXPLAIN') }}</span></dt>
 		<dt class="bg2">
 		  <span class="text medium">
-				<label><input type="radio" class="radio" name="mousestop" value="1"{% if S_MOUSESTOP_ENABLED %} id="mousestop" checked="checked"{% endif %} /> {{ lang('YES') }}</label>
-				<label><input type="radio" class="radio" name="mousestop" value="0"{% if not S_MOUSESTOP_ENABLED %} id="mousestop" checked="checked"{% endif %} /> {{ lang('NO') }}</label>
+				<label><input type="radio" class="radio" name="header_info_mousestop" value="1"{% if S_MOUSESTOP_ENABLED %} id="header_info_mousestop" checked="checked"{% endif %} /> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="header_info_mousestop" value="0"{% if not S_MOUSESTOP_ENABLED %} id="header_info_mousestop" checked="checked"{% endif %} /> {{ lang('NO') }}</label>
 		  </span>
 		</dt>
 	</dl>
 	<dl>
-			<dt><label for="type">{{ lang('INFO_DIRECTION') }}{{ lang('COLON') }}</label><br /><span class="explain">{{ lang('INFO_DIRECTION_EXPLAIN') }}</span></dt>
+			<dt><label for="header_info_direction">{{ lang('INFO_DIRECTION') }}{{ lang('COLON') }}</label><br /><span class="explain">{{ lang('INFO_DIRECTION_EXPLAIN') }}</span></dt>
 			<dd>
 			{DIRECTION_SELECT}
 			</dd>
 	</dl>
 	{% if WYSIWYG_PATH %}
         <dl>
-				<dt><label for="wysiwyg_path">{{ lang('WYSIWYG_PATH') }}</label><br /><span class="text medium">{{ lang('WYSIWYG_PATH_EXPLAIN') }}</span></dt>
-				<dd><input type="text" size="40" id="wysiwyg_path" name="wysiwyg_path" value="{WYSIWYG_PATH}" /></dd>
+				<dt><label for="header_info_wysiwyg_path">{{ lang('WYSIWYG_PATH') }}</label><br /><span class="text medium">{{ lang('WYSIWYG_PATH_EXPLAIN') }}</span></dt>
+				<dd><input type="text" size="40" id="header_info_wysiwyg_path" name="header_info_wysiwyg_path" value="{WYSIWYG_PATH}" /></dd>
 		</dl>
 	{% endif %}
 	
         <dl>
-				<dt><label for="backgrounds_dir">{{ lang('BACKGROUNDS_DIR') }}</label><br /><span class="text medium">{{ lang('BACKGROUNDS_DIR_EXPLAIN') }}</span></dt>
-				<dd><input type="text" size="40" id="backgrounds_dir" name="backgrounds_dir" value="{BACKGROUNDS_DIR}" /></dd>
+				<dt><label for="header_info_backgrounds_dir">{{ lang('BACKGROUNDS_DIR') }}</label><br /><span class="text medium">{{ lang('BACKGROUNDS_DIR_EXPLAIN') }}</span></dt>
+				<dd><input type="text" size="40" id="header_info_backgrounds_dir" name="header_info_backgrounds_dir" value="{BACKGROUNDS_DIR}" /></dd>
 		</dl>
 	
 	
         <dl>
-				<dt><label for="banners_dir">{{ lang('BANNERS_DIR') }}</label><br /><span class="text medium">{{ lang('BANNERS_DIR_EXPLAIN') }}</span></dt>
-				<dd><input type="text" size="40" id="banners_dir" name="banners_dir" value="{BANNERS_DIR}" /></dd>
+				<dt><label for="header_info_banners_dir">{{ lang('BANNERS_DIR') }}</label><br /><span class="text medium">{{ lang('BANNERS_DIR_EXPLAIN') }}</span></dt>
+				<dd><input type="text" size="40" id="header_info_banners_dir" name="header_info_banners_dir" value="{BANNERS_DIR}" /></dd>
 		</dl>
 	<dl>
 		<dt>
-			<label for="banner_position">{{ lang('SP_WATERMARK') }}{{ lang('COLON') }}</label>
+			<label for="header_info_banner_position">{{ lang('SP_WATERMARK') }}{{ lang('COLON') }}</label>
 			<span class="text medium">{{ lang('SP_WATERMARK_EXPLAIN') }}</span><br />
 		</dt>
 	</dl>
 	<dl>
 		  <dt class="bg1">
-		 <label for="use_watermark">{{ lang('WATERMARK') }}{{ lang('COLON') }}</label>
+		 <label for="header_info_use_watermark">{{ lang('WATERMARK') }}{{ lang('COLON') }}</label>
 		  </dt>
 		  <dt class="bg2">
-		  <span class="text medium"><input type="radio" class="radio" name="use_watermark" value="1"{% if S_WATERMARK_ENABLED %} id="use_watermark" checked="checked"{% endif %} /> {{ lang('YES') }} &nbsp;&nbsp;</span>
-		  <span class="text medium"><input type="radio" class="radio" name="use_watermark" value="0"{% if not S_WATERMARK_ENABLED %} id="use_watermark" checked="checked"{% endif %} /> {{ lang('NO') }}</span>
+		  <span class="text medium"><input type="radio" class="radio" name="header_info_use_watermark" value="1"{% if S_WATERMARK_ENABLED %} id="header_info_use_watermark" checked="checked"{% endif %} /> {{ lang('YES') }} &nbsp;&nbsp;</span>
+		  <span class="text medium"><input type="radio" class="radio" name="header_info_use_watermark" value="0"{% if not S_WATERMARK_ENABLED %} id="header_info_use_watermark" checked="checked"{% endif %} /> {{ lang('NO') }}</span>
 		  </dt>
 	</dl>
 	<dl>
 		<dt class="bg1">
-		<label for="disp_watermark_at">{{ lang('WATERMARK_PLACENT') }}{{ lang('COLON') }}</label><br />
+		<label for="header_info_disp_watermark_at">{{ lang('WATERMARK_PLACENT') }}{{ lang('COLON') }}</label><br />
 		<span class="text medium">{{ lang('WATERMARK_PLACENT_EXPLAIN') }}</span></dt>
 		<dt class="bg2">
 	  	<table class="table1" cellpadding="4" cellspacing="1">
 	  	  <tr>
-	  	  	<td><label for="disp_watermark_at1"><input type="radio" {WATERMAR_PLACEMENT_0} name="disp_watermark_at" value="0" />1</label></td>
-	  		<td><label for="disp_watermark_at2"><input type="radio" {WATERMAR_PLACEMENT_1} name="disp_watermark_at" value="1" />2</label></td>
-	  		<td><label for="disp_watermark_at3"><input type="radio" {WATERMAR_PLACEMENT_2} name="disp_watermark_at" value="2" />3</label></td>
+	  	  	<td><label for="header_info_disp_watermark_at1"><input type="radio" {WATERMAR_PLACEMENT_0} name="header_info_disp_watermark_at" value="0" />1</label></td>
+	  		<td><label for="header_info_disp_watermark_at2"><input type="radio" {WATERMAR_PLACEMENT_1} name="header_info_disp_watermark_at" value="1" />2</label></td>
+	  		<td><label for="header_info_disp_watermark_at3"><input type="radio" {WATERMAR_PLACEMENT_2} name="header_info_disp_watermark_at" value="2" />3</label></td>
 	  	  </tr>
 	  	  <tr>
-	  	  	<td><label for="disp_watermark_at4"><input type="radio" {WATERMAR_PLACEMENT_3} name="disp_watermark_at" value="3" />4</label></td>
-	  	  	<td><label for="disp_watermark_at5"><input type="radio" {WATERMAR_PLACEMENT_4} name="disp_watermark_at" value="4" />5</label></td>
-	  	  	<td><label for="disp_watermark_at6"><input type="radio" {WATERMAR_PLACEMENT_5} name="disp_watermark_at" value="5" />6</label></td>
+	  	  	<td><label for="header_info_disp_watermark_at4"><input type="radio" {WATERMAR_PLACEMENT_3} name="header_info_disp_watermark_at" value="3" />4</label></td>
+	  	  	<td><label for="header_info_disp_watermark_at5"><input type="radio" {WATERMAR_PLACEMENT_4} name="header_info_disp_watermark_at" value="4" />5</label></td>
+	  	  	<td><label for="header_info_disp_watermark_at6"><input type="radio" {WATERMAR_PLACEMENT_5} name="header_info_disp_watermark_at" value="5" />6</label></td>
 	  	  </tr>
 	  	  <tr>
-	  	  	<td><label for="disp_watermark_at7"><input type="radio" {WATERMAR_PLACEMENT_6} name="disp_watermark_at" value="6" />7</label></td>
-	  	  	<td><label for="disp_watermark_at8"><input type="radio" {WATERMAR_PLACEMENT_7} name="disp_watermark_at" value="7" />8</label></td>
-	  	  	<td><label for="disp_watermark_at9"><input type="radio" {WATERMAR_PLACEMENT_8} name="disp_watermark_at" value="8" />9</label></td>
+	  	  	<td><label for="header_info_disp_watermark_at7"><input type="radio" {WATERMAR_PLACEMENT_6} name="header_info_disp_watermark_at" value="6" />7</label></td>
+	  	  	<td><label for="header_info_disp_watermark_at8"><input type="radio" {WATERMAR_PLACEMENT_7} name="header_info_disp_watermark_at" value="7" />8</label></td>
+	  	  	<td><label for="header_info_disp_watermark_at9"><input type="radio" {WATERMAR_PLACEMENT_8} name="header_info_disp_watermark_at" value="8" />9</label></td>
 	  	  </tr>
 	  	 </table>
 		</dt>
 	</dl>
       <dl>
-		<dt class="bg1"><label for="thumb_cache">{{ lang('THUMB_CACHE') }}</label><br /><span class="text medium">{{ lang('THUMB_CACHE_EXPLAIN') }}</span></dt>
+		<dt class="bg1"><label for="header_info_thumb_cache">{{ lang('THUMB_CACHE') }}</label><br /><span class="text medium">{{ lang('THUMB_CACHE_EXPLAIN') }}</span></dt>
 		<dt class="bg2">
-		<span class="text medium"><input type="radio" class="radio" name="thumb_cache" value="1"{% if S_THUMB_CACHE_ENABLED %} id="thumb_cache" checked="checked"{% endif %} /> {{ lang('YES') }}</span>
-		<span class="text medium"><input type="radio" class="radio" name="thumb_cache" value="0"{% if not S_THUMB_CACHE_ENABLED %} id="thumb_cache" checked="checked"{% endif %} /> {{ lang('NO') }}</span>
+		<span class="text medium"><input type="radio" class="radio" name="header_info_thumb_cache" value="1"{% if S_THUMB_CACHE_ENABLED %} id="header_info_thumb_cache" checked="checked"{% endif %} /> {{ lang('YES') }}</span>
+		<span class="text medium"><input type="radio" class="radio" name="header_info_thumb_cache" value="0"{% if not S_THUMB_CACHE_ENABLED %} id="header_info_thumb_cache" checked="checked"{% endif %} /> {{ lang('NO') }}</span>
 		</dt>
 	</dl>
 	<dl>
 		<dt>
-			<label for="banner_position">{{ lang('HEADER_INFO_POSITION') }}{{ lang('COLON') }}</label><span class="text medium">{{ lang('HEADER_INFO_ENABLE_EXPLAIN') }}</span><br />
+			<label for="header_info_banner_position">{{ lang('HEADER_INFO_POSITION') }}{{ lang('COLON') }}</label><span class="text medium">{{ lang('HEADER_INFO_ENABLE_EXPLAIN') }}</span><br />
 		</dt>
 	</dl>
         <dl>
 			<dt>
-			<label for="header_info_enable">{{ lang('HEADER_INFO_ENABLE') }}{{ lang('COLON') }}</label><br />
+			<label for="header_info_header_info_enable">{{ lang('HEADER_INFO_ENABLE') }}{{ lang('COLON') }}</label><br />
 			</dt>
 			<dd>
-			<span class="text medium"><input type="radio" class="radio" id="disable" name="header_info_enable" value="1"{% if S_HEADER_INFO_ENABLED %} id="header_info_enable" checked="checked"{% endif %} /> {{ lang('YES') }}</span>
-			<span class="text medium"><input type="radio" class="radio" id="disable" name="header_info_enable" value="0"{% if not S_HEADER_INFO_ENABLED %} id="header_info_enable" checked="checked"{% endif %} /> {{ lang('NO') }}</span>
+			<span class="text medium"><input type="radio" class="radio" id="disable" name="header_info_header_info_enable" value="1"{% if S_HEADER_INFO_ENABLED %} id="header_info_header_info_enable" checked="checked"{% endif %} /> {{ lang('YES') }}</span>
+			<span class="text medium"><input type="radio" class="radio" id="disable" name="header_info_header_info_enable" value="0"{% if not S_HEADER_INFO_ENABLED %} id="header_info_header_info_enable" checked="checked"{% endif %} /> {{ lang('NO') }}</span>
 			</dd>
 		</dl>
 	<dl>
 		<dt>
-			<label for="banner_position2">{{ lang('HEADER_INFO_SEARCHBOX') }}{{ lang('COLON') }}</label>
+			<label for="header_info_banner_position2">{{ lang('HEADER_INFO_SEARCHBOX') }}{{ lang('COLON') }}</label>
 		</dt>
 		<dd>
-			<span class="text medium"><input type="radio" class="radio" name="banner_position2" value="1"{% if S_HEADER_INFO_POSITION2 %} id="header_info_position" checked="checked"{% endif %} /> {{ lang('YES') }}</span>
-			<span class="text medium"><input type="radio" class="radio" name="banner_position2" value="0"{% if not S_HEADER_INFO_POSITION2 %} id="header_info_position" checked="checked"{% endif %} /> {{ lang('NO') }}</span>
+			<span class="text medium"><input type="radio" class="radio" name="header_info_banner_position2" value="1"{% if S_HEADER_INFO_POSITION2 %} id="header_info_position" checked="checked"{% endif %} /> {{ lang('YES') }}</span>
+			<span class="text medium"><input type="radio" class="radio" name="header_info_banner_position2" value="0"{% if not S_HEADER_INFO_POSITION2 %} id="header_info_position" checked="checked"{% endif %} /> {{ lang('NO') }}</span>
 		</dd>
 	</dl>
 	<dl>
 		<dt>
-			<label for="banner_position1">{{ lang('HEADER_INFO_NAVBAR') }}{{ lang('COLON') }}</label>
+			<label for="header_info_banner_position1">{{ lang('HEADER_INFO_NAVBAR') }}{{ lang('COLON') }}</label>
 		</dt>
 		<dd>
-			<span class="text medium"><input type="radio" class="radio" name="banner_position1" value="1"{% if S_HEADER_INFO_POSITION1 %} id="header_info_position" checked="checked"{% endif %} /> {{ lang('YES') }}</span>
-			<span class="text medium"><input type="radio" class="radio" name="banner_position1" value="0"{% if not S_HEADER_INFO_POSITION1 %} id="header_info_position" checked="checked"{% endif %} /> {{ lang('NO') }}</span>
+			<span class="text medium"><input type="radio" class="radio" name="header_info_banner_position1" value="1"{% if S_HEADER_INFO_POSITION1 %} id="header_info_position" checked="checked"{% endif %} /> {{ lang('YES') }}</span>
+			<span class="text medium"><input type="radio" class="radio" name="header_info_banner_position1" value="0"{% if not S_HEADER_INFO_POSITION1 %} id="header_info_position" checked="checked"{% endif %} /> {{ lang('NO') }}</span>
 		</dd>
 	</dl>
 	<dl>
 		<dt>
-			<label for="banner_position3">{{ lang('HEADER_INFO_INDEX') }}{{ lang('COLON') }}</label>
+			<label for="header_info_banner_position3">{{ lang('HEADER_INFO_INDEX') }}{{ lang('COLON') }}</label>
 		</dt>
 		<dd>
-			<span class="text medium"><input type="radio" class="radio" name="banner_position3" value="1"{% if S_HEADER_INFO_POSITION3 %} id="header_info_position" checked="checked"{% endif %} /> {{ lang('YES') }}</span>
-			<span class="text medium"><input type="radio" class="radio" name="banner_position3" value="0"{% if not S_HEADER_INFO_POSITION3 %} id="header_info_position" checked="checked"{% endif %} /> {{ lang('NO') }}</span>
+			<span class="text medium"><input type="radio" class="radio" name="header_info_banner_position3" value="1"{% if S_HEADER_INFO_POSITION3 %} id="header_info_position" checked="checked"{% endif %} /> {{ lang('YES') }}</span>
+			<span class="text medium"><input type="radio" class="radio" name="header_info_banner_position3" value="0"{% if not S_HEADER_INFO_POSITION3 %} id="header_info_position" checked="checked"{% endif %} /> {{ lang('NO') }}</span>
 		</dd>
 	</dl>
 	<dl>
 		<dt>
-			<label for="banner_position">{{ lang('HEADER_INFO_HEADER') }}{{ lang('COLON') }}</label>
+			<label for="header_info_banner_position">{{ lang('HEADER_INFO_HEADER') }}{{ lang('COLON') }}</label>
 		</dt>
 		<dd>
-			<span class="text medium"><input type="radio" class="radio" name="banner_position" value="1"{% if S_HEADER_INFO_POSITION4 %} id="header_info_position" checked="checked"{% endif %} /> {{ lang('YES') }}</span>
-			<span class="text medium"><input type="radio" class="radio" name="banner_position" value="0"{% if not S_HEADER_INFO_POSITION4 %} id="header_info_position" checked="checked"{% endif %} /> {{ lang('NO') }}</span>
+			<span class="text medium"><input type="radio" class="radio" name="header_info_banner_position" value="1"{% if S_HEADER_INFO_POSITION4 %} id="header_info_position" checked="checked"{% endif %} /> {{ lang('YES') }}</span>
+			<span class="text medium"><input type="radio" class="radio" name="header_info_banner_position" value="0"{% if not S_HEADER_INFO_POSITION4 %} id="header_info_position" checked="checked"{% endif %} /> {{ lang('NO') }}</span>
 		</dd>
 	</dl>
 
@@ -203,27 +203,27 @@
 	</dl>
 	<dl>
 		<dt><label for="header_info_title_colour">{{ lang('HEADER_INFO_TITLE_COLOUR') }}{{ lang('COLON') }}</label><br /><span class="text medium">{{ lang('HEADER_INFO_TITLE_COLOUR_EXPLAIN') }}</span></dt>
-		<dd><input class="jscolor {hash:true, uppercase:false}" name="header_info_title_colour" type="text" id="header_info_title_colour" value="{{ HEADER_INFO_TITLE_COLOUR }}" size="8" maxlength="8" />&nbsp;{{ lang('CLICK_TO_SELECT') }}</dd>
+		<dd><input class="jscolor {hash:true, uppercase:false}" name="header_info_title_colour" type="text" id="header_info_title_colour" value="{HEADER_INFO_TITLE_COLOUR}" size="8" maxlength="8" />&nbsp;{{ lang('CLICK_TO_SELECT') }}</dd>
 	</dl>
 	<dl>
 		<dt><label for="header_info_desc_colour">{{ lang('HEADER_INFO_DESC_COLOUR') }}{{ lang('COLON') }}</label><br /><span class="text medium">{{ lang('HEADER_INFO_DESC_COLOUR_EXPLAIN') }}</span></dt>
-		<dd><input class="jscolor {hash:true, uppercase:false}" name="header_info_desc_colour" type="text" id="header_info_desc_colour" value="{{ HEADER_INFO_DESC_COLOUR }}" size="8" maxlength="8" />&nbsp;{{ lang('CLICK_TO_SELECT') }}</dd>
+		<dd><input class="jscolor {hash:true, uppercase:false}" name="header_info_desc_colour" type="text" id="header_info_desc_colour" value="{HEADER_INFO_DESC_COLOUR}" size="8" maxlength="8" />&nbsp;{{ lang('CLICK_TO_SELECT') }}</dd>
 	</dl>
 	<dl>
 		<dt><label for="header_info_radius">{{ lang('HEADER_INFO_RADIUS') }}{{ lang('COLON') }}</label><br /><span class="text medium">{{ lang('HEADER_INFO_RADIUS_EXPLAIN') }}</span></dt>
-		<dd><input name="header_info_banner_radius" type="number" id="header_info_radius" value="{{ HEADER_INFO_RADIUS }}" min="0" max="99" /> {{ lang('PIXELS') }}</dd>
+		<dd><input name="header_info_banner_radius" type="number" id="header_info_radius" value="{HEADER_INFO_RADIUS}" min="0" max="99" /> {{ lang('PIXELS') }}</dd>
 	</dl>
 	<dl>
 		<dt><label for="header_info_pixels">{{ lang('HEADER_INFO_PIXELS') }}{{ lang('COLON') }}</label><br /><span class="text medium">{{ lang('HEADER_INFO_PIXELS_EXPLAIN') }}</span></dt>
-		<dd><input name="header_info_pixels" type="number" id="header_info_pixels" value="{{ HEADER_INFO_PIXELS }}" min="0" max="99" /> {{ lang('PIXELS') }}</dd>
+		<dd><input name="header_info_pixels" type="number" id="header_info_pixels" value="{HEADER_INFO_PIXELS}" min="0" max="99" /> {{ lang('PIXELS') }}</dd>
 	</dl>
 	<dl>
 		<dt><label for="header_title_info_pixels">{{ lang('HEADER_INFO_TITLE_PIXELS') }}{{ lang('COLON') }}</label><br /><span class="text medium">{{ lang('HEADER_INFO_TITLE_PIXELS_EXPLAIN') }}</span></dt>
-		<dd><input name="header_title_info_pixels" type="number" id="header_title_info_pixels" value="{{ HEADER_INFO_TITLE_PIXELS }}" min="0" max="99" /> {{ lang('PIXELS') }}</dd>
+		<dd><input name="header_title_info_pixels" type="number" id="header_title_info_pixels" value="{HEADER_INFO_TITLE_PIXELS}" min="0" max="99" /> {{ lang('PIXELS') }}</dd>
 	</dl>
 	<dl>
 		<dt><label for="header_info_desc_pixels">{{ lang('HEADER_INFO_DESC_PIXELS') }}{{ lang('COLON') }}</label><br /><span class="text medium">{{ lang('HEADER_INFO_DESC_PIXELS_EXPLAIN') }}</span></dt>
-		<dd><input name="header_info_desc_pixels" type="number" id="header_info_desc_pixels" value="{{ HEADER_INFO_DESC_PIXELS }}" min="0" max="99" /> {{ lang('PIXELS') }}</dd>
+		<dd><input name="header_info_desc_pixels" type="number" id="header_info_desc_pixels" value="{HEADER_INFO_DESC_PIXELS}" min="0" max="99" /> {{ lang('PIXELS') }}</dd>
 	</dl>
 	<dl>
 		<dt><label for="header_info_left">{{ lang('HEADER_INFO_LEFT') }}{{ lang('COLON') }}</label><br /><span class="text medium">{{ lang('HEADER_INFO_LEFT_EXPLAIN') }}</span></dt>

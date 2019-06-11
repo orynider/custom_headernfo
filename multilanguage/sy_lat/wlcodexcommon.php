@@ -23,12 +23,15 @@ if (empty($lang) || !is_array($lang))
 {
 	$lang = array();
 }
-$rand_quote = "About This Tool";
+//To do: When done to be trasliterated from Hebrew to Latin script
 $lang = array_merge($lang, array(
-		$rand_quote => "MXP-CMS Team, mxp.sf.net",
-		$rand_quote => "in between milestones edition ;)",
-		$rand_quote => "MX-Publisher, Fully Modular Portal & CMS for phpBB",
-		$rand_quote => "Portal & CMS Site Creation Tool",
-		$rand_quote => "pafileDB, FAP, MX-Publisher, Translator",
-		$rand_quote => "...Calendar, Links & News...modules",
+	'Bîreşit 1:1'	=> 'Bîreşit bâre Elehae iat deşâmeiae uîiat deaerâeae.',
+	'Şemot 33:20'	=> '',
+	'Ueieqârae 23:6'	=> '',
+	'Bîmidbar 10:35'	=>  '',
+	//In Targum Davarim is Meltae ???
+	'Meltaie 8:3'	=> '',
 ));
+
+// THE END
+?>

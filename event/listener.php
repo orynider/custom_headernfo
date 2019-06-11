@@ -67,8 +67,6 @@ class listener implements EventSubscriberInterface
 	*/
 	protected $custom_header_info_table;
 	
-	protected $custom_header_info_config_table;
-	
 	/** @var \phpbb\language\language $language */
 	protected $language;	
 	
@@ -100,7 +98,6 @@ class listener implements EventSubscriberInterface
 	* @param string 																	$php_ext
 	* @param string 																	$root_path
 	* @param string 																	$custom_header_info
-	* @param string 																	$custom_header_info_config
 	* @param \phpbb\language\language									$language
 	* @param \phpbb\collapsiblecategories\operator\operator	$operator
 	*
@@ -118,7 +115,6 @@ class listener implements EventSubscriberInterface
 	\phpbb\path_helper $path_helper,
 	$php_ext, $root_path,
 	$custom_header_info_table, 
-	$custom_header_info_config_table, 
 	\phpbb\language\language $language, 
 	\phpbb\collapsiblecategories\operator\operator $operator = null)
 	{
@@ -135,7 +131,6 @@ class listener implements EventSubscriberInterface
 		$this->php_ext = $php_ext;
 		$this->root_path = $root_path;
 		$this->custom_header_info_table = $custom_header_info_table;
-		$this->custom_header_info_config_table = $custom_header_info_config_table;
 		$this->language = $language;
 		$this->operator = $operator;
 		
@@ -143,10 +138,7 @@ class listener implements EventSubscriberInterface
 		$this->module_root_path	= $this->ext_manager->get_extension_path($this->ext_name, true);
 		
 		$this->user->add_lang_ext($this->ext_name, 'common');
-		
-		// Read out config values
-		$this->header_info_config = $this->config_values();
-		
+			
 		/* Check watever languages for thumbnail text are set and are uploaded or translated */
 		$this->language_from = (isset($this->config['default_lang']) && (is_dir($this->module_root_path . 'language/' . $this->config['default_lang']) . '/')) ? $this->config['default_lang'] : 'en';
 		$this->language_into	= (isset($user->lang['USER_LANG']) && (is_dir($this->module_root_path . 'language/' . $user->lang['USER_LANG']) . '/')) ? $user->lang['USER_LANG'] : $this->language_from;
@@ -157,24 +149,24 @@ class listener implements EventSubscriberInterface
 		}
 		
 		$this->template->assign_vars(array(
-			'S_HEADER_INFO_ENABLED' 	=> (!empty($this->header_info_config['header_info_enable'])) ? true : false,
-			'S_HEADER_INFO_POSITION1'	=> (!empty($this->header_info_config['banner_position1'])) ? true : false,
-			'S_HEADER_INFO_POSITION2'	=> (!empty($this->header_info_config['banner_position2'])) ? true : false,
-			'S_HEADER_INFO_POSITION3'	=> (!empty($this->header_info_config['banner_position3'])) ? true : false,
-			'S_HEADER_INFO_POSITION4'	=> (!empty($this->header_info_config['banner_position'])) ? true : false,
+			'S_HEADER_INFO_ENABLED' 	=> (!empty($this->config['header_info_enable'])) ? true : false,
+			'S_HEADER_INFO_POSITION1'	=> (!empty($this->config['header_info_banner_position1'])) ? true : false,
+			'S_HEADER_INFO_POSITION2'	=> (!empty($this->config['header_info_banner_position2'])) ? true : false,
+			'S_HEADER_INFO_POSITION3'	=> (!empty($this->config['header_info_banner_position3'])) ? true : false,
+			'S_HEADER_INFO_POSITION4'	=> (!empty($this->config['header_info_banner_position'])) ? true : false,
 			'S_THUMBNAIL'   					=> (@function_exists('gd_info') && (@count(@gd_info()) !== 0)), 
-			'MODULE_NAME'					=> $this->header_info_config['module_name'], 
-			'WYSIWYG_PATH'					=> $this->header_info_config['wysiwyg_path'],
-			'BACKGROUNDS_DIR'			=> $this->header_info_config['backgrounds_dir'],
-			'BANNERS_DIR'		   				=> $this->header_info_config['banners_dir'],
-			'HEADER_INFOVERSION'		=> $this->header_info_config['header_info_version'],
-			'ROW_HEIGHT'						=> $this->config['board_disable'] ? 193 : $this->header_info_config['row_height'],	/* Height of each ticker row in PX. Should be uniform. */
-			'SPEED'									=> $this->header_info_config['speed'],	/* Speed of transition animation in milliseconds */
-			'INTERVAL'							=> $this->header_info_config['interval'],		/* Time between change in milliseconds */
-			'MAX_ITEMS'						=> $this->header_info_config['show_amount'],	/* Integer for how many items to query and display at once. Resizes height accordingly (OPTIONAL) */
-			'MOUSESTOP'						=> $this->header_info_config['mousestop'],	/* If set to true, the ticker will stop on mouseover */
-			'DIRECTION'							=> $this->header_info_config['direction'],	/* Direction that list will scroll */
-			'SITE_HOME_URL'   				=> $this->config['board_url'], /* CMS or SITE URL */
+			'MODULE_NAME'					=> $this->config['header_info_module_name'], 
+			'WYSIWYG_PATH'					=> $this->config['header_info_wysiwyg_path'],
+			'BACKGROUNDS_DIR'			=> $this->config['header_info_backgrounds_dir'],
+			'BANNERS_DIR'		   				=> $this->config['header_info_banners_dir'],
+			'HEADER_INFOVERSION'		=> $this->config['header_info_version'],
+			'ROW_HEIGHT'						=> $this->config['board_disable'] ? 193 : $this->config['header_info_row_height'],	/* Height of each ticker row in PX. Should be uniform. */
+			'SPEED'									=> $this->config['header_info_speed'],	/* Speed of transition animation in milliseconds */
+			'INTERVAL'							=> $this->config['header_info_interval'],		/* Time between change in milliseconds */
+			'MAX_ITEMS'						=> $this->config['header_info_show_amount'],	/* Integer for how many items to query and display at once. Resizes height accordingly (OPTIONAL) */
+			'MOUSESTOP'						=> $this->config['header_info_mousestop'],	/* If set to true, the ticker will stop on mouseover */
+			'DIRECTION'							=> $this->config['header_info_direction'],	/* Direction that list will scroll */
+			'SITE_HOME_URL'   				=> $this->config['board_url'], /* CMS or FORUM URL */
 			'PHPBB_URL'   						=> generate_board_url() . '/', /* Forum URL */
 		));
 	}
@@ -247,7 +239,7 @@ class listener implements EventSubscriberInterface
 		$sql_where = ($this->config['board_disable']) ? ' ORDER BY ' . $random : ' WHERE header_info_id <> 1 ORDER BY ' . $random;	
 		
 		//max_items
-		$show_amount = isset($this->header_info_config['show_amount']) ? $this->header_info_config['show_amount'] : 3;
+		$show_amount = isset($this->config['header_info_show_amount']) ? $this->config['header_info_show_amount'] : 3;
 		
 		$sql = "SELECT * FROM " . $this->custom_header_info_table . $sql_where;
 		$result = $this->db->sql_query_limit($sql, $show_amount);
@@ -449,37 +441,4 @@ class listener implements EventSubscriberInterface
 		include($filename);
 		return $lang;
 	}
-
-	/**
-	 * Enter description here...
-	 *
-	 * @return unknown
-	 */
-	function config_values($use_cache = true)
-	{
-		if (($config = $this->cache->get('custom_header_info_config3')) && ($use_cache))
-		{
-			return $config;
-		}
-		else
-		{
-			$sql = "SELECT *
-				FROM " . $this->custom_header_info_config_table;	
-			$result = $this->db->sql_query($sql);
-			while ($row = $this->db->sql_fetchrow($result))
-			{
-				$config[$row['config_name']] = trim($row['config_value']);
-			}
-			
-			if ( empty($config) )
-			{		
-				trigger_error($this->language->lang('COULDNT_GET') . ' ' . $this->ext_name . ' ' . $this->language->lang('CONFIG'), E_USER_ERROR);
-			}		
-			$this->db->sql_freeresult($result);		
-			$this->cache->put('custom_header_info_config', $config);
-			
-			return($config);
-		}
-	}
-
 }

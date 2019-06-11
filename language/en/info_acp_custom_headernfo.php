@@ -177,7 +177,7 @@ $lang = array_merge($lang, array(
 
 	'HEADER_INFO_DIR'								=> 'Header\'s Info Multilangual directory.',
 	'HEADER_INFO_PATH'							=> 'Header\'s Info Multilangual text storage path.',
-	'HEADER_INFO_DIR_EXPLAIN'				=> 'Path under your phpBB root directory, e.g. <samp>language/politics</samp>.',
+	'HEADER_INFO_DIR_EXPLAIN'				=> 'Path under your phpBB root directory, e.g. <samp>multilanguage/politics</samp>.',
 
 	'HEADER_INFO_FONT'							=> 'Header\'s Info thumbnail banner font file.',
 	'HEADER_INFO_FONT_EXPLAIN'			=> 'Select font name from the extension \'assets/fonts\' root folder, e.g. <samp>tituscbz</samp>.',
