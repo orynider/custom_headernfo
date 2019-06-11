@@ -8,6 +8,7 @@
 */
 
 namespace orynider\customheadernfo\controller;
+use orynider\customheadernfo\core\customheadernfo;
 
 class admin_controller extends \orynider\customheadernfo\core\admin_controller
 {
@@ -33,11 +34,11 @@ class admin_controller extends \orynider\customheadernfo\core\admin_controller
 		{
 			$header_info_type_select = $this->get_list_static('header_info_type', 
 											array('language' => $this->language->lang('MULTI_LANGUAGE_BANNER'),
-														'lang_html_text' => $this->language->lang('HTML_MULTI_LANGUAGE_TEXT'), 
-														'simple_db_text' => $this->language->lang('SIMPLE_DB_TEXT'), 
-														'simple_bg_logo' => $this->language->lang('SIMPLE_BG_LOGO')
-														), 
-														$row['header_info_type']);
+													'lang_html_text' => $this->language->lang('HTML_MULTI_LANGUAGE_TEXT'), 
+													'simple_db_text' => $this->language->lang('SIMPLE_DB_TEXT'), 
+													'simple_bg_logo' => $this->language->lang('SIMPLE_BG_LOGO'),
+													), 
+													$row['header_info_type']);
 
 			//Populate info to display starts
 			$info_title = array();
@@ -243,7 +244,7 @@ class admin_controller extends \orynider\customheadernfo\core\admin_controller
 					'header_info_title_colour'		=> $this->request->variable('header_info_title_colour', '#000000', true),
 					'header_info_desc_colour'		=> $this->request->variable('header_info_desc_colour', '#12A3EB', true),
 					'header_info_dir'					=> $this->request->variable('header_info_dir', 'politics', true), /* i.e. ext/orynider/customheadernfo/language/movies/ */
-					'header_info_type'					=> $this->request->variable('header_info_type', '', true),
+					'header_info_type'					=> $this->request->variable('header_info_type', 'language', true),
 					'header_info_font'					=> $this->request->variable('header_info_font', '', true),
 					'header_info_image'				=> $image, /* We can replace 'prosilver' with 'all': str_replace('prosilver' 'all', $image) */
 					'header_info_image_link'		=> $this->request->variable('header_info_image_link', 0),

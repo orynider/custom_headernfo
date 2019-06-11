@@ -566,18 +566,17 @@ class admin_controller extends \orynider\customheadernfo\core\customheadernfo
 				{
 					//Strip sufixes
 					$key = str_replace(array('common.'. $this->php_ext, $this->php_ext), '', $key);
-					
 					$value = str_replace(array('common.'. $this->php_ext, $this->php_ext), '', $value);
 					if ((is_array($disabled) && in_array($key, $disabled)) || (!is_array($disabled) && $key == $disabled))
 					{
 						continue;
 					}
-					$option_list .= '<option value="' . (!empty($this->language->lang($key)) ? $this->language->lang($key) : $key) . '"';
-					if ( $selected == $key )
+					$option_list .= '<option value="' . $key . '"';
+					if ( ucwords($selected) == ucwords($key) )
 					{
 						$option_list .= ' selected';
 					}
-					$option_list .=  '>' . $value . '</option>';
+					$option_list .=  '>' . (!empty($this->language->lang($value)) ? $this->language->lang($value) : $value) . '</option>';
 				}
 			break;
 			case 'in_array':
@@ -596,8 +595,8 @@ class admin_controller extends \orynider\customheadernfo\core\customheadernfo
 					{
 						return '';
 					}
-					$option_list .= '<option value="' . (!empty($this->language->lang($key)) ? $this->language->lang($key) : $key) . '"';
-					if ( $selected == $key )
+					$option_list .= '<option value="' . $key . '"';
+					if ( ucwords($selected) == ucwords($key) )
 					{
 						$option_list .= ' selected';
 					}
