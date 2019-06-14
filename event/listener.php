@@ -119,7 +119,6 @@ class listener implements EventSubscriberInterface
 	$php_ext, $root_path,
 	$custom_header_info_table, 
 	$custom_header_info_config_table, 
-	\phpbb\language\language $language, 
 	\phpbb\collapsiblecategories\operator\operator $operator = null)
 	{
 		$this->db = $db;
@@ -136,34 +135,26 @@ class listener implements EventSubscriberInterface
 		$this->root_path = $root_path;
 		$this->custom_header_info_table = $custom_header_info_table;
 		$this->custom_header_info_config_table = $custom_header_info_config_table;
-		$this->language = $language;
 		$this->operator = $operator;
 		
 		$this->ext_name 		= $this->request->variable('ext_name', 'orynider/customheadernfo');
-		$this->module_root_path	= $this->ext_manager->get_extension_path($this->ext_name, true);
-		
+		$this->module_root_path	= $this->ext_path = $this->ext_manager->get_extension_path($this->ext_name, true);
 		$this->user->add_lang_ext($this->ext_name, 'common');
-		
 		// Read out config values
 		$this->header_info_config = $this->config_values();
 		
-		/* Check watever languages for thumbnail text are set and are uploaded or translated */
-		$this->language_from = (isset($this->config['default_lang']) && (is_dir($this->module_root_path . 'language/' . $this->config['default_lang']) . '/')) ? $this->config['default_lang'] : 'en';
-		$this->language_into	= (isset($user->lang['USER_LANG']) && (is_dir($this->module_root_path . 'language/' . $user->lang['USER_LANG']) . '/')) ? $user->lang['USER_LANG'] : $this->language_from;
-		if (!is_dir($this->module_root_path . 'language/' . $this->language_from . '/'))
-		{
-			//Default language from uk english in case Resource id is #0 
-			$this->language_from = (is_dir($this->module_root_path . 'language/en/')) ?  'en' : $this->language_into;
-		}
+		$this->language_from = (isset($this->config['default_lang'])) ? $this->config['default_lang'] : 'en';
+		$this->language_into	= (isset($this->user->lang['USER_LANG'])) ? $this->user->lang['USER_LANG'] : $this->language_from;
 		
 		$this->template->assign_vars(array(
+			//'S_HEADER_INFO_POSITION'	=> (!empty($this->header_info_config['banner_position'])) ? true : false,
 			'S_HEADER_INFO_ENABLED' 	=> (!empty($this->header_info_config['header_info_enable'])) ? true : false,
 			'S_HEADER_INFO_POSITION1'	=> (!empty($this->header_info_config['banner_position1'])) ? true : false,
 			'S_HEADER_INFO_POSITION2'	=> (!empty($this->header_info_config['banner_position2'])) ? true : false,
 			'S_HEADER_INFO_POSITION3'	=> (!empty($this->header_info_config['banner_position3'])) ? true : false,
 			'S_HEADER_INFO_POSITION4'	=> (!empty($this->header_info_config['banner_position'])) ? true : false,
 			'S_THUMBNAIL'   					=> (@function_exists('gd_info') && (@count(@gd_info()) !== 0)), 
-			'MODULE_NAME'					=> $this->header_info_config['module_name'], 
+			'MODULE_NAME'					=> $this->header_info_config['module_name'], // settings_dbname
 			'WYSIWYG_PATH'					=> $this->header_info_config['wysiwyg_path'],
 			'BACKGROUNDS_DIR'			=> $this->header_info_config['backgrounds_dir'],
 			'BANNERS_DIR'		   				=> $this->header_info_config['banners_dir'],
@@ -249,52 +240,49 @@ class listener implements EventSubscriberInterface
 		//max_items
 		$show_amount = isset($this->header_info_config['show_amount']) ? $this->header_info_config['show_amount'] : 3;
 		
-		$sql = "SELECT * FROM " . $this->custom_header_info_table . $sql_where;
+		$sql = "SELECT * FROM " . $this->custom_header_info_table . "" . $sql_where;
 		$result = $this->db->sql_query_limit($sql, $show_amount);
 		
-		$row_disable = array(
-			'header_info_id'				=> 1,
-			'header_info_name'			=> 'Board Disabled',
-			'header_info_desc'			=> 'Board Disabled Info for the Custom Header Info extension.',
-			'header_info_longdesc'		=> 'This is the Board Disabled Logo for the Custom Header Info extension.',
-			'header_info_use_extdesc'	=> 0,
-			'header_info_title_colour'	=> '#000000',
-			'header_info_desc_colour'	=> '#0c6a99',
-			'header_info_dir'				=> 'politics', 
-			'header_info_font'				=>  'tituscbz.ttf',
-			'header_info_type'				=> 'simple_bg_logo',
-			'header_info_image'			=> generate_board_url() . '/ext/orynider/customheadernfo/styles/prosilver/theme/images/banners/under_construction.gif', //str_replace('prosilver' 'all', $data_files['header_info_image'])
-			'header_info_image_link'	=> 0,	
-			'header_info_banner_radius' => '10',
-			'header_info_title_pixels'	=> '12',
-			'header_info_desc_pixels'	=> '10',
-			'header_info_pixels'			=> '10',
-			'header_info_left'				=> 0,
-			'header_info_right'			=> 0,
-			'header_info_url'				=> 'http://mxpcms.sourceforge.net/',
-			'header_info_license'			=> 'GNU GPL-2',
-			'header_info_time'			=> time(),
-			'header_info_last'				=> 0,
-			'header_info_pin'				=> '0',
-			'header_info_pic_width'		=> '458',
-			'header_info_pic_height'	=> '193',
-			'header_info_disable'			=> 0,
-			'forum_id'							=> 1,
-			'user_id'							=> $this->user->data['user_id'],
-			'bbcode_bitfield'				=> 'QQ==',
-			'bbcode_uid'						=> '2p5lkzzx',
-			'bbcode_options'				=> '',
-		) ;
-				
 		while ($row = $this->db->sql_fetchrow($result)) 
 		{
 			//Populate info to display starts
 			$info_title = array();
 			$info_desc = array();
 			
-			//Merge disable with db rows
-			$row = (count($row) == 0) ? $row_disable : $row; 
-		
+			$row_disable = array(
+				'header_info_id'				=> count($row) + 1,
+				'header_info_name'			=> 'Board Disabled',
+				'header_info_desc'			=> 'Board Disabled Info for the Custom Header Info extension.',
+				'header_info_longdesc'		=> 'This is the Board Disabled Logo for the Custom Header Info extension.',
+				'header_info_use_extdesc'	=> 0,
+				'header_info_title_colour'	=> '#000000',
+				'header_info_desc_colour'	=> '#0c6a99',
+				'header_info_dir'				=> 'politics', 
+				'header_info_font'				=>  'tituscbz.ttf',
+				'header_info_type'				=> 'simple_bg_logo',
+				'header_info_image'			=> generate_board_url() . '/ext/orynider/customheadernfo/styles/prosilver/theme/images/banners/under_construction.gif', //str_replace('prosilver' 'all', $data_files['header_info_image'])
+				'header_info_image_link'	=> 0,	
+				'header_info_banner_radius' => '10',
+				'header_info_title_pixels'	=> '12',
+				'header_info_desc_pixels'	=> '10',
+				'header_info_pixels'			=> '10',
+				'header_info_left'				=> 0,
+				'header_info_right'			=> 0,
+				'header_info_url'				=> 'http://mxpcms.sourceforge.net/',
+				'header_info_license'			=> 'GNU GPL-2',
+				'header_info_time'			=> time(),
+				'header_info_last'				=> 0,
+				'header_info_pin'				=> '0',
+				'header_info_pic_width'		=> '458',
+				'header_info_pic_height'	=> '193',
+				'header_info_disable'			=> 0,
+				'forum_id'							=> 1,
+				'user_id'							=> $this->user->data['user_id'],
+				'bbcode_bitfield'				=> 'QQ==',
+				'bbcode_uid'						=> '2p5lkzzx',
+				'bbcode_options'				=> '',
+			) ;
+				
 			$header_info_name = $row['header_info_name'];
 			$header_info_desc = $row['header_info_desc'];
 			$header_info_longdesc = $row['header_info_longdesc'];
@@ -349,9 +337,9 @@ class listener implements EventSubscriberInterface
 			// Populate corners
 			if ($row['header_info_image'])
 			{
-				$header_corners 	= ($row['header_info_left']) ? $row['header_info_pixels'] . 'px 0px 0px ' . $row['header_info_pixels'] . 'px' : $header_corners;
-	 			$header_corners 	= ($row['header_info_right']) ? '0px ' . $row['header_info_pixels'] . 'px ' . $row['header_info_pixels'] . 'px 0px' : $header_corners;
-				$header_corners 	= ($row['header_info_left'] && $row['header_info_right']) ? $row['header_info_pixels'] . 'px ' . $row['header_info_pixels'] . 'px ' . $row['header_info_pixels'] . 'px ' . $row['header_info_pixels'] . 'px' : $header_corners;
+				$header_corners 	= ($row['header_info_left']) ? $row['header_info_pixels'] . 'px 0px 0px ' . $row['header_info_pixels'] . 'px' : $logo_corners;
+	 			$header_corners 	= ($row['header_info_right']) ? '0px ' . $row['header_info_pixels'] . 'px ' . $row['header_info_pixels'] . 'px 0px' : $logo_corners;
+				$header_corners 	= ($row['header_info_left'] && $row['header_info_right']) ? $row['header_info_pixels'] . 'px ' . $row['header_info_pixels'] . 'px ' . $row['header_info_pixels'] . 'px ' . $row['header_info_pixels'] . 'px' : $logo_corners;
 			}
 			
 			//Populate info to display ends
@@ -372,7 +360,7 @@ class listener implements EventSubscriberInterface
 				'HEADER_INFO_DESC_COLOUR_2'	=> isset($row['header_info_desc_colour']) ? $this->get_gradient_colour($row['header_info_desc_colour'], 2) : '',
 				//New 0.9.0 ends
 				'HEADER_INFO_TYPE'					=> $row['header_info_type'],
-				'HEADER_INFO_DIR'						=> $row['header_info_dir'], 
+				'HEADER_INFO_DIR'						=> $row['header_info_dir'], //ext/orynider/customheadernfo/language/movies/
 				'HEADER_INFO_DB_FONT' 			=> substr($row['header_info_font'], 0, strrpos($row['header_info_font'], '.')), 
 				'HEADER_INFO_IMAGE'					=> $row['header_info_image'],
 				'THUMBNAIL_URL'   						=> ($this->config['board_disable'] && ($row['header_info_id']  == 1)) ? $row_disable['header_info_image'] : generate_board_url() . '/app.' . $this->php_ext . '/thumbnail',
@@ -386,7 +374,7 @@ class listener implements EventSubscriberInterface
 				'HEADER_INFO_WIDTH'				=> isset($row['header_info_width']) ? $row['header_info_width'] : $row['header_info_pic_width'],
 				'HEADER_INFO_HEIGHT'				=> ($this->config['board_disable'] && ($row['header_info_id'] == 0 || $row['header_info_id']  == 1)) ? 193 : (isset($row['header_info_height']) ? $row['header_info_height'] : $row['header_info_pic_height']),
 				//New 0.9.0 ends
-				'S_HEADER_INFO_LINK_CHECKED'		=> $row['header_info_image_link'],
+				'S_HEADER_INFO_LINK_CHECKED'		=> $row['header_info_link'],
 				'HEADER_INFO_URL'							=> $row['header_info_url'],
 				'HEADER_INFO_LICENSE'					=> $row['header_info_license'],
 				'HEADER_INFO_TIME'						=> $row['header_info_time'],
@@ -398,14 +386,14 @@ class listener implements EventSubscriberInterface
 				'S_SIMPLE_DB_LOGO_ENABLED'		=> ($row['header_info_type'] == 'simple_bg_logo'),
 				'S_HEADER_INFO_PIN_CHECKED'		=> $row['header_info_pin'],
 				'S_USE_SITE_DESC'							=> $row['header_info_use_extdesc'],
-				'S_HEADER_INFO_DISABLE'				=> $row['header_info_disable'], 
+				'S_HEADER_INFO_DISABLE'				=> $row['header_info_disable'], // settings_disable,
 			));
 		}
 		$this->db->sql_freeresult($result);
 
 		if ($this->operator !== null)
 		{
-			$fid = 'header_info'; /* string for hash */
+			$fid = 'header_info'; // string for hash
 			$this->template->assign_vars(array(
 				'HEADER_INFO_IS_COLLAPSIBLE'	=> true,
 				'S_HEADER_INFO_HIDDEN' => in_array($fid, $this->operator->get_user_categories()),
@@ -473,11 +461,9 @@ class listener implements EventSubscriberInterface
 			
 			if ( empty($config) )
 			{		
-				msg_handler(E_USER_ERROR, $this->user->lang['COULDNT_GET'] . ' ' . $this->ext_name . ' ' . $this->user->lang['CONFIG'], __FILE__, __LINE__);
-			}
-			
-			$this->db->sql_freeresult($result);
-			
+				trigger_error($this->language->lang('COULDNT_GET') . ' ' . $this->ext_name . ' ' . $this->language->lang('CONFIG'), E_USER_ERROR);
+			}		
+			$this->db->sql_freeresult($result);		
 			$this->cache->put('custom_header_info_config', $config);
 			
 			return($config);

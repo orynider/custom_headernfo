@@ -22,177 +22,177 @@ if (empty($lang) || !is_array($lang))
 }
 
 $lang = array_merge($lang, array(
-	'ACP_HEADER_INFO_TITLE'								=> 'Custom Header Info',
-    'ACP_HEADER_INFO_CONFIG'							=> 'Configurare Header Info',
-	'ACP_MANAGE_CONFIG'									=> 'Configuraţie',
+	'ACP_HEADER_INFO_TITLE'					=> 'Custom Header Info',
+    'ACP_HEADER_INFO_CONFIG'				=> 'Configurare Header Info',
+	'ACP_MANAGE_CONFIG'						=> 'Configuraţie',
 
-	'ACP_MANAGE_FORUMS'									=> 'Forumuri',
-	'ACP_MANAGE_PAGES'									=> 'Pagini',
+	'ACP_MANAGE_FORUMS'						=> 'Forumuri',
+	'ACP_MANAGE_PAGES'							=> 'Pagini',
 	
-	'ACP_NO_BANNER'									=> 'No Banner',
+	'ACP_NO_BANNER'								=> 'Fără Banner',
 	
-	'HEADER_INFO_INTRO'									=> 'Aceasta este o pagină de configurare pentru Extensia Custom Header Info de orynider (FlorinCB).',
+	'HEADER_INFO_INTRO'							=> 'Aceasta este o pagină de configurare pentru Extensia Custom Header Info de orynider (FlorinCB).',
 
-	'HEADER_INFO_DONATE'				                => '<a href="https://www.paypal.me/orynider"><strong>Donează</strong></a>',
-	'HEADER_INFO_DONATE_EXPLAIN'	                => 'Dacă îţi place această extensie ia în consideraţie să faci o donaţie',
+	'HEADER_INFO_DONATE'						=> '<a href="https://www.paypal.me/orynider"><strong>Donează</strong></a>',
+	'HEADER_INFO_DONATE_EXPLAIN'		=> 'Dacă îţi place această extensie ia în consideraţie să faci o donaţie',
 
-	'HEADER_INFO_VERSION'								=> 'Versiune',
- 	'HEADER_INFO_CHECK'									=> 'Verifică Versiune Manual la <a href="http://mxpcms.sf.net/forum/index.php"><strong>Forum Acasă</strong></a>',
-	'HEADER_INFO_EDIT'								=> 'Edit header info item to database.',
+	'HEADER_INFO_VERSION'						=> 'Versiune',
+ 	'HEADER_INFO_CHECK'							=> 'Verifică Versiune Manual la <a href="http://mxpcms.sf.net/forum/index.php"><strong>Forum Acasă</strong></a>',
+	'HEADER_INFO_EDIT'							=> 'Modifică itemul header info în baza de date.',
 
-	'ROW_HEIGHT'											=> 'Înălţime a fiecărui rând ticker în PX',
-	'ROW_HEIGHT_EXPLAIN'								=> 'Fiecare banner este încărcat în info ticker ca un rând folosind acestă applicaţie JavaScript. Înălţimea fiecărui rând ticker trebuie să fie uniformă.',
+	'ROW_HEIGHT'										=> 'Înălţime a fiecărui rând ticker în PX',
+	'ROW_HEIGHT_EXPLAIN'						=> 'Fiecare banner este încărcat în info ticker ca un rând folosind acestă applicaţie JavaScript. Înălţimea fiecărui rând ticker trebuie să fie uniformă.',
 
-	'THUMBNAIL_FONT_DADABASE_ERROR_FOR_ID'	=> 'Thumbnail font dadabase error for id. <br />Edit the banner in ACP and reselect a font uploaded with the font css files.',
+	'THUMBNAIL_FONT_DADABASE_ERROR_FOR_ID'	=> 'Thumbnail font dadabase error pt id. <br />Modifică bannerul în ACP şi reselectează un font uploadad împreună cu fişierele lui css.',
 	
-	'SPEED'														=> 'Speed of transition animation in milliseconds',
+	'SPEED'														=> 'Vizeză de tranzacţie animatiei în millisecunde',
 
-	'SPEED_EXPLAIN'										=> 'Speed of transition animation between banner scrolling in the info ticker.',
+	'SPEED_EXPLAIN'										=> 'Vizeză de tranzacţie a animatiei de defilare banner în info ticker.',
 
-	'INTERVAL'												=> 'Time between change in milliseconds',
-	'INTERVAL_EXPLAIN'									=> 'Time to read the info before scrolling the ticker.',
+	'INTERVAL'												=> 'Timp între schimbare în millisecunde',
+	'INTERVAL_EXPLAIN'									=> 'Timp să citeşti infomaţia între defilarea tickerului.',
 
-	'MOUSESTOP'											=> 'Stop on mouseover the ticker',
-	'MOUSESTOP_EXPLAIN'								=> 'If set to true, the ticker will stop on mouseover.',
+	'MOUSESTOP'											=> 'Opreşte tickerul la mouseover',
+	'MOUSESTOP_EXPLAIN'								=> 'Dacă este setat la adevărat, tickerul se va opri la mouseover.',
 
-	'INFO_DIRECTION'										=> 'The scrolling direction',
-	'INFO_DIRECTION_EXPLAIN'						=> 'Direction in witch the list will scroll. That is up or down.',
+	'INFO_DIRECTION'									=> 'Direcţia de defilare',
+	'INFO_DIRECTION_EXPLAIN'						=> 'Direcţia în care lista va defila. Care este sus ori jos.',
 
-	'HEADER_INFO_EDIT'										=> 'Edit header info item to database',
-	'HEADER_INFO_ADD'									    => 'Add header info item to database.',
+	'HEADER_INFO_EDIT'								=> 'Modifică idem header info în database',
+	'HEADER_INFO_ADD'								=> 'Adaugă item header info în database.',
 
-	'HEADER_INFO_NAME'									=> 'Banner Title Name',
-	'HEADER_INFO_NAME_EXPLAIN'						=> 'Title of new header info item. The title will appear in the header_info tooltip when you navigate with the mouse above.',
+	'HEADER_INFO_NAME'								=> 'Nume Titlu Banner',
+	'HEADER_INFO_NAME_EXPLAIN'				=> 'Titlu de nou item header info. Titlul va apărea în header_info tooltip când navighezi cu miceul deasupra.',
 
-	'HEADER_INFO_TITLE_PIXELS'							=> 'Banner Title Size',
-	'HEADER_INFO_TITLE_PIXELS_EXPLAIN'			=> 'Sets the number of pixels for banner title.<br /><em>The default for prosilver is 12px.</em>',
+	'HEADER_INFO_TITLE_PIXELS'					=> 'Mărime Titlu Banner',
+	'HEADER_INFO_TITLE_PIXELS_EXPLAIN'		=> 'Sets the number of pixels for banner title.<br /><em>The default for prosilver is 12px.</em>',
 
-	'HEADER_INFO_DESC'										=> 'Short Description',
-	'HEADER_INFO_DESC_EXPLAIN'						=> 'Short description of new header info item. The description will appear in the header info tooltip when you navigate with the mouse above.',
+	'HEADER_INFO_DESC'								=> 'Scurtă Descriere',
+	'HEADER_INFO_DESC_EXPLAIN'				=> 'Scurtă descriere a noului item header info. Descrierea va apărea în tooltipul header info când navigaţi cu miceul deoasupra.',
 
-	'HEADER_INFO_DESC_PIXELS'							=> 'Banner Description Size',
-	'HEADER_INFO_DESC_PIXELS_EXPLAIN'			=> 'Sets the number of pixels for banner description.',
+	'HEADER_INFO_DESC_PIXELS'					=> 'Mărime Descriere Banner',
+	'HEADER_INFO_DESC_PIXELS_EXPLAIN'		=> 'Setează numărul de pixeli pt descriere banner.',
 
-	'HEADER_INFO_LONGDESC'								=> 'Long Description',
-	'HEADER_INFO_LONGDESC_EXPLAIN'				=> 'Long description of new header info item. The description will appear in the header info tooltip when you navigate with the mouse above. Note: Maximum 255 characters',
+	'HEADER_INFO_LONGDESC'								=> 'Descriere Lungă',
+	'HEADER_INFO_LONGDESC_EXPLAIN'				=> 'Descriere Lungă a noului item header info. Descrierea va apărea în tooltipul header info când navigaţi cu miceul deoasupra. Notează: Maximum 255 caractere',
 
-	'HEADER_INFO_FORUM_DESC'						=> 'Note: already added forums are disabled. Edit the entry instead.',
-	'CLICK_TO_SELECT'									=> 'Click in the box to select a colour',
+	'HEADER_INFO_FORUM_DESC'						=> 'Notează: Deja adăugat forums este dezactivat. Modifică înschimb intrarea.',
+	'CLICK_TO_SELECT'									=> 'Click în boxă să selectezi o culoare.',
 
-	'USE_EXTENED_SITE_DESC'							=> 'Use extended site description',
-	'USE_EXTENED_SITE_DESC_EXPLAIN'			=> 'Use the standard site description with this header info item.<br /><strong>Note: This will disable the above description and the language directory selected, and so they will have no affect if this <em>extended site description</em> has been selected.</strong> ',
+	'USE_EXTENED_SITE_DESC'							=> 'Foloseşte descriere sit extinsă.',
+	'USE_EXTENED_SITE_DESC_EXPLAIN'			=> 'Foloseşte descrierea sitului standard cu acest item header info.<br /><strong>Notează: Aceasta va dizactiva descrierea de mai sus şi filierul de limbei selectate, şi aşa ele nu vor avea deloc effect dacă această <em>descriere extinsă a sitului</em> a fost selectată.</strong> ',
 
-	'HEADER_INFO_RADIUS'								=> 'Header info banner\'s border radius',
-	'HEADER_INFO_RADIUS_EXPLAIN'				=> 'Sets the number of pixels for rounding the header info banner\'s corners. Setting this to 0 means that the banner will have square corners.',
+	'HEADER_INFO_RADIUS'								=> 'Bordură Radius Banner din header info.',
+	'HEADER_INFO_RADIUS_EXPLAIN'				=> 'Setează numărul de pixeli pt rotunjire de colţuri banner header info. Setarea acesteia la 0 însemnă căci bannerul va avea colţuri drepte.',
 
-	'HEADER_INFO_PIXELS'								=> 'Header info logo\'s radius',
-	'HEADER_INFO_PIXELS_EXPLAIN'					=> 'Sets the number of pixels for rounding the header info logo\'s corners.<br /><em>The default for prosilver is 7px.</em>',
+	'HEADER_INFO_PIXELS'								=> 'Bordură Radius Logo',
+	'HEADER_INFO_PIXELS_EXPLAIN'					=> 'Setează numărul de pixeli pt rotunjire de colţuri logo header info.<br /><em>Implicit pt prosilver este 7px.</em>',
 
-	'HEADER_INFO_LEFT'								=> 'Header info banner\'s left corners',
-	'HEADER_INFO_LEFT_EXPLAIN'				=> 'Round the left side corners to match the header banner.',
+	'HEADER_INFO_LEFT'								=> 'Bordură Radius Banner colţuri stânga',
+	'HEADER_INFO_LEFT_EXPLAIN'				=> 'Rounjeşte partea stângă a colţurilor să se potrivească cu bannerul header info.',
 	
-	'HEADER_INFO_RIGHT'							=> 'Header info banner\'s right corners',
-	'HEADER_INFO_RIGHT_EXPLAIN'				=> 'Round the right side corners to match the header banner.',
+	'HEADER_INFO_RIGHT'							=> 'Bordură Radius Banner colţuri dreapta',
+	'HEADER_INFO_RIGHT_EXPLAIN'				=> 'Rounjeşte partea dreaptă a colţurilor să se potrivească cu bannerul header info.',
 	
-	'HEADER_INFO_TITLE_COLOUR'					=> 'Header info title colour inside logo or banner.',
-	'HEADER_INFO_TITLE_COLOUR_EXPLAIN'		=> 'Select a colour for the header info title text.<br />Setting this option will apply, where possible, the same gradient offsets to the inner background colour that are used in “prosilver”.<br /><em>Default = #12A3EB</em>',
+	'HEADER_INFO_TITLE_COLOUR'					=> 'Culoare Titlu întru logo ori banner.',
+	'HEADER_INFO_TITLE_COLOUR_EXPLAIN'		=> 'Selectează o culoare pt textul titlului.<br />Setarea acestei opţiuni va aplica, unde-i posibil, acelaşi offset gradient coloare fundal interior care este folosită în “prosilver”.<br /><em>Default = #12A3EB</em>',
 
-	'HEADER_INFO_DESC_COLOUR'					=> 'Header info description colour inside logo or banner.',
-	'HEADER_INFO_DESC_COLOUR_EXPLAIN'		=> 'Select a colour for the header info description text.<br />Setting this option will apply, where possible, the same gradient offsets to the text colour that are used in “prosilver”.<br /><em>Default = #000000</em>',
+	'HEADER_INFO_DESC_COLOUR'					=> 'Culoare Descriere întru logo ori banner.',
+	'HEADER_INFO_DESC_COLOUR_EXPLAIN'		=> 'Selectează o culoare pt textul descrierii.<br />Setarea acestei opţiuni va aplica, unde-i acelaşi offset gradient coloare fundal interior care este folosită în “prosilver”.<br /><em>Default = #000000</em>',
 
-	'HEADER_INFO_OPTIONS'							=> 'Header options',
+	'HEADER_INFO_OPTIONS'							=> 'Opţiuni Antet ori Header',
 	
-	'FILE_NOT_EXISTS'										=> 'This file dos not exist.',
+	'FILE_NOT_EXISTS'									=> 'Fişierul nu există.',
 	
-	'HEADER_INFO_URL'									=> 'URL',
-	'HEADER_INFO_URL_EXPLAIN'						=> 'Enter the URL of the header info, If you want the internal and external links to be recognized automatically.',
+	'HEADER_INFO_URL'									=> 'URL Link',
+	'HEADER_INFO_URL_EXPLAIN'					=> 'Introdu URL-ul pt info antet, Dacă vrei ca legăturile interne şi externe să fie recunoscute în mod automat.',
 
-	'HEADER_INFO_IMAGE'								=> 'Image',
-	'HEADER_INFO_IMAGE_EXPLAIN'					=> 'URL of image of header info banner. For a correct visual insert images of size <strong>458x50px</strong>. Header banners can be uploaded to the images/banners folder.',
+	'HEADER_INFO_IMAGE'								=> 'URL Imagine',
+	'HEADER_INFO_IMAGE_EXPLAIN'				=> 'URL pt imaginea bannerului antetului. Pentru afişarea vizuală corectă introdu imagini de mărime <strong>458x50px</strong>. Banerele pe antet pot fi uploadate în folderul images/banners.',
 
-	'HEADER_INFO_NAME_B'								=> 'Name or description of the header info',
+	'HEADER_INFO_NAME_B'							=> 'Name or description of the header info',
 	'HEADER_INFO_IMAGE_B'							=> 'Image of the header info',
 	'HEADER_INFO_URL_B'								=> 'URL of the header info',
 
-	'HEADER_INFO_COPYRIGHT'					        => '<strong>Extension Custom Header Info by <a href="http://mxpcms.sf.net/">orynider</a></strong>',
-	'HEADER_INFO_ADDED'							        => 'New header Info has been added!',
-	'HEADER_INFO_UDPATED'						        => 'Header has been updated!',
+	'HEADER_INFO_COPYRIGHT'						=> '<strong>Extensia Custom Header Info de <a href="http://mxpcms.sf.net/">orynider</a></strong>',
+	'HEADER_INFO_ADDED'							=> 'Nou info a fost adăugat în antet!',
+	'HEADER_INFO_UDPATED'						=> 'Antetul a fost actualizat!',
 
-	'HEADER_INFO_NAVBAR'							=> 'Header Info BreadCrumbs after (1)',
-	'HEADER_INFO_SEARCHBOX'						=> 'Header Info SearchBox before (2)',
-	'HEADER_INFO_HEADER'								=> 'Header Info HeaderBar after (4)',
-	'HEADER_INFO_INDEX'								=> 'Header Info PageBody before (3)',
-	'HEADER_INFO_POSITION'							=> 'Header Info Custom Position',
-	'HEADER_INFO_POSITION_EXPLAIN'				=> 'Do you want to show the Custom Header Info in the NavBar or Header?',
-	'HEADER_INFO_ENABLE'								=> 'Header Info Page Header before (0)',
-	'HEADER_INFO_ENABLE_EXPLAIN'				=> 'Enable Custom Header Info in overall board.',
+	'HEADER_INFO_NAVBAR'							=> 'După Header Info BreadCrumbs (1)',
+	'HEADER_INFO_SEARCHBOX'						=> 'Înainte de Header Info SearchBox (2)',
+	'HEADER_INFO_HEADER'								=> 'După Header Info HeaderBar (4)',
+	'HEADER_INFO_INDEX'								=> 'Înainte de Header Info PageBody (3)',
+	'HEADER_INFO_POSITION'							=> 'Poziţie Personalizată Header Info',
+	'HEADER_INFO_POSITION_EXPLAIN'				=> 'Vrei să afişiezi Custom Header Info în NavBar ori HeaderBar, etc.?',
+	'HEADER_INFO_ENABLE'								=> 'Înainte de Header Info PageHeader (0)',
+	'HEADER_INFO_ENABLE_EXPLAIN'				=> 'Activează Custom Header Info în overall board.',
 
-	'THUMB_CACHE'												=> 'Use thumbnail cache',
-	'THUMB_CACHE_EXPLAIN'									=> 'Enable caching of thumbnail. If you use the Thumbnail Cache feature you must clear your thumbnail cache after editing your banners to make them re-generated.',
+	'THUMB_CACHE'												=> 'Foloseşte thumbnail cache',
+	'THUMB_CACHE_EXPLAIN'									=> 'Activează caşul pt thumbnail. Dacă foloseşti facilitatea Thumbnail Cache trebuie să cureţi caşul miniaturei thumbnail după ce editezi bannerele tale să le re-genererezi.',
 
-	'HEADER_INFO_PIC_WIDTH'									=> 'Width (pixel)',
-	'HEADER_INFO_PIC_WIDTH_EXPLAIN'					=> 'Choose the width of the banner.',
+	'HEADER_INFO_PIC_WIDTH'									=> 'Lăţime (pixeli)',
+	'HEADER_INFO_PIC_WIDTH_EXPLAIN'					=> 'Alege lăţimea banerului.',
 
-	'HEADER_INFO_PIC_HEIGHT'							=> 'Height (pixel)',
-	'HEADER_INFO_PIC_HEIGHT_EXPLAIN'				=> 'Choose the height of the banner.',
+	'HEADER_INFO_PIC_HEIGHT'							=> 'Înălţime (pixeli)',
+	'HEADER_INFO_PIC_HEIGHT_EXPLAIN'				=> 'Alege înălţimea banerului.',
 
-	'HEADER_INFO_LICENSE'									=> 'License',
-	'HEADER_INFO_LICENSE_EXPLAIN'					=> 'This is the license type and version a user or developer must agree to download and use a banner or a text from the header.',
+	'HEADER_INFO_LICENSE'									=> 'Licenţă',
+	'HEADER_INFO_LICENSE_EXPLAIN'					=> 'Aceasta este tipul de licenţă cu care un utilizator oru dezvoltator trebuie să fie de acord să descarce şi folosească un baner ori anumit text din antet.',
 
-	'HEADER_INFO_PINNED'								=> 'Pin Info',
-	'HEADER_INFO_PINNED_EXPLAIN'				=> 'Choose if you want the file pinned or not. Pinned files will always be shown at the top of the file list.',
+	'HEADER_INFO_PINNED'								=> 'Info Prioritate',
+	'HEADER_INFO_PINNED_EXPLAIN'				=> 'Alege dacă vrei ca banerul să fie ori nu prioritar. Cele prioritare vor fi afişate în susul listei.',
 
-	'HEADER_INFO_DISABLE'							=> 'Disable item display',
-	'HEADER_INFO_DISABLE_EXPLAIN'			=> 'This setting makes the item disabled, but still visible. A message informs the user this item or the item url link is not available at the moment.',
+	'HEADER_INFO_DISABLE'							=> 'Dezactivează afişare item',
+	'HEADER_INFO_DISABLE_EXPLAIN'			=> 'Această setare dezactivează un item (imagine ori text), însă însă este vizibilă. Un mesaj informează utilizatorul că acesta ori linkul url nu este disponibil la momentul acesta.',
 
-	'HEADER_INFO_CONF_UDPATED'			    => 'Custom Header Info configuration was succesfully updated.',
-	'HEADER_INFO_ERROR'				            => 'Custom Header Info configuration settings update error.',
+	'HEADER_INFO_CONF_UDPATED'				=> 'Configurarea pt Custom Header Info a fost actualizată cu succes.',
+	'HEADER_INFO_ERROR'								=> 'Eroare de actualizare pt setările cofigurării Custom Header Info.',
 
-	'MODULE_NAME'									=> 'Database Name',
-	'MODULE_NAME_EXPLAIN'						=> 'This is the name of the database, such as \'Custom Header Info\'',
+	'MODULE_NAME'										=> 'Nume Bază de Date',
+	'MODULE_NAME_EXPLAIN'						=> 'Acesta este numele bazei de date, de genul \'Custom Header Info\'',
 
-	'HEADER_INFO_LINK'								=> 'Allow Links',
-	'HEADER_INFO_LINKS_MESSAGE'				=> 'Default \'No Links\' Message',
-	'HEADER_INFO_LINKS_EXPLAIN'				=> 'If links are not allowed this text will be displayed instead',
+	'HEADER_INFO_LINK'								=> 'Permite Legături',
+	'HEADER_INFO_LINKS_MESSAGE'				=> 'Implicit Mesajul \'Fără Legături\'',
+	'HEADER_INFO_LINKS_EXPLAIN'				=> 'Facă legăturile nu sunt permise acest text inloc va fi afişat',
 
-	'WYSIWYG_PATH'								=> 'Path to WYSIWYG software',
-	'WYSIWYG_PATH_EXPLAIN'					=> 'This is the path (from MX-Publisher/phpBB root) to the WYSIWYG software folder, eg \'assets/javascript/\' if you have uploaded, for example, TinyMCE in assets/javascript/tinymce.',
+	'WYSIWYG_PATH'									=> 'Cale spre soft WYSIWYG',
+	'WYSIWYG_PATH_EXPLAIN'					=> 'Aceasta este calea (din MXP/phpBB root) spre folderul softului WYSIWYG, ex \'assets/javascript/\' dacă ai uploadat, de exemplu, TinyMCE în assets/javascript/tinymce.',
 
-	'HEADER_INFO_TYPE'							=> 'default language category',
-	'HEADER_INFO_TYPE_EXPLAIN'			=> 'Select default language category for Your banner or header info.',
+	'HEADER_INFO_TYPE'							=> 'Categorie multilingvistică implicită.',
+	'HEADER_INFO_TYPE_EXPLAIN'				=> 'Selectează categoria mutilingvistică implicită pentru textul banerului ori info antet. Fiecare categorie mutilingvistică este un folder în directorul language al extensiei şi are un fişier common.php înăuntru cu textul înmânat ca imagine în miniatura thumnail sau ca text în banner.',
+	
+	'MULTI_LANGUAGE_BANNER'				=> 'Baner Multilingvistic',
+	'HTML_MULTI_LANGUAGE_TEXT'			=> 'Text Html Multilingvistic',
+	'SIMPLE_DB_TEXT'									=> 'Simplu Text BD',
+	'SIMPLE_BG_LOGO'								=> 'Simplu Logo Fundal',
 
-	'MULTI_LANGUAGE_BANNER'		        => 'Multi Language Banner',
-	'HTML_MULTI_LANGUAGE_TEXT'	        => 'Html Multi Language Text',
-	'SIMPLE_DB_TEXT'						        => 'Simple Database Text',
-	'SIMPLE_BG_LOGO'						        => 'Simple Background Logo',
+	'SP_WATERMARK' 							=> 'Setări WaterMark',
+	'SP_WATERMARK_EXPLAIN'				=> 'Configură un WaterMark de ex. nume de director a categoriei mutilingvistică să fie plasat în baner pe miniatura thumbnail.',
 
-	'SP_WATERMARK' 							=> 'WaterMark Settings',
-	'SP_WATERMARK_EXPLAIN' 			=> 'Configure a WaterMark i.e. the categoty language directory to be placed on the thumbnail banner.',
+	'WATERMARK' 						        => 'Foloseşte WaterMark',
 
-	'WATERMARK' 						        => 'Use WaterMark',
+	'WATERMARK_PLACENT' 				        => 'Poziţia WaterMark pe baner',
+	'WATERMARK_PLACENT_EXPLAIN'	         => 'Selectează poziţia unde să fie plasat WaterMark pe miniatura thumbnail.',
 
-	'WATERMARK_PLACENT' 				        => 'WaterMark position on the banner',
-	'WATERMARK_PLACENT_EXPLAIN'	         => 'Select the position were the WaterMark to be placed on the banner.',
+	'BACKGROUNDS_DIR'								=> 'Director cu imagini de fundal pt Header Info',
+	'BACKGROUNDS_PATH'							=> 'Cale către directorul cu imagini de fundal pt Header Info',
+	'BACKGROUNDS_DIR_EXPLAIN' 				=> 'Cale sub phpBB root directory, de ex. <samp>images/backgrounds</samp>.',
 
-	'BACKGROUNDS_DIR'								=> 'Header\'s Info backgrounds directory.',
-	'BACKGROUNDS_PATH'							=> 'Header\'s Info backgrounds image storage path',
-	'BACKGROUNDS_DIR_EXPLAIN' 				=> 'Path under your phpBB root directory, e.g. <samp>images/backgrounds</samp>.',
+	'HEADER_INFO_DIR'							        => 'Director multilingvistic cu text (informaţii, citate, ş.a.) pt Header Info.',
+	'HEADER_INFO_PATH'								=> 'Cale către director de stocare a text multilingvistic.',
+	'HEADER_INFO_DIR_EXPLAIN'					=> 'Cale sub directorul phpBB root, de ex. <samp>language/politics</samp>.',
 
-	'HEADER_INFO_DIR'							        => 'Header\'s Info language directory.',
-	'HEADER_INFO_PATH'							        => 'Header\'s Info text language storage path.',
-	'HEADER_INFO_DIR_EXPLAIN'				        => 'Path under your phpBB root directory, e.g. <samp>language/politics</samp>.',
+	'HEADER_INFO_FONT'							=> 'Fişier Font pentru textul miniaturii thumbnail al Header\'s Info .',
+	'HEADER_INFO_FONT_EXPLAIN'			=> 'Selectează nume font pentru extensie stocate în \'assets/fonts\', de ex. <samp>tituscbz</samp>.',
 
-	'HEADER_INFO_FONT'							        => 'Header\'s Info thumbnail banner font file.',
-	'HEADER_INFO_FONT_EXPLAIN'			        => 'Select font name from the extension \'assets/fonts\' root folder, e.g. <samp>tituscbz</samp>.',
+	'BANNERS_DIR'										=> 'Director cu nanere a Header\'s Info.',
+	'BANNERS_PATH'									=> 'Cale spre director cu imagini de baner a Header\'s Info.',
+	'BANNERS_DIR_EXPLAIN'						=> 'Cale sub phpBB root directory, de ex. <samp>images/banners</samp>.',
 
-	'BANNERS_DIR'									        => 'Header\'s Info banners directory.',
-	'BANNERS_PATH'								        => 'Header\'s Info banners image storage path.',
-	'BANNERS_DIR_EXPLAIN'						        => 'Path under your phpBB root directory, e.g. <samp>images/banners</samp>.',
+	'ACP_NO_HEADER_INFO'						=> 'Nu există niciun item.',
+  
+	'ACL_A_HEADER_INFO'							=> 'Poate adminitra Custom Header Info.',
 
-	'ACP_NO_HEADER_INFO'                                 => 'There is no custom header info.',
-    //Add permissions acp	
-	'ACL_A_HEADER_INFO'									=> 'Can manage Custom Header Info',
-
-	'SHOW_AMOUNT'											=> 'Minimum items to show',
-	'SHOW_AMOUNT_EXPLAIN'								=> 'Minimum items to query for display in header info.',
+	'SHOW_AMOUNT'								=> 'Itemuri minime de afişat.',
+	'SHOW_AMOUNT_EXPLAIN'					=> 'Itemuri minime de interogat pentru afişare în header info.',
 ));

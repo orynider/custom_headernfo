@@ -23,13 +23,7 @@ if (empty($lang) || !is_array($lang))
 {
 	$lang = array();
 }
-/*
-* Note that You should also activate every language also uploaded in the main phpBB/language directory. 
-* 
- To Do: We should think on a dedicated directory for multilangual files such as 'multilang' 
-			for the files we are currently storing in language subdirectories from were we can import 
-			or export using a ACP feature all the keys and values using DB table as FAQ Manager does.
-*/
+
 $lang = array_merge($lang, array(
 	'Genesys 1:1'	=> 'In beginning created Gods all the heavens and all the earth.',
 	'Exodus 33:20'	=> 'And to say, You dont grab to see even My face because cant stare Me the man and live.',

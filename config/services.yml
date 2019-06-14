@@ -19,7 +19,6 @@ services:
             - '%core.root_path%' 
             - '%orynider.customheadernfo.table.custom_header_info%'
             - '%orynider.customheadernfo.table.custom_header_info_config%'
-            - '@language'			
             - '@?phpbb.collapsiblecategories.operator'            
         tags:
             - { name: event.listener }
@@ -41,7 +40,6 @@ services:
             - '%orynider.customheadernfo.table.custom_header_info%'
             - '%orynider.customheadernfo.table.custom_header_info_config%'
             - '@?files.factory'
-            - '@config'
     orynider.customheadernfo.controller.thumbnail:
         class: orynider\customheadernfo\controller\thumbnail
         arguments:

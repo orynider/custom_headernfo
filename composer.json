@@ -1,39 +1,50 @@
 {
-	"name": "orynider/customheadernfo",
-	"type": "phpbb-extension",
-	"description": "This extension allows you to insert custom text in the header bar. Fully configurable from ACP.",
-	"homepage": "https://github.com/orynider/customheadernfo",
-	"version": "1.0.0",
-	"time": "2019-04-10",
-	"keywords": ["phpbb", "extension", "custom", "header"],
-	"license": "GPL-2.0-only",
-	"authors": [
-		{
-			"name": "FlorinCB",
-			"email": "orynider@users.sourceforge.net",
-			"homepage": "http://mxpcms.sourceforge.net",
-			"role": "Extension Developer"
-		},
-		{
-			"name": "Galandas",
-			"email": "manzarek@live.it",
-			"homepage": "http://phpbb3world.altervista.org",
-			"role": "Credit to the author of bannerscroll phpBB extension"
-		}
-	],
-	"require": {
-		"php": ">=5.4.0",
-		"ext-mbstring": "*",
-		"ext-gd2": "*",
-		"composer/installers": "~1.0"
-	},
+    "name": "orynider/customheadernfo",
+    "type": "phpbb-extension",
+    "description": "This extension allows you to insert custom text in the header bar. Fully configurable from ACP.",
+    "homepage": "https://github.com/orynider/customheadernfo",
+    "version": "1.0.0",
+    "time": "2019-04-10",
+    "keywords": [
+        "phpbb",
+        "extension",
+        "custom",
+        "header"
+    ],
+    "license": "GPL-2.0-only",
+    "authors": [
+        {
+            "name": "FlorinCB",
+            "email": "orynider@users.sourceforge.net",
+            "homepage": "http://mxpcms.sourceforge.net",
+            "role": "Extension Developer"
+        },
+        {
+            "name": "Galandas",
+            "email": "manzarek@live.it",
+            "homepage": "http://phpbb3world.altervista.org",
+            "role": "Credit to the author of bannerscroll phpBB extension"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "ext-mbstring": "*",
+        "ext-gd2": "*",
+        "composer/installers": "~1.0.0",
+        "phpbb/phpbb": ">=3.2.0"
+    },
     "suggest": {
         "phpbb/collapsiblecategories": ""
     },
-	"extra": {
-		"display-name": "Custom Header Info",
-		"soft-require": {
-			"phpbb/phpbb": ">=3.2.0"
-		}
-	}
+    "extra": {
+        "display-name": "Custom Header Info",
+        "soft-require": {
+            "phpbb/phpbb": ">=3.2.0"
+        },
+        "version-check": {
+            "host": "www.phpbb.com",
+            "directory": "/customise/db/extension/custom_header_nfo",
+            "filename": "version_check"
+        }
+    }
 }

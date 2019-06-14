@@ -25,6 +25,7 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 	 */
 	static public function depends_on()
 	{
+		//return array('\phpbb\db\migration\data\v31x\v314');
 		return array('\phpbb\db\migration\data\v320\v320');
 	}
 
@@ -101,8 +102,8 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 		return array(
 			
 			// Add configs
-			array('config.add', array('header_info_enable', '0')),
-			array('config.add', array('header_info_version', '1.0.0')),
+			array('config.add', array('header_info_enable', 0)),
+			array('config.add', array('header_info_version', '0.8.9')),
 			
 			// Add permissions
 			array('permission.add', array('a_headernfo_use', true)),
@@ -183,6 +184,34 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 
 		return $role_id;
 	}
+	
+	/**
+	* Set config value. Creates missing config entry.
+	* Only use this if your config value might exceed 255 characters, otherwise please use set_config
+	*
+	* @param string $config_name Name of config entry to add or update
+	* @param mixed $config_value Value of config entry to add or update
+	*/
+	private function set_customheadernfo_config($config_name, $config_value, $use_cache = true)
+	{
+		// Read out config values
+		$customheadernfo_config = $this->config_values();
+
+		$sql = 'UPDATE ' . $this->table_prefix . "custom_header_info_config
+			SET config_value = '" . $this->db->sql_escape($config_value) . "'
+			WHERE config_name = '" . $this->db->sql_escape($config_name) . "'";
+		$this->db->sql_query($sql);
+
+		if (!$this->db->sql_affectedrows() && !isset($customheadernfo_config[$config_name]))
+		{
+			$sql = 'INSERT INTO ' . $this->table_prefix . 'custom_header_info_config ' . $this->db->sql_build_array('INSERT', array(
+				'config_name'	=> $config_name,
+				'config_value'	=> $config_value));
+			$this->db->sql_query($sql);
+		}
+
+		$this->customheadernfo_config[$config_name] = $config_value;
+	}
 
 	/**
 	* install config values. 	
@@ -195,15 +224,16 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 		foreach (self::$configs as $key => $new_value)
 		{
 			// Read out old config db values
-			$value = isset($customheadernfo_config[$key]) ? $customheadernfo_config[$key] : $new_value;
-		
-			$sql = "";
-			if ($value !== false)
+			$old_value = !isset($customheadernfo_config[$key]) ? $customheadernfo_config[$key] : false;
+			// We keep out old config db values
+			//$new_value = !isset($customheadernfo_config[$key]) ? $customheadernfo_config[$key] : $new_value;		
+			
+			if ($old_value !== false)
 			{
-				$sql .= " AND config_value = '" . $this->db->sql_escape($value) . "'";
+				$sql .= " AND config_value = '" . $this->db->sql_escape($old_value) . "'";
 			}
 		
-			if (isset(self::$is_dynamic[$key]))
+			if (isset(self::$is_dynamic[$config_name]))
 			{
 				$use_cache  = true;
 			}
@@ -215,18 +245,18 @@ class db_install extends \phpbb\db\migration\container_aware_migration
 			if (isset($customheadernfo_config[$key]))
 			{
 				$sql = 'UPDATE ' . $this->custom_header_info_config_table . "
-					SET config_value = '" . $this->db->sql_escape($value) . "'
+					SET config_value = '" . $this->db->sql_escape($new_value) . "'
 					WHERE config_name = '" . $this->db->sql_escape($key) . "'";
 			}
 			else
 			{
 				$sql = 'INSERT INTO ' . $this->custom_header_info_config_table . ' ' . $this->db->sql_build_array('INSERT', array(
 					'config_name'	=> $key,
-					'config_value'	=> $value,
+					'config_value'	=> $new_value,
 					'is_dynamic'	=> ($use_cache) ? 0 : 1));
 			}
 			$this->db->sql_query($sql);
-			$this->customheadernfo_config[$key] = $customheadernfo_config[$key] = $value;
+			$this->customheadernfo_config[$key] = $customheadernfo_config[$key] = $new_value;
 		}
 		return true;
 	}

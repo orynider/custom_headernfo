@@ -22,53 +22,50 @@ if (empty($lang) || !is_array($lang))
 }
 
 $lang = array_merge($lang, array(
-	'ACP_HEADER_INFO_TITLE'						=> 'Custom Header Info',
-    'ACP_HEADER_INFO_CONFIG'					=> 'Header Info Configuration',
-	'ACP_MANAGE_CONFIG'							=> 'Configuration',
-	'ACP_MANAGE_FORUMS'									=> 'Forumuri',
-	'ACP_MANAGE_PAGES'									=> 'Pagini',
+	'ACP_HEADER_INFO_TITLE'					=> 'Custom Header Info',
+    'ACP_HEADER_INFO_CONFIG'				=> 'Custom Header Info Configuration Settings',	
+	'ACP_MANAGE_CONFIG'						=> 'Manage Configuration Settings',
 	
-	'ACP_MANAGE_FORUMS'							=> 'Forums',
-	'ACP_MANAGE_PAGES'								=> 'Pages',
-	'ACP_NO_BANNER'									=> 'No Banner',
+	'ACP_MANAGE_FORUMS'						=> 'Forums',
+	'ACP_MANAGE_PAGES'							=> 'Pages',
+	'ACP_NO_BANNER'								=> 'No Banner',
 	
-	'HEADER_INFO_INTRO'								=> 'This is configuration page for the Custom Header Info Extension by orynider.',
+	'HEADER_INFO_INTRO'							=> 'This is configuration page for the Custom Header Info Extension by orynider.',
+	'HEADER_INFO_DONATE'						=> '<a href="https://www.paypal.me/orynider"><strong>Donate</strong></a>',
+	'HEADER_INFO_DONATE_EXPLAIN'		=> 'If you like this extension considers a donation',
 
-	'HEADER_INFO_DONATE'				           => '<a href="https://www.paypal.me/orynider"><strong>Donate</strong></a>',
-	'HEADER_INFO_DONATE_EXPLAIN'	       => 'If you like this extension considers a donation',
+	'HEADER_INFO_VERSION'						=> 'Version',
+ 	'HEADER_INFO_CHECK'							=> 'Check Manually at <a href="http://mxpcms.sf.net/forum/index.php"><strong>Forum Home</strong></a>',
+	'HEADER_INFO_EDIT'							=> 'Edit header info item to database.',
 
-	'HEADER_INFO_VERSION'							=> 'Version',
- 	'HEADER_INFO_CHECK'								=> 'Check Manually at <a href="http://mxpcms.sf.net/forum/index.php"><strong>Forum Home</strong></a>',
-	'HEADER_INFO_EDIT'								=> 'Edit header info item to database.',
-
-	'ROW_HEIGHT'											=> 'Height of each ticker row in PX',
-	'ROW_HEIGHT_EXPLAIN'							=> 'Each banner is loaded in in the info ticker as a row using this JavaScript aplication. Height of each ticker row should be uniform.',
+	'ROW_HEIGHT'										=> 'Height of each ticker row in PX',
+	'ROW_HEIGHT_EXPLAIN'						=> 'Each banner is loaded in in the info ticker as a row using this JavaScript aplication. Height of each ticker row should be uniform.',
 	
 	'THUMBNAIL_FONT_DADABASE_ERROR_FOR_ID'	=> 'Thumbnail font dadabase error for id. <br />Edit the banner in ACP and reselect a font uploaded with the font css files.',
 	
-	'SPEED'														=> 'Speed of transition animation in milliseconds',
-	'SPEED_EXPLAIN'										=> 'Speed of transition animation between banner scrolling in the info ticker.',
+	'SPEED'													=> 'Speed of transition animation in milliseconds',
+	'SPEED_EXPLAIN'									=> 'Speed of transition animation between banner scrolling in the info ticker.',
 
-	'INTERVAL'												=> 'Time between change in milliseconds',
-	'INTERVAL_EXPLAIN'									=> 'Time to read the info before scrolling the ticker.',
+	'INTERVAL'											=> 'Time between change in milliseconds',
+	'INTERVAL_EXPLAIN'								=> 'Time to read the info before scrolling the ticker.',
 
-	'MOUSESTOP'											=> 'Stop on mouseover the ticker',
-	'MOUSESTOP_EXPLAIN'							=> 'If set to true, the ticker will stop on mouseover.',
+	'MOUSESTOP'										=> 'Stop on mouseover the ticker',
+	'MOUSESTOP_EXPLAIN'						=> 'If set to true, the ticker will stop on mouseover.',
 
-	'INFO_DIRECTION'									=> 'The scrolling direction',
-	'INFO_DIRECTION_EXPLAIN'						=> 'Direction in witch the list will scroll. That is up or down.',
+	'INFO_DIRECTION'								=> 'The scrolling direction',
+	'INFO_DIRECTION_EXPLAIN'					=> 'Direction in witch the list will scroll. That is up or down.',
 
-	'HEADER_INFO_EDIT'								=> 'Edit header info item to database',
-	'HEADER_INFO_ADD'								=> 'Add header info item to database.',
+	'HEADER_INFO_EDIT'							=> 'Edit header info item to database',
+	'HEADER_INFO_ADD'							=> 'Add header info item to database.',
 
-	'HEADER_INFO_NAME'								=> 'Banner Title Name',
-	'HEADER_INFO_NAME_EXPLAIN'				=> 'Title of new header info item. The title will appear in the header_info tooltip when you navigate with the mouse above.',
+	'HEADER_INFO_NAME'							=> 'Banner Title Name',
+	'HEADER_INFO_NAME_EXPLAIN'			=> 'Title of new header info item. The title will appear in the header_info tooltip when you navigate with the mouse above.',
 
 	'HEADER_INFO_TITLE_PIXELS'					=> 'Banner Title Size',
 	'HEADER_INFO_TITLE_PIXELS_EXPLAIN'		=> 'Sets the number of pixels for banner title.<br /><em>The default for prosilver is 12px.</em>',
 
-	'HEADER_INFO_DESC'								=> 'Short Description',
-	'HEADER_INFO_DESC_EXPLAIN'				=> 'Short description of new header info item. The description will appear in the header info tooltip when you navigate with the mouse above.',
+	'HEADER_INFO_DESC'							=> 'Short Description',
+	'HEADER_INFO_DESC_EXPLAIN'			=> 'Short description of new header info item. The description will appear in the header info tooltip when you navigate with the mouse above.',
 
 	'HEADER_INFO_DESC_PIXELS'					=> 'Banner Description Size',
 	'HEADER_INFO_DESC_PIXELS_EXPLAIN'		=> 'Sets the number of pixels for banner description.',
@@ -140,59 +137,59 @@ $lang = array_merge($lang, array(
 	'HEADER_INFO_LICENSE_EXPLAIN'			=> 'This is the license type and version a user or developer must agree to download and use a banner or a text from the header.',
 
 	'HEADER_INFO_PINNED'							=> 'Pin Info',
-	'HEADER_INFO_PINNED_EXPLAIN'			=> 'Choose if you want the file pinned or not. Pinned files will always be shown at the top of the file list.',
+	'HEADER_INFO_PINNED_EXPLAIN'			=> 'Choose if you want the banner pinned or not. The pinned will always be shown at the top of the list.',
 
 	'HEADER_INFO_DISABLE'							=> 'Disable item display',
 	'HEADER_INFO_DISABLE_EXPLAIN'			=> 'This setting makes the item disabled, but still visible. A message informs the user this item or the item url link is not available at the moment.',
 
-	'HEADER_INFO_CONF_UDPATED'			    => 'Custom Header Info configuration was succesfully updated.',
-	'HEADER_INFO_ERROR'				            => 'Custom Header Info configuration settings update error.',
+	'HEADER_INFO_CONF_UDPATED'			=> 'The configuration settings for Custom Header Info was succesfully updated.',
+	'HEADER_INFO_ERROR'							=> 'Custom Header Info configuration settings update error.',
 
 	'MODULE_NAME'									=> 'Database Name',
-	'MODULE_NAME_EXPLAIN'						=> 'This is the name of the database, such as \'Custom Header Info\'',
+	'MODULE_NAME_EXPLAIN'					=> 'This is the name of the database, such as \'Custom Header Info\'',
 
-	'HEADER_INFO_LINK'								=> 'Allow Links',
-	'HEADER_INFO_LINKS_MESSAGE'				=> 'Default \'No Links\' Message',
-	'HEADER_INFO_LINKS_EXPLAIN'				=> 'If links are not allowed this text will be displayed instead',
+	'HEADER_INFO_LINK'							=> 'Allow Links',
+	'HEADER_INFO_LINKS_MESSAGE'			=> 'Default \'No Links\' Message',
+	'HEADER_INFO_LINKS_EXPLAIN'			=> 'If links are not allowed this text will be displayed instead',
 
-	'WYSIWYG_PATH'								=> 'Path to WYSIWYG software',
+	'WYSIWYG_PATH'									=> 'Path to WYSIWYG software',
 	'WYSIWYG_PATH_EXPLAIN'					=> 'This is the path (from MX-Publisher/phpBB root) to the WYSIWYG software folder, eg \'assets/javascript/\' if you have uploaded, for example, TinyMCE in assets/javascript/tinymce.',
 
-	'HEADER_INFO_TYPE'							=> 'default language category',
-	'HEADER_INFO_TYPE_EXPLAIN'			=> 'Select default language category for Your banner or header info.',
+	'HEADER_INFO_TYPE'							=> 'Default mutilingual category.',
+	'HEADER_INFO_TYPE_EXPLAIN'				=> 'Select default mutilingual category for the banner text or header info. Each mutilingual category is a folder in the extension language directory and have a common.php file inside with the text handled as picture in the thumnail or as text în banner.',
 
-	'MULTI_LANGUAGE_BANNER'		        => 'Multi Language Banner',
-	'HTML_MULTI_LANGUAGE_TEXT'	        => 'Html Multi Language Text',
-	'SIMPLE_DB_TEXT'						        => 'Simple Database Text',
+	'MULTI_LANGUAGE_BANNER'		        => 'Multilangual Banner',
+	'HTML_MULTI_LANGUAGE_TEXT'	        => 'Html Multilangual Text',
+	'SIMPLE_DB_TEXT'						        	=> 'Simple Database Text',
 	'SIMPLE_BG_LOGO'						        => 'Simple Background Logo',
 
-	'SP_WATERMARK' 							=> 'WaterMark Settings',
-	'SP_WATERMARK_EXPLAIN' 			=> 'Configure a WaterMark i.e. the categoty language directory to be placed on the thumbnail banner.',
+	'SP_WATERMARK' 								=> 'WaterMark Settings',
+	'SP_WATERMARK_EXPLAIN' 					=> 'Configure a WaterMark i.e. the categoty language directory to be placed în banner on the thumbnail image.',
 
-	'WATERMARK' 						        => 'Use WaterMark',
+	'WATERMARK' 						        		=> 'Use WaterMark',
 
 	'WATERMARK_PLACENT' 				        => 'WaterMark position on the banner',
-	'WATERMARK_PLACENT_EXPLAIN'	         => 'Select the position were the WaterMark to be placed on the banner.',
+	'WATERMARK_PLACENT_EXPLAIN'		=> 'Select the position were the WaterMark to be placed on the banner.',
 
-	'BACKGROUNDS_DIR'								=> 'Header\'s Info backgrounds directory.',
-	'BACKGROUNDS_PATH'							=> 'Header\'s Info backgrounds image storage path',
-	'BACKGROUNDS_DIR_EXPLAIN' 				=> 'Path under your phpBB root directory, e.g. <samp>images/backgrounds</samp>.',
+	'BACKGROUNDS_DIR'							=> 'Header\'s Info backgrounds directory.',
+	'BACKGROUNDS_PATH'						=> 'Header\'s Info backgrounds image storage path',
+	'BACKGROUNDS_DIR_EXPLAIN' 			=> 'Path under your phpBB root directory, e.g. <samp>images/backgrounds</samp>.',
 
-	'HEADER_INFO_DIR'							        => 'Header\'s Info language directory.',
-	'HEADER_INFO_PATH'							        => 'Header\'s Info text language storage path.',
-	'HEADER_INFO_DIR_EXPLAIN'				        => 'Path under your phpBB root directory, e.g. <samp>language/politics</samp>.',
+	'HEADER_INFO_DIR'								=> 'Header\'s Info Multilangual directory.',
+	'HEADER_INFO_PATH'							=> 'Header\'s Info Multilangual text storage path.',
+	'HEADER_INFO_DIR_EXPLAIN'				=> 'Path under your phpBB root directory, e.g. <samp>multilanguage/politics</samp>.',
 
-	'HEADER_INFO_FONT'							        => 'Header\'s Info thumbnail banner font file.',
-	'HEADER_INFO_FONT_EXPLAIN'			        => 'Select font name from the extension \'assets/fonts\' root folder, e.g. <samp>tituscbz</samp>.',
+	'HEADER_INFO_FONT'							=> 'Header\'s Info thumbnail banner font file.',
+	'HEADER_INFO_FONT_EXPLAIN'			=> 'Select font name from the extension \'assets/fonts\' root folder, e.g. <samp>tituscbz</samp>.',
 
-	'BANNERS_DIR'									        => 'Header\'s Info banners directory.',
-	'BANNERS_PATH'								        => 'Header\'s Info banners image storage path.',
-	'BANNERS_DIR_EXPLAIN'						        => 'Path under your phpBB root directory, e.g. <samp>images/banners</samp>.',
+	'BANNERS_DIR'										=> 'Header\'s Info banners directory.',
+	'BANNERS_PATH'									=> 'Header\'s Info banners image storage path.',
+	'BANNERS_DIR_EXPLAIN'						=> 'Path under your phpBB root directory, e.g. <samp>images/banners</samp>.',
 
-	'ACP_NO_HEADER_INFO'                                 => 'There is no custom header info.',
-    //Add permissions acp	
-	'ACL_A_HEADER_INFO'									=> 'Can manage Custom Header Info',
+	'ACP_NO_HEADER_INFO'						=> 'There is no item.',
+    
+	'ACL_A_HEADER_INFO'							=> 'Can manage Custom Header Info',
 
-	'SHOW_AMOUNT'											=> 'Minimum items to show',
-	'SHOW_AMOUNT_EXPLAIN'								=> 'Minimum items to query for display in header info.',
+	'SHOW_AMOUNT'								=> 'Minimum items to show',
+	'SHOW_AMOUNT_EXPLAIN'					=> 'Minimum items to query for display in header info.',
 ));

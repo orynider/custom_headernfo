@@ -70,10 +70,12 @@ $lang = array_merge($lang, array(
 	'Klaus Iohannis ca preşedinte, cu ocazia Zilei Comemorării Victimelor Fascismului şi Comunismului, 23.08.2018.'	=> 'Totalitarismele au distrus statul de drept, au încercat să spulbere libertatea de expresie, au încălcat, în mod flagrant, drepturile şi libertăţile cetăţeneşti, însă nu au reuşit să reprime dorinţa de libertate şi ataşamentul faţă de valorile democratice ale milioanelor de oameni care au crezut cu tărie că aceste regimuri pot fi învinse.',
 	//www.presidency.ro/ro/media/mesaje/mesajul-presedintelui-romaniei-domnul-klaus-iohannis-transmis-in-cadrul-galei-regaseste-romania
 	'Klaus Iohannis ca preşedinte, în cadrul Galei „Regăsește România”, 22.10.2018.'	=> '"Natura, în ansamblul ei, nu trebuie percepută ca un dat definitiv, ci trebuie preţuită şi îngrijită continuu de către noi toţi.."',
-	'Benjamin Netanyahu, The Times of Israel,17 May 2015.'	=> '"There is no room for racism and discrimination in our society, none... We will turn racism into something contemptible and despicable."',
+	'Benjamin Netanyahu, The Times of Israel, 17 May 2015.'	=> '"There is no room for racism and discrimination in our society, none... We will turn racism into something contemptible and despicable."',
 	//www.gov.il/he/departments/news/speechcong030315
-	'03.03.20, ISIS בִּנְיָמִין נְתַנְיָהוּ‬ על'	=> '"במשחקי כס קטלניים אלה, אין כל מקום לאמריקה או לישראל, אין כל שלום לנוצרים, יהודים או מוסלמים שאינם חולקים את אותה אמונה אסלאמיסטית ימי ביניימית, אין כל זכויות לנשים ואין כל חירות לאיש. לכן, ככל שהדבר נוגע לאיראן ודאע"ש, האויב של האויב שלך הוא האויב שלך."',
+	'03.03.2015, ISIS בִּנְיָמִין נְתַנְיָהוּ‬ על'	=> '"במשחקי כס קטלניים אלה, אין כל מקום לאמריקה או לישראל, אין כל שלום לנוצרים, יהודים או מוסלמים שאינם חולקים את אותה אמונה אסלאמיסטית ימי ביניימית, אין כל זכויות לנשים ואין כל חירות לאיש. לכן, ככל שהדבר נוגע לאיראן ודאע"ש, האויב של האויב שלך הוא האויב שלך."',
 	//www.haaretz.com/transcript-of-netanyahu-speech-1.5343049
-	'Benjamin Netanyahu on Iran\'s Nuclear Weapons, before the UN General Assembly, 01.10.2013.'	=> '“If Israel is forced to stand alone, Israel will stand alone. Yet, in standing alone, Israel will know that we will be defending many, many others.”',
-	'Benjamin Netanyahu vowed, “as PM of Israel in a speech before a joint session of US Congress, 03.03.2015.'	=> '“Even if Israel has to stand alone, Israel will stand. But I know that Israel does not stand alone, I know that America stands with Israel, I know that you stand with Israel.”',
+	' בִּנְיָמִין נְתַנְיָהוּ‬ כראש הממשלה מעל במת האו"ם ב־1 באוקטובר 2'	=> '“.אם ישראל תיאלץ לעמוד לבדה – היא תעמוד לבדה, אבל בכך שנעמוד לבד נדע שאנחנו מצילים את חייהם של רבים אחרים”',
+	//https://www.israelhayom.co.il/article/263243
+	//https://www.youtube.com/watch?v=dR5fpeEDGmc
+	'03.03.2015, בִּנְיָמִין נְתַנְיָהוּ‬ על אמריקה'	=> '“גם אם ישראל תצטרך לעמוד לבד, היא תעמוד. אך אני יודע שישראל  לא עומדת לבד, אני יודע שאמריקה עומדת לצד ישראל.. אני יודע שכם נשארת עם ישראל.”',
 ));

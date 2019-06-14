@@ -29,7 +29,7 @@ $lang = array_merge($lang, array(
 	'J.R.R. Tolkien, The Hobbit.'	=> '“Where there`s life there`s hope.”',
 	'J.R.R. Tolkien, The Hobbit.'	=> '“In a hole in the ground there lived a hobbit.”',
 	//Credit: Thanks to Laura Formisano at rd.com/quotes
-	'Christofer Lloyd as Dr. Emmeth Brown, Back to Future.'	=> 'Where we are going, we don`t need roads.',
+	'Christofer Lloyd as Dr. Emmeth Brown, Back to Future.'	=> 'לאן אנחנו הולכים, אנחנו לא צריכים כבישים.',
 	'Mae West as Tira, I`m No Angel.'	=> 'Well, it`s not the men in your life that counts, it`s the life in your men.',
 	'Mae West as Lady Lou, She Done Him Wrong.'	=> '“Why don`t you come up sometime and see me?”',
 	'Robert Armstrong as Carl Denham, King Kong.'	=> '“Oh, no, it wasn`t the airplanes. It was Beauty killed the Beast.”',
@@ -37,7 +37,7 @@ $lang = array_merge($lang, array(
 	'קלינט איסטווד כא הארי קאלאן,מכת פתע'	=> '“קדימה, תעשה לי את היום.”',
 	'Harrison Ford as Indiana Jones, Raiders of the Lost Ark.'	=> '“It`s not the years, honey. It`s the mileage.”',
 	'Judy Garland as Dorothy Gale, The Wizard of Oz.'	=> '“There`s no place like home.”',
-	'Matthew Broderick as Ferris Bueller, Ferris Bueller`s Day Off.'	=> '“Life moves pretty fast.     	    	    	If you don`t stop and look around once in a while, you could miss it.”',
+	'Matthew Broderick as Ferris Bueller, Ferris Bueller`s Day Off.'	=> '“Life moves pretty fast. 	If you don`t stop and look around once in a while, you could miss it.”',
 	'Humphrey Bogart as Rick Blaine, Casablanca.'	=> '“We`ll always have Paris.”',
 	'Christian Bale as Batman, Batman Begins.'	=> '“It`s not who I am underneath but what I do that defines me.”',
 	'Tim Robbins as Andy Dufresne, The Shawshank Redemption.'	=> '“Get busy living or get busy dying.”',
@@ -70,9 +70,9 @@ $lang = array_merge($lang, array(
 	'Frank Oz as Yoda, Star Wars Episode V: The Empire Strikes Back.'	=> '“Luminous beings are we, not this crude matter.”',
 	'Sir Alec Guinness as Obi-Wan Kenobi, Star Wars Episode IV: A New Hope.'	=> '“In my experience, there`s no such thing as luck.”',
 	'Harrison Ford as Han Solo, Star Wars Episode V: The Empire Strikes Back.'	=> '“Never tell me the odds.”',
-	'Frank Oz as Yoda, Star Wars Episode V: The Empire Strikes Back.'	=> '“Once you start down the dark path, forever will it dominate your destiny.”',
-	'Frank Oz as Yoda, Wars Episode I: The Phantom Menace.'	=> '“Fear leads to anger, anger leads to hate, hate leads to suffering.”',
-	'Tom Hanks as Jim Lovell, Apollo 13.'	=> '“Houston, we have a problem.”',
-	'Vivien Leigh as Scarlett O`Hara, Gone with the Wind.'	=> '“After all, tomorrow is another day!”',
+	'Frank Oz as Yoda, Star Wars Episode V: The Empire Strikes Back.'	=> '“ברגע שאתה מתחיל במורד השביל האפל, לנצח זה יהיה להשתלט על הגורל שלך.”',
+	'Frank Oz as Yoda, Wars Episode I: The Phantom Menace.'	=> '“פחד מוביל לכעס. כעס מוביל לשנאה. שנאה מובילה לסבל...”',
+	'Tom Hanks as Jim Lovell, Apollo 13.'	=> '“יוסטון, יש לנו בעיה"',
+	'Vivien Leigh as Scarlett O`Hara, Gone with the Wind.'	=> '"אחרי הכל, מחר יפציע יום חדש."',
 	//Originally Published on https://ro.wikipedia.org/wiki/100_de_ani...100_de_replici_memorabile
 ));
