@@ -4,7 +4,7 @@
 	"description": "This extension allows you to insert custom text in the header bar. Fully configurable from ACP.",
 	"homepage": "https://github.com/orynider/customheadernfo",
 	"version": "1.0.0",
-	"time": "2019-04-10",
+	"time": "2019-12-31",
 	"keywords": ["phpbb", "extension", "custom", "header"],
 	"license": "GPL-2.0-only",
 	"authors": [
@@ -31,7 +31,7 @@
         "phpbb/collapsiblecategories": ""
     },
 	"extra": {
-		"display-name": "Custom Header Info",
+		"display-name": "Custom Header NFO",
 		"soft-require": {
 			"phpbb/phpbb": ">=3.2.0"
 		}
