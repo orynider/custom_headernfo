@@ -25,17 +25,7 @@ class customheadernfo_module
 
 		// Get an instance of the admin controller
 		$admin_controller = $phpbb_container->get('orynider.customheadernfo.controller.admin.controller');
-		
-		/* Requests 
-		To do: We need to split the admin controller in smaller files
-		To do: We need to add action=add or just use action = submit
-		$action = $request->variable('action', '');
-		if ($request->is_set_post('add'))
-		{
-			$action = 'add';
-		}
-		*/
-		
+			
 		// Make the $u_action url available in the admin controller
 		$admin_controller->set_page_url($this->u_action);
 		
@@ -48,10 +38,6 @@ class customheadernfo_module
 				$admin_controller->manage_header_info_config();
 			break;
 			
-			/* Not used atm
-			//To do: We split config in two
-		}
-		*/	
 		}
 	}
 }
