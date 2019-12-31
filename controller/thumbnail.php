@@ -2,8 +2,8 @@
 /**
 *
 * @package phpBB Extension - Custom Header Info
-* @copyright (c) 2018 orynider - http://mxpcms.sourceforge.net
-* @version $Id: thumbnail.php,v 1.5 2008/08/30 22:23:00 orynider Exp
+* @copyright (c) 2019 orynider - http://mxpcms.sourceforge.net
+* @version $Id: thumbnail.php,v 1.6 2019/12/31 22:23:00 orynider Exp
 * @copyright (c) 2002-2006 [Jon Ohlsson, Mohd Basri, wGEric, PHP Arena, pafileDB, Smartor, FlorinCB] MX-Publisher Project Team
 * @license http://opensource.org/licenses/gpl-license.php GNU General Public License v2
 *
@@ -11,7 +11,8 @@
 
 namespace orynider\customheadernfo\controller;
 use orynider\customheadernfo\core\customheadernfo;
-
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 /**
  * Enter description here...
  *
@@ -337,14 +338,11 @@ class thumbnail extends \orynider\customheadernfo\core\thumbnail
 				ImageSaveAlpha($im, true);
 			}
 		}
-
-		Header($file_header);
-
-		Header("Expires: Mon, 1, 1999 05:00:00 GMT");
-		Header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-		Header("Cache-Control: no-store, no-cache, must-revalidate");
-		Header("Cache-Control: post-check=0, pre-check=0", false);
-		Header("Pragma: no-cache");
+		
+        $response = new Response();
+        $response->headers->set('Content-Type', $file_header); 
+        $response->headers->set('Cache-Control', 'must-revalidate');
+        $response->headers->set('Expires', $this->createDateTimeOneHourLater()->format(DATE_RFC2822));
 
 		/* return with no uppercase if patern not in string */
 		if (strpos($pic_title, ',') !== false)
@@ -525,5 +523,16 @@ class thumbnail extends \orynider\customheadernfo\core\thumbnail
 		ImagePNG($im);
 		ImageDestroy($im);
 	}
-}
 
+    protected function createDateTimeOneHourLater()
+    {
+        return $this->createDateTimeNow()->add(new \DateInterval('PT1H'));
+    }
+
+    protected function createDateTimeNow()
+    {
+        $date = new \DateTime();
+
+        return $date->setTimestamp(time());
+    }
+}
