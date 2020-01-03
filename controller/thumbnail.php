@@ -112,6 +112,24 @@ class thumbnail extends \orynider\customheadernfo\core\thumbnail
 		$board_url = generate_board_url();
 		$phpbb_url = $board_url . '/';
 
+		// First of all, get the request uri...
+		$http_host = preg_replace('/^\/?(.*?)\/?$/', "\\1", trim($this->request->server('HTTP_HOST')));
+		$script_name = preg_replace('/^\/?(.*?)\/?$/', "\\1", trim($this->request->server('SCRIPT_NAME')));
+
+		// If we are unable to get the script name we use REQUEST_URI as a failover and note it within the page array for easier support...
+		$script_name = !empty($script_name) ? $script_name : htmlspecialchars_decode($this->request->server('REQUEST_URI'));
+		
+		$script_name = (($pos = strpos($script_name, '?')) !== false) ? substr($script_name, 0, $pos) : $script_name;
+		
+		// Replace backslashes and doubled slashes (could happen on some proxy setups)
+		$server_name = $http_host . $this->config['script_path'];
+		$script_name = str_replace(array('\\', '//'), '/', $server_name);
+		
+		// Do not rely on cookie_secure, users seem to think that it means a secured cookie instead of an encrypted connection
+		$cookie_secure = ($this->request->server('HTTPS')) && ($this->request->server('HTTPS') == 'on') ? 1 : $this->config['cookie_secure'];
+		//Extract phpBB_URL from SERVER
+		$url = (($cookie_secure) ? 'https://' : 'http://') . $server_name . '/'; 
+		
 		// Replace path by your own font path
 		$font_name = $this->request->variable('font', $header_info_font);
 		$font = $this->module_root_path . "assets/fonts/" . $font_name . '.ttf';
@@ -137,8 +155,20 @@ class thumbnail extends \orynider\customheadernfo\core\thumbnail
 		
 		$header_info_image = $header_info_image ? str_replace('_info.', '_bg.', $header_info_image) : $this->module_root_path . "styles/prosilver/theme/images/banners/custom_header_bg.png";
 		$header_info_image = str_replace(basename($header_info_image), $this->request->variable('image', basename($header_info_image)), $header_info_image);
-		$header_info_image	= ($this->config['board_disable'] || ($row['header_info_id'] == 0)) ? generate_board_url() . '/ext/orynider/customheadernfo/styles/prosilver/theme/images/banners/under_construction.gif' : $header_info_image;
+		$header_info_image	= ($this->config['board_disable'] || ($row['header_info_id'] == 0)) ? $url . '/ext/orynider/customheadernfo/styles/prosilver/theme/images/banners/under_construction.gif' : $header_info_image;
 		$header_info_image = str_replace(array('.php', '.pal'), '.png', $header_info_image);
+		
+		// Determine board url if is on a subdomain - we may need it later
+		// For $url = 'http://www.free.example.net/forum/'; 
+		$array_url = explode(".", $url);
+		
+		// Determine later also for https://www. and http://www.
+		$url_image = (($cookie_secure) ? 'https://' : 'http://') . (array_key_exists(count($array_url) - 2, $array_url) ? $array_url[count($array_url) - 2] : "").".".$array_url[count($array_url) - 1];
+		
+		$header_info_image = str_replace($url_image, $url, $header_info_image);
+		// This path is sent with the base template paths in the assign_vars()
+		// call below. We need to correct it in case we are accessing from a
+		// controller because the web paths will be incorrect otherwise.
 		
 		//user logged in ? user has custom style ?
 		if (($this->user->data['user_id'] !== 1))
@@ -151,8 +181,10 @@ class thumbnail extends \orynider\customheadernfo\core\thumbnail
 				$header_info_image = str_replace('prosilver', $this->user_style, $header_info_image);
 			}
 		}
+		
 		/* http://localhost/Rhea/ext/orynider/customheadernfo/styles/prosilver/theme/images/banners/custom_header_bg.png */
-		$src_path = str_replace(array('localhost' . $this->config['script_path'], $phpbb_url), $this->root_path, $header_info_image);
+		$src_path = str_replace(array('localhost' . $this->config['script_path'], $url), $this->root_path, $header_info_image);
+		
 		$pic_filename = basename($src_path);
 		$pic_filetype = strtolower(substr($pic_filename, strlen($pic_filename) - 4, 4)); 
 		$pic_ext = str_replace('jpg', 'jpeg', substr(strrchr($pic_filename, '.'), 1));
